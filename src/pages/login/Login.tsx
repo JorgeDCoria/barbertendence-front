@@ -2,27 +2,22 @@ import {
   Box,
   Grid,
   InputAdornment,
-  Stack,
   TextField,
   Button,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
+  Typography,
 } from "@mui/material";
 import logo from "../../assets/logo.png";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
-import { useState } from "react";
+import PhoneAndroidOutlinedIcon from "@mui/icons-material/PhoneAndroidOutlined";
+
 interface Props {}
 
 const Login: React.FC<Props> = ({}) => {
-  const [areaCode, setAreaCode] = useState("");
-  const [phoneNumber, setPhoneNumber] = useState("");
-
-  const handleAreaCodeChange = (event: any) => {
-    setAreaCode(event.target.value);
-  };
-
-  const handlePhoneNumberChange = (event: any) => {
-    setPhoneNumber(event.target.value);
-  };
   return (
     <Grid
       container
@@ -44,87 +39,154 @@ const Login: React.FC<Props> = ({}) => {
         sm={8}
         md={6}
         lg={4}
+        container
+        direction={"column"}
+        justifyContent={{ xs: "center", sm: "space-around" }}
         sx={{
           background: "white",
-          placeContent: "space-around",
           height: "90vh",
           borderRadius: "16px",
           boxSizing: "border-box",
-          overflow: "hidden",
         }}
       >
         {/* contenedor de logo */}
-        <Grid
-          item
-          xs={12}
-          border="2px solid white"
-          sx={{
-            background: "white",
-            border: "2px solid red",
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
-          <Box
-            component="img"
-            sx={{
-              width: { xs: 250, sm: 400 },
-              border: "2px solid red",
-            }}
-            src={logo}
-          ></Box>
-        </Grid>
-        {/* contenedor de los inputs */}
-        <Grid
-          item
-          xs={12}
-          md={10}
-          border="2px solid red"
-          sx={{
-            display: "flex",
-            justifyContent: "center",
-          }}
-        >
-          <Stack spacing={4} my={4} component="form" sx={{ width: "90%" }}>
-            {/* Numero telefono */}
-            <TextField
-              label="Phone Number"
-              value={`${areaCode} ${phoneNumber}`}
-              onChange={handlePhoneNumberChange}
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">
-                    +1 ({areaCode})
-                  </InputAdornment>
-                ),
+        <Box sx={{ height: "100%" }}>
+          <Grid container>
+            <Grid
+              item
+              xs={12}
+              sx={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
               }}
-            />
-            <TextField
-              id="input-password"
-              label="Password"
-              type="password"
-              fullWidth
-              variant="outlined"
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <LockOutlinedIcon />
-                  </InputAdornment>
-                ),
-                endAdornment: (
-                  <InputAdornment position="end">
-                    <VisibilityOutlinedIcon />
-                  </InputAdornment>
-                ),
-              }}
-            />
+            >
+              <Box
+                component="img"
+                sx={{
+                  width: { xs: 200 },
+                  height: 120,
+                  objectFit: "cover",
+                }}
+                src={logo}
+              ></Box>
+            </Grid>
 
-            <Button variant="contained" color="primary">
-              Ingresar
-            </Button>
-          </Stack>
-        </Grid>
+            {/* contenedor de los inputs */}
+            <Grid
+              item
+              xs={12}
+              padding={2}
+              container
+              gap={{ xs: 2 }}
+              marginTop={{ md: 4 }}
+              justifyContent={"center"}
+            >
+              <Grid
+                item
+                xs={12}
+                lg={10}
+                container
+                alignItems={"center"}
+                justifyContent={{
+                  xs: "center",
+                  sm: "space-around",
+                  lg: "space-between",
+                }}
+              >
+                <PhoneAndroidOutlinedIcon fontSize="large" />
+                <FormControl sx={{ minWidth: { xs: 80 } }}>
+                  <InputLabel id="code">Code</InputLabel>
+                  <Select labelId="code" id="code-select" label="Code">
+                    <MenuItem>+54</MenuItem>
+                    <MenuItem>+11</MenuItem>
+                    <MenuItem>+381</MenuItem>
+                  </Select>
+                </FormControl>
+                <FormControl sx={{ flexFlow: 1 }}>
+                  {" "}
+                  <TextField
+                    name="number"
+                    label="Numero sin codigo de area"
+                    type="number"
+                  ></TextField>
+                </FormControl>
+              </Grid>
+              {/* Numero telefono */}
+
+              <Grid item xs={12} lg={10}>
+                <Box
+                  sx={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "8px",
+                    width: "100%",
+                  }}
+                >
+                  {" "}
+                  <LockOutlinedIcon fontSize="large" />
+                  <TextField
+                    required
+                    id="input-password"
+                    label="Password"
+                    type="password"
+                    name="password"
+                    fullWidth
+                    variant="outlined"
+                    InputProps={{
+                      endAdornment: (
+                        <InputAdornment position="end">
+                          <VisibilityOutlinedIcon />
+                        </InputAdornment>
+                      ),
+                    }}
+                  />
+                </Box>{" "}
+              </Grid>
+              <Grid item xs={10}>
+                <Button
+                  type="submit"
+                  variant="contained"
+                  fullWidth
+                  color="primary"
+                  size="large"
+                >
+                  Ingresar
+                </Button>
+              </Grid>
+              <Grid item xs={10}>
+                <Button
+                  type="submit"
+                  variant="outlined"
+                  fullWidth
+                  color="primary"
+                  size="large"
+                >
+                  Ingresar con gmail
+                </Button>
+              </Grid>
+              <Grid item xs={10}>
+                <Typography
+                  component={"p"}
+                  align="center"
+                  color={"primary.main"}
+                >
+                  ¿olvidate tu password?
+                </Typography>
+                <Typography component={"p"} align="center">
+                  No tienes una cuenta{" "}
+                  <Typography
+                    component={"span"}
+                    fontSize={"18px"}
+                    color={"primary.main"}
+                  >
+                    Registrate
+                  </Typography>{" "}
+                </Typography>
+              </Grid>
+            </Grid>
+          </Grid>
+        </Box>
       </Grid>
     </Grid>
   );
