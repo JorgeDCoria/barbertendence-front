@@ -81,49 +81,76 @@ const Login: React.FC<Props> = ({}) => {
                         <Grid
                             item
                             xs={12}
+                            sm={10}
+                            md={12}
+                            gap={{ md: 2 }}
                             padding={2}
                             container
-                            gap={{ xs: 2 }}
                             marginTop={{ md: 4 }}
+                            alignItems={"center"}
                             justifyContent={"center"}
                         >
+                            {/*  input phone */}
                             <Grid
                                 item
                                 xs={12}
                                 lg={10}
                                 container
+                                justifyContent={"space-between"}
                                 alignItems={"center"}
-                                justifyContent={{
-                                    xs: "center",
-                                    sm: "space-around",
-                                    lg: "space-between",
-                                }}
+                                sx={{ height: "80px" }}
                             >
-                                <PhoneAndroidOutlinedIcon fontSize="large" />
-                                <FormControl sx={{ minWidth: { xs: 80 } }}>
-                                    <InputLabel id="code">Code</InputLabel>
-                                    <Select
-                                        labelId="code"
-                                        id="code-select"
-                                        label="Code"
+                                <Grid item xs={5}>
+                                    <Box
+                                        sx={{
+                                            display: "flex",
+                                            alignItems: "center",
+                                        }}
                                     >
-                                        <MenuItem>+54</MenuItem>
-                                        <MenuItem>+11</MenuItem>
-                                        <MenuItem>+381</MenuItem>
-                                    </Select>
-                                </FormControl>
-                                <FormControl sx={{ flexFlow: 1 }}>
+                                        <PhoneAndroidOutlinedIcon fontSize="large" />
+                                        <FormControl
+                                            sx={{
+                                                minWidth: { xs: 80, sm: 100 },
+                                            }}
+                                        >
+                                            <InputLabel id="code">
+                                                Code
+                                            </InputLabel>
+                                            <Select
+                                                labelId="code"
+                                                id="code-select"
+                                                label="Code"
+                                            >
+                                                <MenuItem>+54</MenuItem>
+                                                <MenuItem>+11</MenuItem>
+                                                <MenuItem>+381</MenuItem>
+                                            </Select>
+                                        </FormControl>
+                                    </Box>
+                                </Grid>
+                                <Grid item xs={7}>
                                     {" "}
-                                    <TextField
-                                        name="number"
-                                        label="Numero sin codigo de area"
-                                        type="number"
-                                    ></TextField>
-                                </FormControl>
+                                    <FormControl fullWidth>
+                                        {" "}
+                                        <TextField
+                                            name="number"
+                                            label="Numero sin codigo de area"
+                                            type="number"
+                                        ></TextField>
+                                    </FormControl>
+                                </Grid>
                             </Grid>
-                            {/* Numero telefono */}
+                            {/* Numero password */}
 
-                            <Grid item xs={12} lg={10}>
+                            <Grid
+                                item
+                                xs={12}
+                                lg={10}
+                                sx={{ height: "80px" }}
+                                container
+                                alignItems={"center"}
+                                justifyContent={"center"}
+                            >
                                 <Box
                                     sx={{
                                         display: "flex",
@@ -152,7 +179,7 @@ const Login: React.FC<Props> = ({}) => {
                                     />
                                 </Box>{" "}
                             </Grid>
-                            <Grid item xs={10}>
+                            <Grid item xs={10} sx={{ height: "40px" }}>
                                 <Button
                                     type="submit"
                                     variant="contained"
@@ -163,7 +190,7 @@ const Login: React.FC<Props> = ({}) => {
                                     Ingresar
                                 </Button>
                             </Grid>
-                            <Grid item xs={10}>
+                            <Grid item xs={10} sx={{ height: "40px" }}>
                                 <Button
                                     type="submit"
                                     variant="outlined"

@@ -107,43 +107,57 @@ const Register = () => {
                                     />
                                 </Box>{" "}
                             </Grid>
+                            {/* Number phone */}
                             <Grid
                                 item
                                 xs={12}
                                 lg={10}
                                 container
+                                justifyContent={"space-between"}
                                 alignItems={"center"}
-                                justifyContent={{
-                                    xs: "center",
-                                    sm: "space-around",
-                                    lg: "space-between",
-                                }}
                             >
-                                <PhoneAndroidOutlinedIcon />
-                                <FormControl sx={{ minWidth: { xs: 80 } }}>
-                                    <InputLabel id="code">Code</InputLabel>
-                                    <Select
-                                        labelId="code"
-                                        id="code-select"
-                                        label="Code"
-                                        size="small"
+                                <Grid item xs={5}>
+                                    <Box
+                                        sx={{
+                                            display: "flex",
+                                            alignItems: "center",
+                                        }}
                                     >
-                                        <MenuItem>+54</MenuItem>
-                                        <MenuItem>+11</MenuItem>
-                                        <MenuItem>+381</MenuItem>
-                                    </Select>
-                                </FormControl>
-                                <FormControl sx={{ flexFlow: 1 }}>
+                                        <PhoneAndroidOutlinedIcon />
+                                        <FormControl
+                                            sx={{
+                                                minWidth: { xs: 80, sm: 100 },
+                                            }}
+                                        >
+                                            <InputLabel id="code">
+                                                Code
+                                            </InputLabel>
+                                            <Select
+                                                labelId="code"
+                                                id="code-select"
+                                                label="Code"
+                                                size="small"
+                                            >
+                                                <MenuItem>+54</MenuItem>
+                                                <MenuItem>+11</MenuItem>
+                                                <MenuItem>+381</MenuItem>
+                                            </Select>
+                                        </FormControl>
+                                    </Box>
+                                </Grid>
+                                <Grid item xs={7}>
                                     {" "}
-                                    <TextField
-                                        name="number"
-                                        label="Numero sin codigo de area"
-                                        type="number"
-                                        size="small"
-                                    ></TextField>
-                                </FormControl>
+                                    <FormControl fullWidth>
+                                        {" "}
+                                        <TextField
+                                            size="small"
+                                            name="number"
+                                            label="Numero sin codigo de area"
+                                            type="number"
+                                        ></TextField>
+                                    </FormControl>
+                                </Grid>
                             </Grid>
-                            {/* Numero telefono */}
 
                             <Grid item xs={12} lg={10}>
                                 <Box
