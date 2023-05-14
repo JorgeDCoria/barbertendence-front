@@ -1,5 +1,5 @@
 import { Box, InputAdornment, TextField } from "@mui/material";
-import React from "react";
+import React, { useState } from "react";
 import { type SizeSMValue, type SizeSMLValue } from "src/types";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
@@ -16,6 +16,11 @@ const InputPassword: React.FC<Props> = ({
     sizeTextField,
     sizeIcon,
 }) => {
+    const [showPassword, setShowPassword] = useState(false);
+
+    const handleShowPassword = (): void => {
+        setShowPassword((prevShowPassword) => !prevShowPassword);
+    };
     return (
         <Box
             sx={{
@@ -31,7 +36,7 @@ const InputPassword: React.FC<Props> = ({
                 required
                 id={name}
                 label={label}
-                type="password"
+                type={showPassword ? "text" : "password"}
                 name={name}
                 fullWidth
                 variant="outlined"
@@ -39,7 +44,12 @@ const InputPassword: React.FC<Props> = ({
                 InputProps={{
                     endAdornment: (
                         <InputAdornment position="end">
-                            <VisibilityOutlinedIcon />
+                            <VisibilityOutlinedIcon
+                                onClick={handleShowPassword}
+                                sx={{
+                                    cursor: "pointer",
+                                }}
+                            />
                         </InputAdornment>
                     ),
                 }}
