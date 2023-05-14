@@ -1,26 +1,14 @@
 // import { useState } from "react";
-import {
-    Box,
-    Grid,
-    InputAdornment,
-    TextField,
-    Button,
-    FormControl,
-    InputLabel,
-    Select,
-    MenuItem,
-    Typography,
-} from "@mui/material";
+import { Box, Grid, Button, Typography } from "@mui/material";
 import logo from "../../assets/logo.png";
-import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
-import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
-import PhoneAndroidOutlinedIcon from "@mui/icons-material/PhoneAndroidOutlined";
+
 import { Link } from "react-router-dom";
+import InputPassword from "./components/InputPassword";
+import InputPhoneNumber from "./components/InputPhoneNumber";
 
 interface Props {}
 
 const Login: React.FC<Props> = ({}) => {
-    //const [showPassword, setShowPassword] = useState<Boolean>(false);
     return (
         <Grid
             container
@@ -91,54 +79,11 @@ const Login: React.FC<Props> = ({}) => {
                             justifyContent={"center"}
                         >
                             {/*  input phone */}
-                            <Grid
-                                item
-                                xs={12}
-                                lg={10}
-                                container
-                                justifyContent={"space-between"}
-                                alignItems={"center"}
-                                sx={{ height: "80px" }}
-                            >
-                                <Grid item xs={5}>
-                                    <Box
-                                        sx={{
-                                            display: "flex",
-                                            alignItems: "center",
-                                        }}
-                                    >
-                                        <PhoneAndroidOutlinedIcon fontSize="large" />
-                                        <FormControl
-                                            sx={{
-                                                minWidth: { xs: 80, sm: 100 },
-                                            }}
-                                        >
-                                            <InputLabel id="code">
-                                                Code
-                                            </InputLabel>
-                                            <Select
-                                                labelId="code"
-                                                id="code-select"
-                                                label="Code"
-                                            >
-                                                <MenuItem>+54</MenuItem>
-                                                <MenuItem>+11</MenuItem>
-                                                <MenuItem>+381</MenuItem>
-                                            </Select>
-                                        </FormControl>
-                                    </Box>
-                                </Grid>
-                                <Grid item xs={7}>
-                                    {" "}
-                                    <FormControl fullWidth>
-                                        {" "}
-                                        <TextField
-                                            name="number"
-                                            label="Numero sin codigo de area"
-                                            type="number"
-                                        ></TextField>
-                                    </FormControl>
-                                </Grid>
+                            <Grid item xs={12} lg={10}>
+                                <InputPhoneNumber
+                                    sizeIcon="large"
+                                    sizeInput="medium"
+                                />
                             </Grid>
                             {/* Numero password */}
 
@@ -146,38 +91,16 @@ const Login: React.FC<Props> = ({}) => {
                                 item
                                 xs={12}
                                 lg={10}
-                                sx={{ height: "80px" }}
                                 container
                                 alignItems={"center"}
                                 justifyContent={"center"}
                             >
-                                <Box
-                                    sx={{
-                                        display: "flex",
-                                        alignItems: "center",
-                                        gap: "8px",
-                                        width: "100%",
-                                    }}
-                                >
-                                    {" "}
-                                    <LockOutlinedIcon fontSize="large" />
-                                    <TextField
-                                        required
-                                        id="input-password"
-                                        label="Password"
-                                        type="password"
-                                        name="password"
-                                        fullWidth
-                                        variant="outlined"
-                                        InputProps={{
-                                            endAdornment: (
-                                                <InputAdornment position="end">
-                                                    <VisibilityOutlinedIcon />
-                                                </InputAdornment>
-                                            ),
-                                        }}
-                                    />
-                                </Box>{" "}
+                                <InputPassword
+                                    label="Password"
+                                    name="password"
+                                    sizeTextField="medium"
+                                    sizeIcon="large"
+                                />
                             </Grid>
                             <Grid item xs={10} sx={{ height: "40px" }}>
                                 <Button

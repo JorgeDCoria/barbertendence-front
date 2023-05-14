@@ -1,18 +1,5 @@
 import { createTheme } from "@mui/material/styles";
 
-declare module '@mui/material/styles' {
-  interface Theme {
-    background: {
-      gradient: string;
-    };
-  }
-  // allow configuration using `createTheme`
-  interface ThemeOptions {
-    background?: {
-      gradient?: string;
-    };
-  }
-}
 
 const theme = createTheme({
   palette: {
@@ -61,11 +48,7 @@ const theme = createTheme({
     fontFamily:['Open Sans',"sans-serif"].join(','),
     h1:{fontFamily:["Poppins", "sans-serif"].join(',')},
     h2:{fontFamily:["Raleway", "sans-serif"].join(',')},
-
   },
-  background:{
-    gradient:"linear-gradient(to bottom right, #1A237E, #004D40)"
-  }
 });
 
 export default theme;

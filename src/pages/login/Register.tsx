@@ -1,21 +1,12 @@
-import {
-    Box,
-    Button,
-    FormControl,
-    Grid,
-    InputAdornment,
-    InputLabel,
-    MenuItem,
-    Select,
-    TextField,
-    Typography,
-} from "@mui/material";
-import logo from "../../assets/logo.png";
-import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
-import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
-import PhoneAndroidOutlinedIcon from "@mui/icons-material/PhoneAndroidOutlined";
-import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
 import { Link } from "react-router-dom";
+import { Box, Button, Grid, TextField, Typography } from "@mui/material";
+
+import logo from "../../assets/logo.png";
+
+import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
+import InputNumber from "./components/InputPhoneNumber";
+import InputPassword from "./components/InputPassword";
+
 const Register = () => {
     return (
         <Grid
@@ -108,116 +99,28 @@ const Register = () => {
                                 </Box>{" "}
                             </Grid>
                             {/* Number phone */}
-                            <Grid
-                                item
-                                xs={12}
-                                lg={10}
-                                container
-                                justifyContent={"space-between"}
-                                alignItems={"center"}
-                            >
-                                <Grid item xs={5}>
-                                    <Box
-                                        sx={{
-                                            display: "flex",
-                                            alignItems: "center",
-                                        }}
-                                    >
-                                        <PhoneAndroidOutlinedIcon />
-                                        <FormControl
-                                            sx={{
-                                                minWidth: { xs: 80, sm: 100 },
-                                            }}
-                                        >
-                                            <InputLabel id="code">
-                                                Code
-                                            </InputLabel>
-                                            <Select
-                                                labelId="code"
-                                                id="code-select"
-                                                label="Code"
-                                                size="small"
-                                            >
-                                                <MenuItem>+54</MenuItem>
-                                                <MenuItem>+11</MenuItem>
-                                                <MenuItem>+381</MenuItem>
-                                            </Select>
-                                        </FormControl>
-                                    </Box>
-                                </Grid>
-                                <Grid item xs={7}>
-                                    {" "}
-                                    <FormControl fullWidth>
-                                        {" "}
-                                        <TextField
-                                            size="small"
-                                            name="number"
-                                            label="Numero sin codigo de area"
-                                            type="number"
-                                        ></TextField>
-                                    </FormControl>
-                                </Grid>
+                            <Grid item xs={12} lg={10}>
+                                <InputNumber
+                                    sizeInput="small"
+                                    sizeIcon="small"
+                                />
                             </Grid>
 
                             <Grid item xs={12} lg={10}>
-                                <Box
-                                    sx={{
-                                        display: "flex",
-                                        alignItems: "center",
-                                        gap: "8px",
-                                        width: "100%",
-                                    }}
-                                >
-                                    {" "}
-                                    <LockOutlinedIcon />
-                                    <TextField
-                                        required
-                                        id="input-password"
-                                        label="Password"
-                                        type="password"
-                                        name="password"
-                                        fullWidth
-                                        variant="outlined"
-                                        size="small"
-                                        InputProps={{
-                                            endAdornment: (
-                                                <InputAdornment position="end">
-                                                    <VisibilityOutlinedIcon />
-                                                </InputAdornment>
-                                            ),
-                                        }}
-                                    />
-                                </Box>{" "}
+                                <InputPassword
+                                    label="Password"
+                                    name="password"
+                                    sizeIcon="medium"
+                                    sizeTextField="small"
+                                />
                             </Grid>
                             <Grid item xs={12} lg={10}>
-                                <Box
-                                    sx={{
-                                        display: "flex",
-                                        alignItems: "center",
-                                        gap: "8px",
-                                        width: "100%",
-                                    }}
-                                >
-                                    {" "}
-                                    <LockOutlinedIcon />
-                                    <TextField
-                                        required
-                                        id="input-confirm-password"
-                                        label="Confirm Password"
-                                        type="password"
-                                        name="password"
-                                        fullWidth
-                                        variant="outlined"
-                                        size="small"
-                                        InputProps={{
-                                            endAdornment: (
-                                                <InputAdornment position="end">
-                                                    <VisibilityOutlinedIcon />
-                                                </InputAdornment>
-                                            ),
-                                        }}
-                                    />
-                                </Box>{" "}
+                                <InputPassword
+                                    label="Confirm Password"
+                                    name="confirmPassword"
+                                    sizeIcon="medium"
+                                    sizeTextField="small"
+                                />
                             </Grid>
                             <Grid item xs={10} md={6}>
                                 <Button
