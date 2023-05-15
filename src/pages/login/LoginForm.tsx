@@ -7,7 +7,7 @@ import InputPhoneNumber from "./components/InputPhoneNumber";
 
 interface Props {}
 
-const Login: React.FC<Props> = ({}) => {
+const LoginForm: React.FC<Props> = ({}) => {
     return (
         <Box
             sx={{ height: "100%" }}
@@ -96,4 +96,4 @@ const Login: React.FC<Props> = ({}) => {
     );
 };
 
-export default Login;
+export default LoginForm;
