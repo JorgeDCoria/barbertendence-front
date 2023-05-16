@@ -8,6 +8,8 @@ interface Props {
     name: string;
     sizeTextField: SizeSMValue;
     sizeIcon: SizeSMLValue;
+    value: string;
+    handleChange: Function;
 }
 
 const InputPassword: React.FC<Props> = ({
@@ -15,6 +17,8 @@ const InputPassword: React.FC<Props> = ({
     name,
     sizeTextField,
     sizeIcon,
+    value,
+    handleChange,
 }) => {
     const [showPassword, setShowPassword] = useState(false);
 
@@ -41,6 +45,8 @@ const InputPassword: React.FC<Props> = ({
                 fullWidth
                 variant="outlined"
                 size={sizeTextField}
+                value={value}
+                onChange={(e) => handleChange(e)}
                 InputProps={{
                     endAdornment: (
                         <InputAdornment position="end">

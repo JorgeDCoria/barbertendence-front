@@ -1,13 +1,42 @@
 // import { useState } from "react";
+import { useState } from "react";
 import { Box, Grid, Button, Typography } from "@mui/material";
 
 import { Link } from "react-router-dom";
 import InputPassword from "./components/InputPassword";
 import InputPhoneNumber from "./components/InputPhoneNumber";
 
+type Phone = {
+    code: string;
+    phone: number;
+};
 interface Props {}
+interface Input {
+    numberPhone: Phone;
+    password: string;
+}
 
 const LoginForm: React.FC<Props> = ({}) => {
+    const [input, setInput] = useState<Input>({
+        numberPhone: { code: "", phone: 0 },
+        password: "",
+    });
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
+        if (e.target.name === "password")
+            setInput({ ...input, [e.target.name]: e.target.value });
+        else
+            setInput({
+                ...input,
+                numberPhone: {
+                    ...input.numberPhone,
+                    [e.target.name]: e.target.value,
+                },
+            });
+    };
+
+    const handleSubmit = (e: React.FormEvent<HTMLFormElement>): void => {
+        e.preventDefault();
+    };
     return (
         <Box
             sx={{ height: "100%" }}
@@ -15,6 +44,7 @@ const LoginForm: React.FC<Props> = ({}) => {
             display={"flex"}
             alignItems={"center"}
             justifyContent={"center"}
+            onSubmit={handleSubmit}
         >
             {/* contenedor de los inputs */}
             <Grid
@@ -29,7 +59,15 @@ const LoginForm: React.FC<Props> = ({}) => {
             >
                 {/*  input phone */}
                 <Grid item xs={12} lg={10}>
-                    <InputPhoneNumber sizeIcon="large" sizeInput="medium" />
+                    <InputPhoneNumber
+                        sizeIcon="large"
+                        sizeInput="medium"
+                        codeName="code"
+                        phoneName="phone"
+                        codeValue={input.numberPhone.code}
+                        phoneValue={input.numberPhone.phone}
+                        handleChange={handleChange}
+                    />
                 </Grid>
                 {/* Numero password */}
 
@@ -46,6 +84,8 @@ const LoginForm: React.FC<Props> = ({}) => {
                         name="password"
                         sizeTextField="medium"
                         sizeIcon="large"
+                        value={input.password}
+                        handleChange={handleChange}
                     />
                 </Grid>
                 <Grid item xs={10} sx={{ height: "40px" }}>

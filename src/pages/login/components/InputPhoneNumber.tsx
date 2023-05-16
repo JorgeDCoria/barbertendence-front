@@ -13,8 +13,21 @@ import { SizeSMLValue, type SizeSMValue } from "src/types";
 interface Props {
     sizeInput: SizeSMValue;
     sizeIcon: SizeSMLValue;
+    codeName: string;
+    codeValue: string;
+    phoneValue: number;
+    phoneName: string;
+    handleChange: Function;
 }
-const InputPhoneNumber: React.FC<Props> = ({ sizeInput, sizeIcon }) => {
+const InputPhoneNumber: React.FC<Props> = ({
+    sizeInput,
+    sizeIcon,
+    codeName,
+    codeValue,
+    phoneName,
+    phoneValue,
+    handleChange,
+}) => {
     return (
         <Grid
             container
@@ -43,10 +56,17 @@ const InputPhoneNumber: React.FC<Props> = ({ sizeInput, sizeIcon }) => {
                         }}
                     >
                         <InputLabel id="code">Code</InputLabel>
-                        <Select labelId="code" id="code-select" label={"Code"}>
-                            <MenuItem>+54</MenuItem>
-                            <MenuItem>+11</MenuItem>
-                            <MenuItem>+381</MenuItem>
+                        <Select
+                            labelId="code"
+                            id="code-select"
+                            label={"Code"}
+                            name={codeName}
+                            value={codeValue}
+                            onChange={(e) => handleChange(e)}
+                        >
+                            <MenuItem value={"+54"}>+54</MenuItem>
+                            <MenuItem value={"+11"}>+11</MenuItem>
+                            <MenuItem value={"+57"}>+57</MenuItem>
                         </Select>
                     </FormControl>
                 </Box>
@@ -58,9 +78,11 @@ const InputPhoneNumber: React.FC<Props> = ({ sizeInput, sizeIcon }) => {
                     {" "}
                     <TextField
                         size={sizeInput}
-                        name="number"
+                        name={phoneName}
+                        value={phoneValue}
                         label="Numero sin codigo de area"
                         type="number"
+                        onChange={(e) => handleChange(e)}
                     ></TextField>
                 </FormControl>
             </Grid>
