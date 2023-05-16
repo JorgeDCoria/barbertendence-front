@@ -15,16 +15,60 @@ interface Input {
     numberPhone: Phone;
     password: string;
 }
+type InputError = {
+    error: boolean;
+    message: string;
+};
+type FormError = {
+    phoneError: InputError;
+    passwordError: InputError;
+};
 
+const validarPassword = (password: string): boolean => {
+    let ExpRegPass =
+        /(?=(.*[0-9]))(?=.*[\!@#$%^&*()\\[\]{}\-_+=|:;"'<>,./?])(?=.*[a-z])(?=(.*[A-Z]))(?=(.*)).{8,}/;
+    return password.match(ExpRegPass) !== null;
+};
+const validarNumberPhone = (phone: string): string => {
+    let ExpRegSoloNumeros = "^[0-9]+$";
+    let message: string = "";
+    if (phone.match(ExpRegSoloNumeros) == null) message = "Solo numeros";
+    if (phone.length < 7) message = "Ingrese un numero valido";
+
+    return message;
+};
 const LoginForm: React.FC<Props> = ({}) => {
     const [input, setInput] = useState<Input>({
         numberPhone: { code: "", phone: 0 },
         password: "",
     });
+    const [formError, setFormError] = useState<FormError>({
+        phoneError: { error: false, message: "" },
+        passwordError: { error: false, message: "" },
+    });
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
-        if (e.target.name === "password")
+        if (e.target.name === "password") {
             setInput({ ...input, [e.target.name]: e.target.value });
-        else
+            if (!validarPassword(e.target.value)) {
+                setFormError({
+                    ...formError,
+                    passwordError: {
+                        ...formError.passwordError,
+                        error: true,
+                        message: "Password invalida",
+                    },
+                });
+            } else {
+                setFormError({
+                    ...formError,
+                    passwordError: {
+                        ...formError.passwordError,
+                        error: false,
+                        message: "",
+                    },
+                });
+            }
+        } else {
             setInput({
                 ...input,
                 numberPhone: {
@@ -32,6 +76,16 @@ const LoginForm: React.FC<Props> = ({}) => {
                     [e.target.name]: e.target.value,
                 },
             });
+            let aux = validarNumberPhone(e.target.value);
+            setFormError({
+                ...formError,
+                phoneError: {
+                    ...formError.phoneError,
+                    error: aux !== "",
+                    message: aux,
+                },
+            });
+        }
     };
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>): void => {
@@ -67,6 +121,8 @@ const LoginForm: React.FC<Props> = ({}) => {
                         codeValue={input.numberPhone.code}
                         phoneValue={input.numberPhone.phone}
                         handleChange={handleChange}
+                        error={formError.phoneError.error}
+                        errorMessage={formError.phoneError.message}
                     />
                 </Grid>
                 {/* Numero password */}
@@ -86,6 +142,8 @@ const LoginForm: React.FC<Props> = ({}) => {
                         sizeIcon="large"
                         value={input.password}
                         handleChange={handleChange}
+                        error={formError.passwordError.error}
+                        errorMessage={formError.passwordError.message}
                     />
                 </Grid>
                 <Grid item xs={10} sx={{ height: "40px" }}>

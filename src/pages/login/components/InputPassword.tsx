@@ -10,6 +10,8 @@ interface Props {
     sizeIcon: SizeSMLValue;
     value: string;
     handleChange: Function;
+    error: boolean;
+    errorMessage: string;
 }
 
 const InputPassword: React.FC<Props> = ({
@@ -19,6 +21,8 @@ const InputPassword: React.FC<Props> = ({
     sizeIcon,
     value,
     handleChange,
+    error,
+    errorMessage,
 }) => {
     const [showPassword, setShowPassword] = useState(false);
 
@@ -47,6 +51,8 @@ const InputPassword: React.FC<Props> = ({
                 size={sizeTextField}
                 value={value}
                 onChange={(e) => handleChange(e)}
+                error={error}
+                helperText={error ? errorMessage : ""}
                 InputProps={{
                     endAdornment: (
                         <InputAdornment position="end">

@@ -18,6 +18,8 @@ interface Props {
     phoneValue: number;
     phoneName: string;
     handleChange: Function;
+    error: boolean;
+    errorMessage: string;
 }
 const InputPhoneNumber: React.FC<Props> = ({
     sizeInput,
@@ -27,6 +29,8 @@ const InputPhoneNumber: React.FC<Props> = ({
     phoneName,
     phoneValue,
     handleChange,
+    error,
+    errorMessage,
 }) => {
     return (
         <Grid
@@ -83,6 +87,8 @@ const InputPhoneNumber: React.FC<Props> = ({
                         label="Numero sin codigo de area"
                         type="number"
                         onChange={(e) => handleChange(e)}
+                        error={error}
+                        helperText={error ? errorMessage : ""}
                     ></TextField>
                 </FormControl>
             </Grid>
