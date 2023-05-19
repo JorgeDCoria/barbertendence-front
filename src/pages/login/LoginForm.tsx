@@ -5,20 +5,15 @@ import { Box, Grid, Button, Typography } from "@mui/material";
 import { Link } from "react-router-dom";
 import InputPassword from "./components/InputPassword";
 import InputPhoneNumber from "./components/InputPhoneNumber";
+import { type Phone } from "src/types/phoneType";
+import { type InputError } from "src/types/inputError";
 
-type Phone = {
-    code: string;
-    phone: number;
-};
 interface Props {}
 interface Input {
     numberPhone: Phone;
     password: string;
 }
-type InputError = {
-    error: boolean;
-    message: string;
-};
+
 type FormError = {
     phoneError: InputError;
     passwordError: InputError;

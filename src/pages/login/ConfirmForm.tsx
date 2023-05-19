@@ -1,11 +1,31 @@
-import { Box, Button, Grid, Typography, useTheme } from "@mui/material";
+import {
+    Box,
+    Button,
+    Grid,
+    Typography,
+    useTheme,
+    Modal,
+    Stack,
+} from "@mui/material";
 import { useState, useEffect } from "react";
 import BoxCode from "./components/BoxCode";
+import InputPhoneNumber from "./components/InputPhoneNumber";
+import { Phone } from "src/types/phoneType";
+import { InputError } from "src/types/inputError";
 
 interface Props {}
 const ConfirmForm: React.FC<Props> = ({}) => {
     // const codeAux: string[] = ["", "", "", "", "", ""];
     const [code, setCode] = useState<string[]>(["", "", "", "", "", ""]);
+    const [showModal, setShowModal] = useState<boolean>(false);
+    const [numberPhone, setNumberPhone] = useState<Phone>({
+        code: "",
+        phone: 0,
+    });
+    const [error, setError] = useState<InputError>({
+        error: false,
+        message: "",
+    });
     const theme = useTheme();
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
@@ -13,6 +33,20 @@ const ConfirmForm: React.FC<Props> = ({}) => {
         const aux: string[] = [...code];
         aux[parseInt(e.target.name)] = e.target.value;
         setCode(aux);
+    };
+
+    const handleShowModal = (
+        e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+    ) => {
+        e.preventDefault();
+        setShowModal(!showModal);
+    };
+
+    const handleChangeNumberPhone = (
+        e: React.ChangeEvent<HTMLInputElement>
+    ): void => {
+        e.preventDefault();
+        setNumberPhone({ ...numberPhone, [e.target.name]: e.target.value });
     };
     useEffect(() => {}, []);
     return (
@@ -70,11 +104,63 @@ const ConfirmForm: React.FC<Props> = ({}) => {
                     >
                         Confirmar
                     </Button>
-                    <Button sx={{ height: "40px" }} variant="contained">
+                    <Button
+                        sx={{ height: "40px" }}
+                        variant="contained"
+                        onClick={(e) => handleShowModal(e)}
+                    >
                         Cambiar Numero
                     </Button>{" "}
                 </Grid>
             </Grid>
+            <Modal
+                open={showModal}
+                onClose={handleShowModal}
+                // aria-labelledby="modal-modal-title"
+                // aria-describedby="modal-modal-description"
+                sx={{
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                }}
+            >
+                <Box
+                    sx={{
+                        width: "725px",
+                        height: "400px",
+                        background: "white",
+                        borderRadius: "16px",
+                    }}
+                >
+                    <Stack>
+                        <Typography
+                            fontSize={"2.5rem"}
+                            fontWeight={500}
+                            textAlign={"center"}
+                            color={theme.palette.primary.main}
+                        >
+                            Cambiar Numero
+                        </Typography>
+                        <Typography textAlign={"center"}>
+                            Ingresa un nuevo numero y te enviaremos un nuevo
+                            codigo de validacion
+                        </Typography>
+                        <Box>
+                            <InputPhoneNumber
+                                sizeInput="medium"
+                                codeName={"code"}
+                                codeValue={numberPhone.code}
+                                errorMessage={error.message}
+                                phoneName="phone"
+                                phoneValue={numberPhone.phone}
+                                sizeIcon="medium"
+                                error={error.error}
+                                handleChange={(e) => handleChangeNumberPhone(e)}
+                            />
+                        </Box>
+                    </Stack>
+                </Box>
+            </Modal>
         </Box>
     );
 };
