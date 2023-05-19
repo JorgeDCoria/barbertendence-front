@@ -4,12 +4,15 @@ import BoxCode from "./components/BoxCode";
 
 interface Props {}
 const ConfirmForm: React.FC<Props> = ({}) => {
-    const auxCode: string[] = ["", "", "", "", "", ""];
-    const [code, setCode] = useState<string[]>(auxCode);
+    // const codeAux: string[] = ["", "", "", "", "", ""];
+    const [code, setCode] = useState<string[]>(["", "", "", "", "", ""]);
     const theme = useTheme();
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
         e.preventDefault();
+        const aux: string[] = [...code];
+        aux[parseInt(e.target.name)] = e.target.value;
+        setCode(aux);
     };
     useEffect(() => {}, []);
     return (
@@ -49,6 +52,7 @@ const ConfirmForm: React.FC<Props> = ({}) => {
                             handleChange={handleChange}
                             key={i}
                             value={e}
+                            name={`${i}`}
                         />
                     ))}
                 </Grid>

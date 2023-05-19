@@ -3,8 +3,9 @@ import { Box, InputAdornment, TextField, useTheme } from "@mui/material";
 interface Props {
     value: string;
     handleChange: Function;
+    name: string;
 }
-const BoxCode: React.FC<Props> = ({ value, handleChange }) => {
+const BoxCode: React.FC<Props> = ({ value, handleChange, name }) => {
     const theme = useTheme();
     return (
         <Box
@@ -21,8 +22,10 @@ const BoxCode: React.FC<Props> = ({ value, handleChange }) => {
             }}
         >
             <TextField
+                name={name}
                 inputProps={{ maxLength: 1 }}
                 variant="standard"
+                onChange={(e) => handleChange(e)}
                 sx={{
                     textAlign: "center",
                     px: "0.7rem",
@@ -38,7 +41,9 @@ const BoxCode: React.FC<Props> = ({ value, handleChange }) => {
                         fontSize: { xs: "32px", sm: "44px" },
                     },
                 }}
-            ></TextField>
+            >
+                {value}
+            </TextField>
         </Box>
     );
 };
