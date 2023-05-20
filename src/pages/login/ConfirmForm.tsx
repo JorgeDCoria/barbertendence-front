@@ -122,6 +122,7 @@ const ConfirmForm: React.FC<Props> = ({}) => {
                     display: "flex",
                     justifyContent: "center",
                     alignItems: "center",
+                    px: 1,
                 }}
             >
                 <Box
@@ -131,10 +132,16 @@ const ConfirmForm: React.FC<Props> = ({}) => {
                         background: "white",
                         borderRadius: "16px",
                     }}
+                    py={2}
                 >
-                    <Stack>
+                    <Stack
+                        height={"100%"}
+                        spacing={2}
+                        justifyContent={"space-around"}
+                        alignItems={"center"}
+                    >
                         <Typography
-                            fontSize={"2.5rem"}
+                            fontSize={"2rem"}
                             fontWeight={500}
                             textAlign={"center"}
                             color={theme.palette.primary.main}
@@ -145,18 +152,44 @@ const ConfirmForm: React.FC<Props> = ({}) => {
                             Ingresa un nuevo numero y te enviaremos un nuevo
                             codigo de validacion
                         </Typography>
-                        <Box>
-                            <InputPhoneNumber
-                                sizeInput="medium"
-                                codeName={"code"}
-                                codeValue={numberPhone.code}
-                                errorMessage={error.message}
-                                phoneName="phone"
-                                phoneValue={numberPhone.phone}
-                                sizeIcon="medium"
-                                error={error.error}
-                                handleChange={(e) => handleChangeNumberPhone(e)}
-                            />
+                        <Box
+                            width={"100%"}
+                            display={"flex"}
+                            justifyContent={"center"}
+                            alignItems={"center"}
+                        >
+                            <Box
+                                width={{ xs: "90%", md: "80%" }}
+                                border={`2px solid ${theme.palette.primary.main}`}
+                                borderRadius={"16px"}
+                                p={{ xs: 3, md: 4 }}
+                            >
+                                <InputPhoneNumber
+                                    sizeInput="medium"
+                                    codeName={"code"}
+                                    codeValue={numberPhone.code}
+                                    errorMessage={error.message}
+                                    phoneName="phone"
+                                    phoneValue={numberPhone.phone}
+                                    sizeIcon="large"
+                                    error={error.error}
+                                    handleChange={handleChangeNumberPhone}
+                                />
+                            </Box>
+                        </Box>
+                        <Box
+                            display={"flex"}
+                            justifyContent={"space-around"}
+                            alignItems={"center"}
+                            gap={{ xs: 2 }}
+                            flexDirection={{ xs: "column", sm: "row" }}
+                        >
+                            <Button variant="contained" sx={{ width: "180px" }}>
+                                Confimar
+                            </Button>
+                            <Button variant="contained" sx={{ width: "180px" }}>
+                                Cancelar
+                            </Button>
                         </Box>
                     </Stack>
                 </Box>
