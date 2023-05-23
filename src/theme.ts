@@ -1,8 +1,18 @@
 import { createTheme } from "@mui/material/styles";
 
+declare module '@mui/material/styles' {
+  interface Palette {
+    customDark?: PaletteOptions['primary'];
+  }
+
+  interface PaletteOptions {
+    customDark?: PaletteOptions['primary'];
+  }
+}
 
 const theme = createTheme({
   palette: {
+    
     primary: {
       main: '#7F217D',
       light: '#FAEBF9',
@@ -42,6 +52,9 @@ const theme = createTheme({
       700: '#423D42',
       800: '#282528',
       900: '#0D0C0D',
+    },
+    customDark:{
+      main: 'rgba(0,0,0,0.8)'
     },
   },
   typography:{
