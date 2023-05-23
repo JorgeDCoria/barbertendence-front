@@ -13,7 +13,7 @@ const UserLayout: React.FC<Props> = () => {
         { title: "Mi Perfil", url: "perfil", icon: <MenuIcon /> },
     ];
     return (
-        <Container maxWidth="xl" sx={{ border: "2px solid red" }}>
+        <Container maxWidth="xl" sx={{ mb: "24px" }}>
             <NavBar items={itemsNav} />
             <Box pt={8}></Box>
             <Outlet />
