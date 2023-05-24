@@ -1,6 +1,5 @@
-import React, { useRef, useState } from "react";
 import { Order } from "src/types/Order";
-import { Box, Button } from "@mui/material";
+
 import CardOrder from "./CardOrder";
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";

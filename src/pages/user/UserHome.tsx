@@ -7,7 +7,9 @@ import {
     Grid,
     IconButton,
     Stack,
+    Theme,
     Typography,
+    useMediaQuery,
     useTheme,
 } from "@mui/material";
 import React from "react";
@@ -16,7 +18,38 @@ import CardOrder from "./components/CardOrder";
 import AddIcon from "@mui/icons-material/Add";
 import banner from "../../assets/banner.jpg";
 import CaruselCard from "./components/CaruselCard";
+import PaginationCard from "./components/paginationCard";
 const orders: Order[] = [
+    {
+        date: new Date(),
+        time: "20:45",
+        nameBarber: "Barber",
+        nameClient: "george",
+        nameService: "Corte de Pelo",
+    },
+    {
+        date: new Date(),
+        time: "20:45",
+        nameBarber: "Barber",
+        nameClient: "Edgar",
+        nameService: "Corte de Pelo",
+    },
+    {
+        date: new Date(),
+        time: "20:45",
+        nameBarber: "Barber",
+        nameClient: "Rodolfo",
+        nameService: "Corte de Pelo",
+    },
+    {
+        date: new Date(),
+        time: "20:45",
+        nameBarber: "Barber",
+        nameClient: "Matias",
+        nameService: "Corte de Pelo",
+    },
+];
+const ordersPrev: Order[] = [
     {
         date: new Date(),
         time: "20:45",
@@ -59,9 +92,53 @@ const orders: Order[] = [
         nameClient: "Lucas",
         nameService: "Corte de Pelo",
     },
+    {
+        date: new Date(),
+        time: "20:45",
+        nameBarber: "Barber",
+        nameClient: "Lautaro",
+        nameService: "Corte de Pelo",
+    },
+    {
+        date: new Date(),
+        time: "20:45",
+        nameBarber: "Barber",
+        nameClient: "Roman",
+        nameService: "Corte de Pelo",
+    },
+    {
+        date: new Date(),
+        time: "20:45",
+        nameBarber: "Barber",
+        nameClient: "Leticia",
+        nameService: "Corte de Pelo",
+    },
+    {
+        date: new Date(),
+        time: "20:45",
+        nameBarber: "Barber",
+        nameClient: "Matias",
+        nameService: "Corte de Pelo",
+    },
+    {
+        date: new Date(),
+        time: "20:45",
+        nameBarber: "Barber",
+        nameClient: "Marcos",
+        nameService: "Corte de Pelo",
+    },
+    {
+        date: new Date(),
+        time: "20:45",
+        nameBarber: "Barber",
+        nameClient: "Rodrigo",
+        nameService: "Corte de Pelo",
+    },
 ];
 const UserHome: React.FC<{}> = ({}) => {
-    const theme = useTheme();
+    const theme: Theme = useTheme();
+
+    const isXs = useMediaQuery(theme.breakpoints.only("xs"));
 
     return (
         <Box width={"100%"}>
@@ -170,20 +247,11 @@ const UserHome: React.FC<{}> = ({}) => {
                 >
                     Turnos Anteriores
                 </Typography>
-                <Box
-                    display={"flex"}
-                    width={"100%"}
-                    sx={{
-                        flexWrap: "wrap",
-                        justifyContent: "space-around",
-                        rowGap: "8px",
-                    }}
-                >
-                    {orders &&
-                        orders.map((order, index) => (
-                            <CardOrder key={index} order={order} />
-                        ))}
-                </Box>
+
+                <PaginationCard
+                    orders={ordersPrev}
+                    orderPerPage={isXs ? 4 : 8}
+                />
             </Stack>
         </Box>
     );
