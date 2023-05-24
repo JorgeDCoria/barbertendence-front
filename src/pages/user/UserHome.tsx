@@ -15,6 +15,7 @@ import { Order } from "src/types/Order";
 import CardOrder from "./components/CardOrder";
 import AddIcon from "@mui/icons-material/Add";
 import banner from "../../assets/banner.jpg";
+import CaruselCard from "./components/CaruselCard";
 const orders: Order[] = [
     {
         date: new Date(),
@@ -27,35 +28,35 @@ const orders: Order[] = [
         date: new Date(),
         time: "20:45",
         nameBarber: "Barber",
-        nameClient: "george",
+        nameClient: "Edgar",
         nameService: "Corte de Pelo",
     },
     {
         date: new Date(),
         time: "20:45",
         nameBarber: "Barber",
-        nameClient: "george",
+        nameClient: "Rodolfo",
         nameService: "Corte de Pelo",
     },
     {
         date: new Date(),
         time: "20:45",
         nameBarber: "Barber",
-        nameClient: "george",
+        nameClient: "Matias",
         nameService: "Corte de Pelo",
     },
     {
         date: new Date(),
         time: "20:45",
         nameBarber: "Barber",
-        nameClient: "george",
+        nameClient: "Brayan",
         nameService: "Corte de Pelo",
     },
     {
         date: new Date(),
         time: "20:45",
         nameBarber: "Barber",
-        nameClient: "george",
+        nameClient: "Lucas",
         nameService: "Corte de Pelo",
     },
 ];
@@ -73,14 +74,16 @@ const UserHome: React.FC<{}> = ({}) => {
                 >
                     Turnos Pendientes
                 </Typography>
-                <Grid container>
-                    <Grid item xs={12} sm={10}>
+                <Grid container justifyContent={"center"}>
+                    <Grid item xs={12} sm={9}>
                         <Box
-                            display={"flex"}
                             width={"100%"}
-                            justifyContent={"center"}
+                            p={2}
+                            border={`2px solid ${theme.palette.primary.main}`}
+                            borderRadius={"16px"}
                         >
-                            <CardOrder order={orders[0]} />
+                            {" "}
+                            <CaruselCard orders={orders} />
                         </Box>
                     </Grid>
                     <Grid item xs={12} sm={2}>
@@ -89,7 +92,7 @@ const UserHome: React.FC<{}> = ({}) => {
                             alignItems={"center"}
                             height={"100%"}
                             width={"100%"}
-                            justifyContent={{ xs: "center", sm: "start" }}
+                            justifyContent={"center"}
                             mt={{ xs: "16px", sm: "0" }}
                         >
                             <Button
