@@ -178,6 +178,9 @@ const UserHome: React.FC<{}> = ({}) => {
                                     width: "7rem",
                                     background: theme.palette.primary.dark,
                                     boxShadow: `2px 2px 10px 1px ${theme.palette.primary.main}`,
+                                    "&:hover": {
+                                        background: theme.palette.primary.main,
+                                    },
                                 }}
                             >
                                 <Stack>
