@@ -14,11 +14,12 @@ import {
 } from "@mui/material";
 import React from "react";
 import { Order } from "src/types/Order";
-import CardOrder from "./components/CardOrder";
 import AddIcon from "@mui/icons-material/Add";
 import banner from "../../assets/banner.jpg";
 import CaruselCard from "./components/CaruselCard";
-import PaginationCard from "./components/paginationCard";
+import PaginationCard from "./components/PaginationCard";
+import CardOrder from "./components/CardOrder";
+
 const orders: Order[] = [
     {
         date: new Date(),
@@ -160,7 +161,11 @@ const UserHome: React.FC<{}> = ({}) => {
                             borderRadius={"16px"}
                         >
                             {" "}
-                            <CaruselCard orders={orders} />
+                            <CaruselCard>
+                                {orders.map((order, index) => (
+                                    <CardOrder key={index} order={order} />
+                                ))}
+                            </CaruselCard>
                         </Box>
                     </Grid>
                     <Grid item xs={12} sm={2}>
