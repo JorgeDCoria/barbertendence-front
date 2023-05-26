@@ -6,24 +6,32 @@ import s from "./CarouselCard.module.css";
 
 interface Props {
     children: ReactNode;
+    numDesktop?: number;
+    numTablet?: number;
+    numMobile?: number;
 }
 
-const CaruselCard: React.FC<Props> = ({ children }) => {
+const CaruselCard: React.FC<Props> = ({
+    children,
+    numDesktop = 3,
+    numMobile = 1,
+    numTablet = 2,
+}) => {
     const responsive: any = {
         desktop: {
             breakpoint: { max: 3000, min: 1024 },
-            items: 3,
-            slidesToSlide: 3,
+            items: numDesktop,
+            slidesToSlide: numDesktop,
         },
         tablet: {
             breakpoint: { max: 1024, min: 464 },
-            items: 2,
-            slidesToSlide: 2,
+            items: numTablet,
+            slidesToSlide: numTablet,
         },
         mobile: {
             breakpoint: { max: 464, min: 0 },
-            items: 1,
-            slidesToSlide: 1,
+            items: numMobile,
+            slidesToSlide: numMobile,
         },
     };
 

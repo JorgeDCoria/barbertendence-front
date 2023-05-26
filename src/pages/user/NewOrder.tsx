@@ -2,6 +2,8 @@ import { Box, Stack, Typography, Theme, useTheme } from "@mui/material";
 import { Service } from "src/types/Service";
 import CardService from "./components/CardService";
 import CaruselCard from "./components/CaruselCard";
+import { Barber } from "src/types/Barber";
+import CardBarber from "./components/CardBarber";
 const NewOrder = () => {
     const theme: Theme = useTheme();
     const services: Service[] = [
@@ -61,6 +63,38 @@ const NewOrder = () => {
                 "Arrego de cejas con disminucion, utilizamos tecnicas especializadas para que tus cejas queden implecables.",
         },
     ];
+    const barbers: Barber[] = [
+        {
+            name: "Juan",
+            description: "cuento con 5 años de experiencia, animate te espero",
+            avatar: "",
+        },
+        {
+            name: "Joquin",
+            description: "cuento con 5 años de experiencia, animate te espero",
+            avatar: "",
+        },
+        {
+            name: "Marcos",
+            description: "cuento con 5 años de experiencia, animate te espero",
+            avatar: "",
+        },
+        {
+            name: "Emiliano",
+            description: "cuento con 5 años de experiencia, animate te espero",
+            avatar: "",
+        },
+        {
+            name: "Ernesto",
+            description: "cuento con 5 años de experiencia, animate te espero",
+            avatar: "",
+        },
+        {
+            name: "Lorenzo",
+            description: "cuento con 5 años de experiencia, animate te espero",
+            avatar: "",
+        },
+    ];
     return (
         <Box>
             <Stack>
@@ -76,6 +110,21 @@ const NewOrder = () => {
                     <CaruselCard>
                         {services.map((s) => (
                             <CardService key={s.id} service={s} />
+                        ))}
+                    </CaruselCard>
+                </Box>
+                <Typography
+                    variant="h3"
+                    fontWeight={600}
+                    color={"primary"}
+                    textAlign={"center"}
+                >
+                    Nuestros Profesionales
+                </Typography>
+                <Box p={2}>
+                    <CaruselCard numDesktop={4}>
+                        {barbers.map((b) => (
+                            <CardBarber key={b.name} barber={b} />
                         ))}
                     </CaruselCard>
                 </Box>

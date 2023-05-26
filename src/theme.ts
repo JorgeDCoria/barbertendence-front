@@ -2,11 +2,11 @@ import { createTheme } from "@mui/material/styles";
 
 declare module '@mui/material/styles' {
   interface Palette {
-    customDark?: PaletteOptions['primary'];
+    customDark?: string;
   }
 
   interface PaletteOptions {
-    customDark?: PaletteOptions['primary'];
+    customDark?: string;
   }
 }
 
@@ -53,9 +53,8 @@ const theme = createTheme({
       800: '#282528',
       900: '#0D0C0D',
     },
-    customDark:{
-      main: 'rgba(0,0,0,0.8)'
-    },
+    customDark:'rgba(0,0,0,0.8)',
+    
   },
   typography:{
     fontFamily:['Open Sans',"sans-serif"].join(','),

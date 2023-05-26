@@ -30,7 +30,7 @@ const NavBar: React.FC<Props> = ({ items }) => {
         <Box sx={{ flexGrow: 1 }}>
             <AppBar
                 position="fixed"
-                sx={{ background: theme.palette.customDark?.main }}
+                sx={{ background: theme.palette.customDark }}
             >
                 <Toolbar>
                     <Hidden smUp>
