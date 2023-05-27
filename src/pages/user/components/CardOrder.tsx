@@ -16,7 +16,13 @@ interface Props {
 }
 const CardOrder: React.FC<Props> = ({ order }) => {
     return (
-        <Card sx={{ width: "250px", height: "250px", position: "relative" }}>
+        <Card
+            sx={{
+                width: { xs: "150px", sm: "250px" },
+                height: { xs: "150px", sm: "250px" },
+                position: "relative",
+            }}
+        >
             <CardMedia
                 component={"img"}
                 src={serviceImage}

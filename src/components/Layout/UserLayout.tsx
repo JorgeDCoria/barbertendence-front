@@ -4,7 +4,8 @@ import NavBar from "./NavBar";
 import { Outlet } from "react-router-dom";
 import { TabNav } from "src/types/tabNav";
 import MenuIcon from "@mui/icons-material/Menu";
-
+import { LocalizationProvider } from "@mui/x-date-pickers";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 interface Props {}
 const UserLayout: React.FC<Props> = () => {
     const itemsNav: TabNav[] = [
@@ -15,8 +16,10 @@ const UserLayout: React.FC<Props> = () => {
     return (
         <Container maxWidth="xl" sx={{ mb: "24px" }}>
             <NavBar items={itemsNav} />
-            <Box pt={8}></Box>
-            <Outlet />
+            <Box pt={10}></Box>
+            <LocalizationProvider dateAdapter={AdapterDayjs}>
+                <Outlet />
+            </LocalizationProvider>
         </Container>
     );
 };

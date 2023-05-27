@@ -4,6 +4,8 @@ import CardService from "./components/CardService";
 import CaruselCard from "./components/CaruselCard";
 import { Barber } from "src/types/Barber";
 import CardBarber from "./components/CardBarber";
+import { DatePicker, MobileTimePicker } from "@mui/x-date-pickers";
+import dayjs from "dayjs";
 const NewOrder = () => {
     const theme: Theme = useTheme();
     const services: Service[] = [
@@ -97,9 +99,9 @@ const NewOrder = () => {
     ];
     return (
         <Box>
-            <Stack>
+            <Stack component={"form"}>
                 <Typography
-                    variant="h3"
+                    variant={"h3"}
                     fontWeight={600}
                     color={"primary"}
                     textAlign={"center"}
@@ -127,6 +129,32 @@ const NewOrder = () => {
                             <CardBarber key={b.name} barber={b} />
                         ))}
                     </CaruselCard>
+                </Box>
+                <Typography
+                    variant="h3"
+                    fontWeight={600}
+                    color={"primary"}
+                    textAlign={"center"}
+                >
+                    ¿Cuando?
+                </Typography>
+                <Box
+                    display={"flex"}
+                    justifyContent={"center"}
+                    p={4}
+                    flexDirection={"column"}
+                    gap={4}
+                    width={{ xs: "100%", md: "30%" }}
+                    alignSelf={"center"}
+                >
+                    <DatePicker
+                        label="Seleccione una fecha"
+                        defaultValue={dayjs("2022-04-17")}
+                    />
+                    <MobileTimePicker
+                        label="Seleccione un horario"
+                        defaultValue={dayjs("2022-04-17T15:30")}
+                    />
                 </Box>
             </Stack>
         </Box>

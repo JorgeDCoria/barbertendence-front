@@ -17,8 +17,8 @@ const CardService: React.FC<Props> = ({ service }) => {
     return (
         <Card
             sx={{
-                width: "350px",
-                height: "250px",
+                width: { xs: "300px", sm: "350px" },
+                height: { xs: "250px", sm: "250px" },
                 color: "white",
                 boxShadow: `2px 6px 10px 1px ${theme.palette.primary.dark}`,
             }}
