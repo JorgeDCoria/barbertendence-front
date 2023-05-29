@@ -12,7 +12,6 @@ declare module '@mui/material/styles' {
 
 const theme = createTheme({
   palette: {
-    
     primary: {
       main: '#7F217D',
       light: '#FAEBF9',
@@ -25,7 +24,6 @@ const theme = createTheme({
       600: "#8E258B",
       700: "#651A64",
       800: "#3D103C",
-      
       contrastText: '#fff',
     },
     secondary: {
@@ -57,9 +55,35 @@ const theme = createTheme({
     
   },
   typography:{
-    fontFamily:['Open Sans',"sans-serif"].join(','),
-    h1:{fontFamily:["Poppins", "sans-serif"].join(',')},
-    h2:{fontFamily:["Raleway", "sans-serif"].join(',')},
+    fontFamily:['Open Sans', 'Poppins', 'Raleway',"sans-serif"].join(','),
+    h1:{
+      fontFamily:["Poppins", "sans-serif"].join(','),
+      fontWeight:"600"},
+    h2:{
+      fontFamily:["Poppins", "sans-serif"].join(','),
+      fontWeight:"600"},
+    h3:{
+      fontFamily:["Poppins", "sans-serif"].join(','),
+      fontWeight:"600"},
+    h4:{
+      fontFamily:["Poppins", "sans-serif"].join(','),
+      fontWeight:"600",
+      
+    },      
+    h5:{
+      fontFamily:["Poppins", "sans-serif"].join(','),
+      fontWeight:"600"},
+    h6:{
+      fontFamily:["Poppins", "sans-serif"].join(',')},
+    subtitle1:{
+      fontFamily:["Raleway", "sans-serif"].join(","),
+      fontWeight:"500"
+    },
+    subtitle2:{
+      fontFamily:["Raleway", "sans-serif"].join(","),
+      fontWeight:"500",
+      
+  },
   },
 });
 

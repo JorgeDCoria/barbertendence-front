@@ -14,11 +14,12 @@ import {
 } from "@mui/material";
 import React from "react";
 import { Order } from "src/types/Order";
-import AddIcon from "@mui/icons-material/Add";
+
 import banner from "../../assets/banner.jpg";
 import CaruselCard from "./components/CaruselCard";
 import PaginationCard from "./components/PaginationCard";
 import CardOrder from "./components/CardOrder";
+import ButtonLg from "./components/ButtonLg";
 
 const orders: Order[] = [
     {
@@ -177,29 +178,10 @@ const UserHome: React.FC<{}> = ({}) => {
                             justifyContent={"center"}
                             mt={{ xs: "16px", sm: "0" }}
                         >
-                            <Button
-                                sx={{
-                                    color: "white",
-                                    width: "7rem",
-                                    background: theme.palette.primary.dark,
-                                    boxShadow: `2px 2px 10px 1px ${theme.palette.primary.main}`,
-                                    "&:hover": {
-                                        background: theme.palette.primary.main,
-                                    },
-                                }}
-                            >
-                                <Stack>
-                                    <IconButton>
-                                        <AddIcon
-                                            sx={{
-                                                fontSize: "3rem",
-                                                color: "white",
-                                            }}
-                                        />
-                                    </IconButton>
-                                    <Typography>Agregar Turno</Typography>
-                                </Stack>
-                            </Button>
+                            <ButtonLg
+                                label="Agregar Turno"
+                                handleClick={() => {}}
+                            />
                         </Box>
                     </Grid>
                 </Grid>

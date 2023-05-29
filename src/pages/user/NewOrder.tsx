@@ -1,4 +1,4 @@
-import { Box, Stack, Typography, Theme, useTheme } from "@mui/material";
+import { Box, Stack, Typography, Theme, useTheme, Grid } from "@mui/material";
 import { Service } from "src/types/Service";
 import CardService from "./components/CardService";
 import CaruselCard from "./components/CaruselCard";
@@ -6,6 +6,7 @@ import { Barber } from "src/types/Barber";
 import CardBarber from "./components/CardBarber";
 import { DatePicker, MobileTimePicker } from "@mui/x-date-pickers";
 import dayjs from "dayjs";
+import ButtonLg from "./components/ButtonLg";
 const NewOrder = () => {
     const theme: Theme = useTheme();
     const services: Service[] = [
@@ -98,32 +99,31 @@ const NewOrder = () => {
         },
     ];
     return (
-        <Box>
-            <Stack component={"form"}>
+        <Box width={"100%"}>
+            <Stack
+                component={"form"}
+                justifyContent={"center"}
+                alignItems={"center"}
+                width={"100%"}
+            >
                 <Typography
-                    variant={"h3"}
-                    fontWeight={600}
+                    variant={"h4"}
                     color={"primary"}
                     textAlign={"center"}
                 >
                     Agregar Un Nuevo Turno
                 </Typography>
-                <Box p={2}>
+                <Box p={2} width={"100%"}>
                     <CaruselCard>
                         {services.map((s) => (
                             <CardService key={s.id} service={s} />
                         ))}
                     </CaruselCard>
                 </Box>
-                <Typography
-                    variant="h3"
-                    fontWeight={600}
-                    color={"primary"}
-                    textAlign={"center"}
-                >
+                <Typography variant="h4" color={"primary"} textAlign={"center"}>
                     Nuestros Profesionales
                 </Typography>
-                <Box p={2}>
+                <Box p={2} width={"100%"}>
                     <CaruselCard numDesktop={4}>
                         {barbers.map((b) => (
                             <CardBarber key={b.name} barber={b} />
@@ -131,31 +131,54 @@ const NewOrder = () => {
                     </CaruselCard>
                 </Box>
                 <Typography
-                    variant="h3"
-                    fontWeight={600}
+                    variant="h4"
+                    fontFamily={"Poppins"}
                     color={"primary"}
                     textAlign={"center"}
                 >
                     ¿Cuando?
                 </Typography>
-                <Box
-                    display={"flex"}
-                    justifyContent={"center"}
-                    p={4}
-                    flexDirection={"column"}
-                    gap={4}
-                    width={{ xs: "100%", md: "30%" }}
-                    alignSelf={"center"}
-                >
-                    <DatePicker
-                        label="Seleccione una fecha"
-                        defaultValue={dayjs("2022-04-17")}
-                    />
-                    <MobileTimePicker
-                        label="Seleccione un horario"
-                        defaultValue={dayjs("2022-04-17T15:30")}
-                    />
-                </Box>
+                <Grid container>
+                    <Grid
+                        item
+                        xs={12}
+                        sm={8}
+                        display={"flex"}
+                        justifyContent={"flex-end"}
+                    >
+                        <Box
+                            display={"flex"}
+                            justifyContent={"center"}
+                            p={4}
+                            flexDirection={"column"}
+                            gap={4}
+                            width={{ xs: "100%", sm: "80%", md: "50%" }}
+                            alignSelf={"center"}
+                        >
+                            <DatePicker
+                                label="Seleccione una fecha"
+                                defaultValue={dayjs("2022-04-17")}
+                            />
+                            <MobileTimePicker
+                                label="Seleccione un horario"
+                                defaultValue={dayjs("2022-04-17T15:30")}
+                            />
+                        </Box>
+                    </Grid>{" "}
+                    <Grid item xs={12} sm={4}>
+                        <Box
+                            height={"100%"}
+                            display={"flex"}
+                            justifyContent={{ xs: "center", md: "start" }}
+                            alignItems={"center"}
+                        >
+                            <ButtonLg
+                                label="Agregar Turno"
+                                handleClick={() => {}}
+                            />
+                        </Box>
+                    </Grid>
+                </Grid>
             </Stack>
         </Box>
     );
