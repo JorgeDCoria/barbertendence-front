@@ -1,11 +1,9 @@
 import {
     Box,
-    Button,
     Card,
     CardContent,
     CardMedia,
     Grid,
-    IconButton,
     Stack,
     Theme,
     Typography,
@@ -20,123 +18,163 @@ import CaruselCard from "./components/CaruselCard";
 import PaginationCard from "./components/PaginationCard";
 import CardOrder from "./components/CardOrder";
 import ButtonLg from "./components/ButtonLg";
+import { Link } from "react-router-dom";
 
 const orders: Order[] = [
     {
+        id: "",
         date: new Date(),
         time: "20:45",
-        nameBarber: "Barber",
-        nameClient: "george",
-        nameService: "Corte de Pelo",
+        barber: {
+            name: "Juan",
+            description: "",
+            avatar: "",
+            id: "",
+        },
+        service: {
+            id: "",
+            description: "",
+            duration: 0,
+            image: "",
+            name: "Corte de pelo",
+            price: 800,
+        },
     },
     {
+        id: "",
         date: new Date(),
         time: "20:45",
-        nameBarber: "Barber",
-        nameClient: "Edgar",
-        nameService: "Corte de Pelo",
+        barber: {
+            name: "Roberto",
+            description: "",
+            avatar: "",
+            id: "",
+        },
+        service: {
+            id: "",
+            description: "",
+            duration: 0,
+            image: "",
+            name: "Corte de pelo",
+            price: 800,
+        },
     },
     {
+        id: "",
         date: new Date(),
         time: "20:45",
-        nameBarber: "Barber",
-        nameClient: "Rodolfo",
-        nameService: "Corte de Pelo",
+        barber: {
+            name: "Lautaro",
+            description: "",
+            avatar: "",
+            id: "",
+        },
+        service: {
+            id: "",
+            description: "",
+            duration: 0,
+            image: "",
+            name: "Corte de pelo",
+            price: 800,
+        },
     },
     {
+        id: "",
         date: new Date(),
         time: "20:45",
-        nameBarber: "Barber",
-        nameClient: "Matias",
-        nameService: "Corte de Pelo",
+        barber: {
+            name: "Matias",
+            description: "",
+            avatar: "",
+            id: "",
+        },
+        service: {
+            id: "",
+            description: "Nicolas",
+            duration: 0,
+            image: "",
+            name: "Corte de pelo",
+            price: 800,
+        },
+    },
+    {
+        id: "",
+        date: new Date(),
+        time: "20:45",
+        barber: {
+            name: "Matias",
+            description: "",
+            avatar: "",
+            id: "",
+        },
+        service: {
+            id: "",
+            description: "",
+            duration: 0,
+            image: "",
+            name: "Corte de pelo",
+            price: 800,
+        },
+    },
+    {
+        id: "",
+        date: new Date(),
+        time: "20:45",
+        barber: {
+            name: "Kevin",
+            description: "",
+            avatar: "",
+            id: "",
+        },
+        service: {
+            id: "",
+            description: "",
+            duration: 0,
+            image: "",
+            name: "Corte de pelo",
+            price: 800,
+        },
+    },
+    {
+        id: "",
+        date: new Date(),
+        time: "20:45",
+        barber: {
+            name: "Lautaro",
+            description: "",
+            avatar: "",
+            id: "",
+        },
+        service: {
+            id: "",
+            description: "",
+            duration: 0,
+            image: "",
+            name: "Corte de pelo",
+            price: 800,
+        },
+    },
+    {
+        id: "",
+        date: new Date(),
+        time: "20:45",
+        barber: {
+            name: "Jose",
+            description: "",
+            avatar: "",
+            id: "",
+        },
+        service: {
+            id: "",
+            description: "",
+            duration: 0,
+            image: "",
+            name: "Corte de pelo",
+            price: 800,
+        },
     },
 ];
-const ordersPrev: Order[] = [
-    {
-        date: new Date(),
-        time: "20:45",
-        nameBarber: "Barber",
-        nameClient: "george",
-        nameService: "Corte de Pelo",
-    },
-    {
-        date: new Date(),
-        time: "20:45",
-        nameBarber: "Barber",
-        nameClient: "Edgar",
-        nameService: "Corte de Pelo",
-    },
-    {
-        date: new Date(),
-        time: "20:45",
-        nameBarber: "Barber",
-        nameClient: "Rodolfo",
-        nameService: "Corte de Pelo",
-    },
-    {
-        date: new Date(),
-        time: "20:45",
-        nameBarber: "Barber",
-        nameClient: "Matias",
-        nameService: "Corte de Pelo",
-    },
-    {
-        date: new Date(),
-        time: "20:45",
-        nameBarber: "Barber",
-        nameClient: "Brayan",
-        nameService: "Corte de Pelo",
-    },
-    {
-        date: new Date(),
-        time: "20:45",
-        nameBarber: "Barber",
-        nameClient: "Lucas",
-        nameService: "Corte de Pelo",
-    },
-    {
-        date: new Date(),
-        time: "20:45",
-        nameBarber: "Barber",
-        nameClient: "Lautaro",
-        nameService: "Corte de Pelo",
-    },
-    {
-        date: new Date(),
-        time: "20:45",
-        nameBarber: "Barber",
-        nameClient: "Roman",
-        nameService: "Corte de Pelo",
-    },
-    {
-        date: new Date(),
-        time: "20:45",
-        nameBarber: "Barber",
-        nameClient: "Leticia",
-        nameService: "Corte de Pelo",
-    },
-    {
-        date: new Date(),
-        time: "20:45",
-        nameBarber: "Barber",
-        nameClient: "Matias",
-        nameService: "Corte de Pelo",
-    },
-    {
-        date: new Date(),
-        time: "20:45",
-        nameBarber: "Barber",
-        nameClient: "Marcos",
-        nameService: "Corte de Pelo",
-    },
-    {
-        date: new Date(),
-        time: "20:45",
-        nameBarber: "Barber",
-        nameClient: "Rodrigo",
-        nameService: "Corte de Pelo",
-    },
-];
+
 const UserHome: React.FC<{}> = ({}) => {
     const theme: Theme = useTheme();
 
@@ -161,9 +199,9 @@ const UserHome: React.FC<{}> = ({}) => {
                             border={`2px solid ${theme.palette.primary.main}`}
                             borderRadius={"16px"}
                         >
-                            {" "}
+                            {/* Carousel de turnos pendientes */}
                             <CaruselCard>
-                                {orders.map((order, index) => (
+                                {orders.slice(0, 5).map((order, index) => (
                                     <CardOrder key={index} order={order} />
                                 ))}
                             </CaruselCard>
@@ -178,10 +216,10 @@ const UserHome: React.FC<{}> = ({}) => {
                             justifyContent={"center"}
                             mt={{ xs: "16px", sm: "0" }}
                         >
-                            <ButtonLg
-                                label="Agregar Turno"
-                                handleClick={() => {}}
-                            />
+                            {/* Boton agregar turno */}
+                            <Link to={"newOrder"}>
+                                <ButtonLg label="Agregar Turno" />
+                            </Link>
                         </Box>
                     </Grid>
                 </Grid>
@@ -237,11 +275,7 @@ const UserHome: React.FC<{}> = ({}) => {
                 >
                     Turnos Anteriores
                 </Typography>
-
-                <PaginationCard
-                    orders={ordersPrev}
-                    orderPerPage={isXs ? 4 : 8}
-                />
+                <PaginationCard orders={orders} orderPerPage={isXs ? 4 : 8} />
             </Stack>
         </Box>
     );

@@ -9,18 +9,31 @@ import {
     Typography,
 } from "@mui/material";
 import image from "../../../assets/service.jpg";
+import { useState } from "react";
 interface Props {
     service: Service;
+    handleClick: (service: Service | null) => void;
 }
-const CardService: React.FC<Props> = ({ service }) => {
+const CardService: React.FC<Props> = ({ service, handleClick }) => {
     const theme: Theme = useTheme();
+    const [selected, setSelected] = useState<boolean>(false);
+    const handleServiceSelected = () => {
+        selected ? handleClick(null) : handleClick(service);
+        setSelected(!selected);
+    };
     return (
         <Card
+            onClick={handleServiceSelected}
             sx={{
                 width: { xs: "300px", sm: "350px" },
                 height: { xs: "250px", sm: "250px" },
                 color: "white",
-                boxShadow: `2px 6px 10px 1px ${theme.palette.primary.dark}`,
+                boxShadow: `${
+                    selected
+                        ? `2px 6px 10px 1px ${theme.palette.secondary.main}`
+                        : `2px 6px 10px 1px ${theme.palette.primary.dark}`
+                }`,
+                cursor: "pointer",
             }}
         >
             <Box sx={{ position: "relative", width: "100%", height: "100%" }}>
@@ -44,7 +57,9 @@ const CardService: React.FC<Props> = ({ service }) => {
                     alignItems={"center"}
                     justifyContent={"center"}
                     sx={{
-                        background: "rgba(0,0,6,0.7)",
+                        background: `${
+                            selected ? "rgba(61,16,61,0.9)" : "rgba(0,0,6,0.7)"
+                        }`,
                         "&:hover": { background: "rgba(61,16,61,0.8)" },
                     }}
                 >

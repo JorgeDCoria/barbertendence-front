@@ -9,13 +9,13 @@ import {
 import AddIcon from "@mui/icons-material/Add";
 interface Props {
     label: string;
-    handleClick: Function;
+    handleClick?: Function;
 }
 const ButtonLg: React.FC<Props> = ({ label, handleClick }) => {
     const theme: Theme = useTheme();
     return (
         <Button
-            onClick={(e) => handleClick(e)}
+            onClick={handleClick ? (e) => handleClick(e) : () => {}}
             sx={{
                 color: "white",
                 width: "7rem",

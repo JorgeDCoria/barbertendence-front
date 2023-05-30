@@ -1,7 +1,11 @@
+import { Barber } from "./Barber";
+import { Service } from "./Service";
+
 export type Order= {
+  id:string;
   date:Date;
   time: string;
-  nameService:string;
-  nameBarber:string;
-  nameClient:string;
+  service:Service | null;
+  barber:Barber | null;
+  
 }

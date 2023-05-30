@@ -16,13 +16,7 @@ interface Props {
 }
 const CardOrder: React.FC<Props> = ({ order }) => {
     return (
-        <Card
-            sx={{
-                width: { xs: "150px", sm: "250px" },
-                height: { xs: "150px", sm: "250px" },
-                position: "relative",
-            }}
-        >
+        <Card sx={{ width: "250px", height: "250px", position: "relative" }}>
             <CardMedia
                 component={"img"}
                 src={serviceImage}
@@ -62,10 +56,9 @@ const CardOrder: React.FC<Props> = ({ order }) => {
                             <Typography> {order.time}</Typography>
                         </Stack>
                         <Typography variant="h5" fontWeight={700}>
-                            {order.nameService}
+                            {order.service?.name}
                         </Typography>
-                        <Typography>{order.nameBarber}</Typography>
-                        <Typography>{order.nameClient}</Typography>
+                        <Typography>{order.barber?.name}</Typography>
                         <Button variant="contained">Ver Mas</Button>
                     </Stack>
                 </CardContent>

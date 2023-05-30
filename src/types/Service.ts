@@ -4,4 +4,5 @@ export type Service = {
   image:string;
   price:number;
   duration:number;
+  description:string;
 }

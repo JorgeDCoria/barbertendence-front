@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Box, Stack, Typography, Theme, useTheme, Grid } from "@mui/material";
 import { Service } from "src/types/Service";
 import CardService from "./components/CardService";
@@ -7,8 +8,16 @@ import CardBarber from "./components/CardBarber";
 import { DatePicker, MobileTimePicker } from "@mui/x-date-pickers";
 import dayjs from "dayjs";
 import ButtonLg from "./components/ButtonLg";
+import { Order } from "src/types/Order";
 const NewOrder = () => {
     const theme: Theme = useTheme();
+    const [newOrder, setNewOrder] = useState<Order>({
+        id: "",
+        barber: null,
+        date: new Date(),
+        time: "",
+        service: null,
+    });
     const services: Service[] = [
         {
             id: "1",
@@ -68,36 +77,47 @@ const NewOrder = () => {
     ];
     const barbers: Barber[] = [
         {
+            id: "",
             name: "Juan",
             description: "cuento con 5 años de experiencia, animate te espero",
             avatar: "",
         },
         {
+            id: "",
             name: "Joquin",
             description: "cuento con 5 años de experiencia, animate te espero",
             avatar: "",
         },
         {
+            id: "",
             name: "Marcos",
             description: "cuento con 5 años de experiencia, animate te espero",
             avatar: "",
         },
         {
+            id: "",
             name: "Emiliano",
             description: "cuento con 5 años de experiencia, animate te espero",
             avatar: "",
         },
         {
+            id: "",
             name: "Ernesto",
             description: "cuento con 5 años de experiencia, animate te espero",
             avatar: "",
         },
         {
+            id: "",
             name: "Lorenzo",
             description: "cuento con 5 años de experiencia, animate te espero",
             avatar: "",
         },
     ];
+    const handleClick = (service: Service | null): void => {
+        // service.selected = true;
+        setNewOrder({ ...newOrder, service: service || null });
+    };
+
     return (
         <Box width={"100%"}>
             <Stack
@@ -116,7 +136,11 @@ const NewOrder = () => {
                 <Box p={2} width={"100%"}>
                     <CaruselCard>
                         {services.map((s) => (
-                            <CardService key={s.id} service={s} />
+                            <CardService
+                                handleClick={handleClick}
+                                key={s.id}
+                                service={s}
+                            />
                         ))}
                     </CaruselCard>
                 </Box>
