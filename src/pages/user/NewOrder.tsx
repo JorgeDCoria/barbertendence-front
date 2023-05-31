@@ -118,6 +118,15 @@ const NewOrder = () => {
         else setServiceSelected(service);
     };
 
+    const handleSelectBarber = (
+        e: React.MouseEvent<HTMLDivElement, MouseEvent>,
+        barber: Barber
+    ): void => {
+        e.stopPropagation();
+        if (!barberSelected) setBarberSelected(barber);
+        else if (barberSelected.id === barber.id) setBarberSelected(null);
+        else setBarberSelected(barber);
+    };
     return (
         <Box width={"100%"}>
             <Stack
@@ -155,7 +164,16 @@ const NewOrder = () => {
                 <Box p={2} width={"100%"}>
                     <CaruselCard numDesktop={4}>
                         {barbers.map((b) => (
-                            <CardBarber key={b.name} barber={b} />
+                            <CardBarber
+                                handleClick={handleSelectBarber}
+                                selected={
+                                    barberSelected
+                                        ? barberSelected.id === b.id
+                                        : false
+                                }
+                                key={b.name}
+                                barber={b}
+                            />
                         ))}
                     </CaruselCard>
                 </Box>

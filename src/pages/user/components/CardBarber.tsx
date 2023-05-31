@@ -1,9 +1,8 @@
-import React from "react";
+import { useState } from "react";
 import { Barber } from "src/types/Barber";
 import {
     Card,
     CardMedia,
-    CardContent,
     Box,
     Theme,
     useTheme,
@@ -12,25 +11,54 @@ import {
 import perfil from "../../../assets/perfil.jpg";
 interface Props {
     barber: Barber;
+    selected: boolean;
+    handleClick: (
+        e: React.MouseEvent<HTMLDivElement, MouseEvent>,
+        barber: Barber
+    ) => void;
 }
-const CardBarber: React.FC<Props> = ({ barber }) => {
+const CardBarber: React.FC<Props> = ({ barber, selected, handleClick }) => {
     const theme: Theme = useTheme();
+    const [isHovered, setIsHovered] = useState<boolean>(false);
+    const handleMouseEnter = (
+        e: React.MouseEvent<HTMLDivElement, MouseEvent>
+    ) => {
+        e.stopPropagation();
+        setIsHovered(true);
+    };
+    const handleMouseLeave = (
+        e: React.MouseEvent<HTMLDivElement, MouseEvent>
+    ) => {
+        e.stopPropagation();
+        setIsHovered(false);
+    };
+
     return (
         <Card
+            onMouseEnter={(e) => handleMouseEnter(e)}
+            onMouseLeave={(e) => handleMouseLeave(e)}
+            onClick={(e) => handleClick(e, barber)}
             sx={{
                 height: "280px",
                 width: "230px",
                 position: "relative",
+                cursor: "pointer",
             }}
         >
             <CardMedia
                 component={"img"}
                 src={perfil}
                 sx={{
-                    height: "200px",
+                    height: `${isHovered || selected ? "100%" : "200px"}`,
                     width: "100%",
                     objectFit: "cover",
                     borderRadius: "16px",
+                    transition: "height 1s",
+                    scale: `${selected && "1.2"}`,
+
+                    "&:hover": {
+                        scale: `${!selected && "1.2"}`,
+                    },
                 }}
             />
             <Typography
@@ -64,12 +92,17 @@ const CardBarber: React.FC<Props> = ({ barber }) => {
                     p={1}
                     borderRadius={"16px"}
                     sx={{
-                        background: "#282528",
+                        background: `${
+                            isHovered || selected
+                                ? theme.palette.primary.main
+                                : "#282528"
+                        }`,
 
                         width: "90%",
                         height: "100%",
                         display: "flex",
                         alignItems: "center",
+                        transitionDuration: "1.5s",
                     }}
                 >
                     <Typography textAlign={"center"} color={"white"}>
