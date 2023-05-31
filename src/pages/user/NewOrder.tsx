@@ -11,13 +11,11 @@ import ButtonLg from "./components/ButtonLg";
 import { Order } from "src/types/Order";
 const NewOrder = () => {
     const theme: Theme = useTheme();
-    const [newOrder, setNewOrder] = useState<Order>({
-        id: "",
-        barber: null,
-        date: new Date(),
-        time: "",
-        service: null,
-    });
+    const [newOrder, setNewOrder] = useState<Order | null>(null);
+    const [serviceSelected, setServiceSelected] = useState<Service | null>(
+        null
+    );
+    const [barberSelected, setBarberSelected] = useState<Barber | null>(null);
     const services: Service[] = [
         {
             id: "1",
@@ -39,7 +37,7 @@ const NewOrder = () => {
                 "Corte de pelo ya sea clasico o degradado con un margen de trabajo mas amplio asesoramiento de visagismo y productos premium para un acabado aun mas profesional.",
         },
         {
-            id: "1",
+            id: "3",
             name: "arreglo de barba",
             duration: 0.5,
             image: "",
@@ -48,7 +46,7 @@ const NewOrder = () => {
                 "Arreglo de barba con disminucion, afeitado completo y/o perfilado.",
         },
         {
-            id: "1",
+            id: "4",
             name: "afeitado tradicional",
             duration: 0.5,
             image: "",
@@ -57,7 +55,7 @@ const NewOrder = () => {
                 "ageitado o arreglo de barba con el metodo tradicional, toallas calientes/frias y vapor de ozono.",
         },
         {
-            id: "1",
+            id: "5",
             name: "corte niño",
             duration: 0.5,
             image: "",
@@ -66,7 +64,7 @@ const NewOrder = () => {
                 "Corte de pelo clasico o degradado para niños hasta 12 años ",
         },
         {
-            id: "1",
+            id: "6",
             name: "perfilado de cejas",
             duration: 0.5,
             image: "",
@@ -77,45 +75,47 @@ const NewOrder = () => {
     ];
     const barbers: Barber[] = [
         {
-            id: "",
+            id: "1",
             name: "Juan",
             description: "cuento con 5 años de experiencia, animate te espero",
             avatar: "",
         },
         {
-            id: "",
+            id: "2",
             name: "Joquin",
             description: "cuento con 5 años de experiencia, animate te espero",
             avatar: "",
         },
         {
-            id: "",
+            id: "3",
             name: "Marcos",
             description: "cuento con 5 años de experiencia, animate te espero",
             avatar: "",
         },
         {
-            id: "",
+            id: "4",
             name: "Emiliano",
             description: "cuento con 5 años de experiencia, animate te espero",
             avatar: "",
         },
         {
-            id: "",
+            id: "5",
             name: "Ernesto",
             description: "cuento con 5 años de experiencia, animate te espero",
             avatar: "",
         },
         {
-            id: "",
+            id: "6",
             name: "Lorenzo",
             description: "cuento con 5 años de experiencia, animate te espero",
             avatar: "",
         },
     ];
-    const handleClick = (service: Service | null): void => {
+    const handleSelectedService = (service: Service): void => {
         // service.selected = true;
-        setNewOrder({ ...newOrder, service: service || null });
+        if (!serviceSelected) setServiceSelected(service);
+        else if (service.id === serviceSelected.id) setServiceSelected(null);
+        else setServiceSelected(service);
     };
 
     return (
@@ -137,9 +137,14 @@ const NewOrder = () => {
                     <CaruselCard>
                         {services.map((s) => (
                             <CardService
-                                handleClick={handleClick}
+                                handleSelectedService={handleSelectedService}
                                 key={s.id}
                                 service={s}
+                                selected={
+                                    serviceSelected
+                                        ? serviceSelected.id === s.id
+                                        : false
+                                }
                             />
                         ))}
                     </CaruselCard>

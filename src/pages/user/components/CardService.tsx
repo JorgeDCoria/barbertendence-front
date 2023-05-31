@@ -9,21 +9,28 @@ import {
     Typography,
 } from "@mui/material";
 import image from "../../../assets/service.jpg";
-import { useState } from "react";
+
 interface Props {
     service: Service;
-    handleClick: (service: Service | null) => void;
+    selected: boolean;
+    handleSelectedService: (service: Service) => void;
 }
-const CardService: React.FC<Props> = ({ service, handleClick }) => {
+const CardService: React.FC<Props> = ({
+    service,
+    selected,
+    handleSelectedService,
+}) => {
     const theme: Theme = useTheme();
-    const [selected, setSelected] = useState<boolean>(false);
-    const handleServiceSelected = () => {
-        selected ? handleClick(null) : handleClick(service);
-        setSelected(!selected);
+    const handleClick = (
+        e: React.MouseEvent<HTMLDivElement, MouseEvent>,
+        service: Service
+    ) => {
+        e.stopPropagation();
+        handleSelectedService(service);
     };
     return (
         <Card
-            onClick={handleServiceSelected}
+            onClick={(e) => handleClick(e, service)}
             sx={{
                 width: { xs: "300px", sm: "350px" },
                 height: { xs: "250px", sm: "250px" },
