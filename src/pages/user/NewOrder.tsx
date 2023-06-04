@@ -5,10 +5,10 @@ import CardService from "./components/CardService";
 import CaruselCard from "./components/CaruselCard";
 import { Barber } from "src/types/Barber";
 import CardBarber from "./components/CardBarber";
-import { DatePicker, MobileTimePicker } from "@mui/x-date-pickers";
-import dayjs from "dayjs";
+
 import ButtonLg from "./components/ButtonLg";
 import { Order } from "src/types/Order";
+import ScheduleUser from "./components/ScheduleUser";
 const NewOrder = () => {
     const theme: Theme = useTheme();
     const [newOrder, setNewOrder] = useState<Order | null>(null);
@@ -16,6 +16,69 @@ const NewOrder = () => {
         null
     );
     const [barberSelected, setBarberSelected] = useState<Barber | null>(null);
+    // const today = dayjs();
+    // const lastMonday = today.startOf("week");
+    // const nextSunday = today.endOf("week").startOf("day");
+    // const maxDate = today.add(30, "day");
+    // configuracion de tiempo
+    // const initAm = dayjs().set('hour',8).startOf('hour');
+    // const endAm = dayjs().set('hour',12).endOf('hour');
+    // const initPm  = dayjs().set('hour', 16).startOf('hour');
+    // const endPm = dayjs().set('hour', 20).endOf('hour');
+
+    // const shouldDisableTime: TimePickerProps<Dayjs>["shouldDisableTime"] = (
+    //     value,
+    //     view
+    // ) => view === "hours" && value.hour() < 8 && value.hour() > 12;
+
+    // const isTimeAvailable = (time: dayjs.Dayjs) => {
+    //     // Filtrar horarios que no sean de 08:00 a 12:00 y de 16:00 a 20:00
+    //     const startTime1 = time.set("hour", 0);
+    //     const endTime1 = time.set("hour", 8);
+    //     const startTime2 = time.set("hour", 11);
+    //     const endTime2 = time.set("hour", 16);
+    //     const startTime3 = time.set("hour", 19);
+    //     const endTime3 = time.set("hour", 24);
+
+    // return (
+    //     (time.isAfter(startTime1) && time.isBefore(endTime1)) ||
+    //     (time.isAfter(startTime2) && time.isBefore(endTime2)) ||
+    //     (time.isAfter(startTime3) && time.isBefore(endTime3))
+    // );
+    // const startTime1 = time
+    //     .set("hour", 0)
+    //     .set("minute", 0)
+    //     .set("second", 0);
+    // const endTime1 = time.set("hour", 8).set("minute", 0).set("second", 0);
+    // const startTime2 = time
+    //     .set("hour", 11)
+    //     .set("minute", 30)
+    //     .set("second", 0);
+    // const endTime2 = time
+    //     .set("hour", 16)
+    //     .set("minute", 0)
+    //     .set("second", 0);
+    // const startTime3 = time
+    //     .set("hour", 19)
+    //     .set("minute", 30)
+    //     .set("second", 0);
+    // const endTime3 = time
+    //     .set("hour", 24)
+    //     .set("minute", 0)
+    //     .set("second", 0);
+
+    // const conditionOne =
+    //     time.isAfter(startTime1) && time.isBefore(endTime1);
+    // const conditionTwo =
+    //     time.isAfter(startTime2) && time.isBefore(endTime2);
+    // return conditionOne && conditionTwo;
+    // };
+
+    // const isWeekend = (date: Dayjs): boolean => {
+    //     const day = date.day();
+    //     return day === 0 || day === 6;
+    // };
+
     const services: Service[] = [
         {
             id: "1",
@@ -189,7 +252,7 @@ const NewOrder = () => {
                     <Grid
                         item
                         xs={12}
-                        sm={8}
+                        sm={10}
                         display={"flex"}
                         justifyContent={"flex-end"}
                     >
@@ -199,20 +262,25 @@ const NewOrder = () => {
                             p={4}
                             flexDirection={"column"}
                             gap={4}
-                            width={{ xs: "100%", sm: "80%", md: "50%" }}
+                            width={{ xs: "100%" }}
                             alignSelf={"center"}
                         >
-                            <DatePicker
-                                label="Seleccione una fecha"
-                                defaultValue={dayjs("2022-04-17")}
+                            <ScheduleUser />
+                            {/* <DatePicker
+                                label="Seleccione una"
+                                defaultValue={today}
+                                disablePast
+                                maxDate={maxDate}
+                                shouldDisableDate={isWeekend}
                             />
                             <MobileTimePicker
                                 label="Seleccione un horario"
                                 defaultValue={dayjs("2022-04-17T15:30")}
-                            />
+                                shouldDisableTime={isTimeAvailable}
+                            /> */}
                         </Box>
                     </Grid>{" "}
-                    <Grid item xs={12} sm={4}>
+                    <Grid item xs={12} sm={2}>
                         <Box
                             height={"100%"}
                             display={"flex"}
