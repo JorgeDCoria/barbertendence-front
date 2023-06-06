@@ -1,7 +1,11 @@
 import { useState } from "react";
 import { Box, Paper, Theme, useTheme } from "@mui/material";
 //@ts-ignore
-import { ViewState } from "@devexpress/dx-react-scheduler";
+import {
+    EditingState,
+    ViewState,
+    IntegratedEditing,
+} from "@devexpress/dx-react-scheduler";
 //@ts-ignore
 import {
     Scheduler,
@@ -17,15 +21,18 @@ import {
 } from "@devexpress/dx-react-scheduler-material-ui";
 
 import header from "../../../assets/serviceImage.jpg";
+import { Appointemnt } from "src/types/Appointment";
 //import { WeekView } from "node_modules/@devexpress/dx-react-scheduler/dist/dx-react-scheduler";
 
-const schedulerData = [
+const appointmentsData: Appointemnt[] = [
     {
+        id: 0,
         startDate: "2023-06-06T09:45",
         endDate: "2023-06-06T11:00",
         title: "Meeting",
     },
     {
+        id: 1,
         startDate: "2023-06-06T12:00",
         endDate: "2023-06-06T13:30",
         title: "Go to a gym",
@@ -43,12 +50,15 @@ const ScheduleUser = () => {
     const [currentDate, setCurrentDate] = useState<string>(
         formattedDate(new Date())
     );
+    const [appointments, setAppointments] =
+        useState<Appointemnt[]>(appointmentsData);
     const theme: Theme = useTheme();
 
     const currentDateChange = (currentDate: string) => {
         setCurrentDate(currentDate);
     };
 
+    // ************* custom command Button ****************
     const CustomCommandButton: React.FC<{}> = ({ ...restProp }) => (
         <AppointmentTooltip.CommandButton
             sx={{
@@ -63,6 +73,7 @@ const ScheduleUser = () => {
         />
     );
 
+    // ***************** custom header *************
     type HeadersProps = {
         children: React.ReactNode;
         image: string;
@@ -83,19 +94,55 @@ const ScheduleUser = () => {
         ></AppointmentTooltip.Header>
     );
 
+    const handleCommitChange = ({
+        added,
+        changed,
+        deleted,
+    }: {
+        added?: any;
+        changed?: any;
+        deleted?: number | string;
+    }) => {
+        if (added) {
+            const startingAddedId =
+                appointments.length > 0
+                    ? appointments[appointments.length - 1].id + 1
+                    : 0;
+            setAppointments([
+                ...appointments,
+                { id: startingAddedId, ...added },
+            ]);
+        }
+        if (changed) {
+            setAppointments(
+                appointments.map((appointment) =>
+                    changed[appointment.id]
+                        ? { ...appointment, ...changed[appointment.id] }
+                        : appointment
+                )
+            );
+        }
+        if (deleted !== undefined) {
+            setAppointments(
+                appointments.filter((appointment) => appointment.id !== deleted)
+            );
+        }
+    };
     return (
         <Paper
             sx={{
                 height: "80vh",
             }}
         >
-            <Scheduler data={schedulerData}>
+            <Scheduler data={appointments}>
                 {" "}
                 <ViewState
                     currentDate={currentDate}
                     onCurrentDateChange={currentDateChange}
                 />
+                <EditingState onCommitChanges={handleCommitChange} />
                 {/* <DayView /> */}
+                <IntegratedEditing />
                 <WeekView
                     startDayHour={9}
                     endDayHour={14}
