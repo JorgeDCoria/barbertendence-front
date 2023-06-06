@@ -18,6 +18,7 @@ import {
     DateNavigator,
     Toolbar,
     AppointmentTooltip,
+    ConfirmationDialog,
 } from "@devexpress/dx-react-scheduler-material-ui";
 
 import header from "../../../assets/serviceImage.jpg";
@@ -128,6 +129,13 @@ const ScheduleUser = () => {
             );
         }
     };
+
+    const customDialogMessage: ConfirmationDialog.LocalizationMessages = {
+        confirmDeleteMessage:
+            "Estas seguro de que quieres eleiminar este Turno?",
+        deleteButton: "Eliminar",
+        cancelButton: "Cancelar",
+    };
     return (
         <Paper
             sx={{
@@ -152,6 +160,7 @@ const ScheduleUser = () => {
                 <Toolbar />
                 <DateNavigator />
                 <TodayButton />
+                <ConfirmationDialog messages={customDialogMessage} />
                 <Appointments />
                 <AppointmentTooltip
                     headerComponent={CustomAppointmentTooltipHeader}
