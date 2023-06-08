@@ -1,5 +1,7 @@
 export type Appointemnt = {
-  startDate:string;
-  endDate:string;
-  title:string;
+  id:number;
+  startDate:Date | string;
+  endDate:Date | string;
+  title?:string;
+  notes?:string;
 }

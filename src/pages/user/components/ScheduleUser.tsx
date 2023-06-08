@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useCallback, useEffect } from "react";
 import { Box, Paper, Theme, useTheme } from "@mui/material";
 //@ts-ignore
 import {
@@ -11,6 +11,7 @@ import {
     Scheduler,
     DayView,
     Appointments,
+    AppointmentForm,
     WeekView,
     MonthView,
     ViewSwitcher,
@@ -20,7 +21,7 @@ import {
     AppointmentTooltip,
     ConfirmationDialog,
 } from "@devexpress/dx-react-scheduler-material-ui";
-
+import * as dayjs from "dayjs";
 import header from "../../../assets/serviceImage.jpg";
 import { Appointemnt } from "src/types/Appointment";
 //import { WeekView } from "node_modules/@devexpress/dx-react-scheduler/dist/dx-react-scheduler";
@@ -47,18 +48,32 @@ const formattedDate = (date: Date): string => {
     return `${year}-${month}-${day}`;
 };
 
-const ScheduleUser = () => {
+interface Props {
+    titleService: string;
+    duration: number;
+}
+
+const ScheduleUser: React.FC<Props> = ({ titleService, duration }) => {
     const [currentDate, setCurrentDate] = useState<string>(
         formattedDate(new Date())
     );
     const [appointments, setAppointments] =
         useState<Appointemnt[]>(appointmentsData);
+    const [addedAppointment, setAddedAppointment] = useState<Appointemnt>(
+        {} as Appointemnt
+    );
+    const [isAppointmentBeingCreated, setIsAppointmentBeingCreated] =
+        useState<boolean>(false);
     const theme: Theme = useTheme();
 
     const currentDateChange = (currentDate: string) => {
         setCurrentDate(currentDate);
     };
-
+    useEffect(() => {
+        setAddedAppointment({
+            title: titleService,
+        } as Appointemnt);
+    }, [titleService]);
     // ************* custom command Button ****************
     const CustomCommandButton: React.FC<{}> = ({ ...restProp }) => (
         <AppointmentTooltip.CommandButton
@@ -95,6 +110,12 @@ const ScheduleUser = () => {
         ></AppointmentTooltip.Header>
     );
 
+    const CustomRadioGroupComponent: React.FC<{}> = ({}) => (
+        <AppointmentForm.RadioGroupProps>
+            Soy nuevo radio button
+        </AppointmentForm.RadioGroupProps>
+    );
+
     const handleCommitChange = ({
         added,
         changed,
@@ -128,6 +149,28 @@ const ScheduleUser = () => {
                 appointments.filter((appointment) => appointment.id !== deleted)
             );
         }
+        setIsAppointmentBeingCreated(false);
+    };
+
+    const onAddedAppointmentChange = (appointment: Appointemnt) => {
+        console.log("*********** esta en on addedappointmentchange *********");
+        console.log(appointment);
+
+        appointment.title = addedAppointment.title;
+        console.log(
+            "🚀 ~ file: ScheduleUser.tsx:149 ~ onAddedAppointmentChange ~ appointment.title:",
+            appointment.title
+        );
+        console.log(appointment);
+        appointment.endDate = dayjs(appointment.startDate)
+            .add(duration, "minutes")
+            .toDate();
+        console.log(
+            "🚀 ~ file: ScheduleUser.tsx:166 ~ onAddedAppointmentChange ~ appointment.endDate:",
+            appointment.endDate
+        );
+        setAddedAppointment(appointment);
+        setIsAppointmentBeingCreated(true);
     };
 
     const customDialogMessage: ConfirmationDialog.LocalizationMessages = {
@@ -148,7 +191,11 @@ const ScheduleUser = () => {
                     currentDate={currentDate}
                     onCurrentDateChange={currentDateChange}
                 />
-                <EditingState onCommitChanges={handleCommitChange} />
+                <EditingState
+                    onCommitChanges={handleCommitChange}
+                    addedAppointment={addedAppointment}
+                    onAddedAppointmentChange={onAddedAppointmentChange}
+                />
                 {/* <DayView /> */}
                 <IntegratedEditing />
                 <WeekView
@@ -167,6 +214,9 @@ const ScheduleUser = () => {
                     commandButtonComponent={CustomCommandButton}
                     showCloseButton
                     showDeleteButton
+                />
+                <AppointmentForm
+                    radioGroupComponent={CustomRadioGroupComponent}
                 />
             </Scheduler>
         </Paper>
