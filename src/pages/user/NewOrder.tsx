@@ -173,135 +173,138 @@ const NewOrder = () => {
         else setBarberSelected(barber);
     };
     return (
-        <Box width={"100%"}>
-            <Stack
-                component={"form"}
-                justifyContent={"center"}
-                alignItems={"center"}
-                width={"100%"}
+        <Stack
+            component={"form"}
+            justifyContent={{
+                xs: "space-between",
+                sm: "space-around",
+            }}
+            alignItems={"center"}
+            width={"100%"}
+            minHeight={{ xs: "80vh", md: "100vh" }}
+        >
+            {activeStep < steps.length && (
+                <>
+                    <Typography
+                        variant={"h4"}
+                        color={"primary"}
+                        textAlign={"center"}
+                    >
+                        {steps[activeStep].title}
+                    </Typography>
+                    <Typography
+                        textAlign={"center"}
+                        maxWidth={{ xs: "95%", md: "70%" }}
+                    >
+                        {steps[activeStep].note}
+                    </Typography>
+                </>
+            )}
+            <Stepper
+                activeStep={activeStep}
+                sx={{ width: { sm: "70%", xs: "100%" } }}
             >
-                {activeStep < steps.length && (
-                    <>
-                        <Typography
-                            variant={"h4"}
-                            color={"primary"}
-                            textAlign={"center"}
-                        >
-                            {steps[activeStep].title}
-                        </Typography>
-                        <Typography textAlign={"center"} maxWidth={"80ch"}>
-                            {steps[activeStep].note}
-                        </Typography>
-                    </>
-                )}
-                <Stepper
-                    activeStep={activeStep}
-                    sx={{ width: { sm: "70%", xs: "100%" } }}
-                >
-                    {steps.map(({ subTitle }, index) => {
-                        const stepProps: { completed?: boolean } = {};
-                        const labelProps: { optional?: React.ReactNode } = {};
-                        return (
-                            <Step key={index} {...stepProps}>
-                                <StepLabel {...labelProps}>
-                                    {subTitle}
-                                </StepLabel>
-                            </Step>
-                        );
-                    })}
-                </Stepper>
+                {steps.map(({ subTitle }, index) => {
+                    const stepProps: { completed?: boolean } = {};
+                    const labelProps: { optional?: React.ReactNode } = {};
+                    return (
+                        <Step key={index} {...stepProps}>
+                            <StepLabel {...labelProps}>{subTitle}</StepLabel>
+                        </Step>
+                    );
+                })}
+            </Stepper>
 
-                {activeStep === steps.length ? (
-                    <>
-                        <Typography sx={{ mt: 2, mb: 1 }}>
-                            All steps completed - you&apos;re finished
-                        </Typography>
-                        <Box
-                            sx={{
-                                display: "flex",
-                                flexDirection: "row",
-                                pt: 2,
-                            }}
-                        >
-                            <Box sx={{ flex: "1 1 auto" }} />
-                            <Button onClick={handleReset}>Reset</Button>
+            {activeStep === steps.length ? (
+                <>
+                    <Typography sx={{ mt: 2, mb: 1 }}>
+                        All steps completed - you&apos;re finished
+                    </Typography>
+                    <Box
+                        sx={{
+                            display: "flex",
+                            flexDirection: "row",
+                            pt: 2,
+                        }}
+                    >
+                        <Box sx={{ flex: "1 1 auto" }} />
+                        <Button onClick={handleReset}>Reset</Button>
+                    </Box>
+                </>
+            ) : (
+                <>
+                    {activeStep === 0 && (
+                        <Box p={2} width={"100%"}>
+                            <CaruselCard>
+                                {services.map((s) => (
+                                    <CardService
+                                        handleSelectedService={
+                                            handleSelectedService
+                                        }
+                                        key={s.id}
+                                        service={s}
+                                        selected={
+                                            serviceSelected
+                                                ? serviceSelected.id === s.id
+                                                : false
+                                        }
+                                    />
+                                ))}
+                            </CaruselCard>
                         </Box>
-                    </>
-                ) : (
-                    <>
-                        {activeStep === 0 && (
-                            <Box p={2} width={"100%"}>
-                                <CaruselCard>
-                                    {services.map((s) => (
-                                        <CardService
-                                            handleSelectedService={
-                                                handleSelectedService
-                                            }
-                                            key={s.id}
-                                            service={s}
-                                            selected={
-                                                serviceSelected
-                                                    ? serviceSelected.id ===
-                                                      s.id
-                                                    : false
-                                            }
-                                        />
-                                    ))}
-                                </CaruselCard>
-                            </Box>
-                        )}
+                    )}
 
-                        {activeStep === 1 && (
-                            <Box p={2} width={"100%"}>
-                                <CaruselCard numDesktop={4}>
-                                    {barbers.map((b) => (
-                                        <CardBarber
-                                            handleClick={handleSelectBarber}
-                                            selected={
-                                                barberSelected
-                                                    ? barberSelected.id === b.id
-                                                    : false
-                                            }
-                                            key={b.name}
-                                            barber={b}
-                                        />
-                                    ))}
-                                </CaruselCard>
-                            </Box>
-                        )}
-                        {activeStep === 2 && (
-                            <Grid container justifyContent={"center"}>
-                                <Grid
-                                    item
-                                    xs={12}
-                                    sm={11}
+                    {activeStep === 1 && (
+                        <Box p={2} width={"100%"}>
+                            <CaruselCard numDesktop={4}>
+                                {barbers.map((b) => (
+                                    <CardBarber
+                                        handleClick={handleSelectBarber}
+                                        selected={
+                                            barberSelected
+                                                ? barberSelected.id === b.id
+                                                : false
+                                        }
+                                        key={b.name}
+                                        barber={b}
+                                    />
+                                ))}
+                            </CaruselCard>
+                        </Box>
+                    )}
+                    {activeStep === 2 && (
+                        <Grid container justifyContent={"center"}>
+                            <Grid
+                                item
+                                xs={12}
+                                md={8}
+                                display={"flex"}
+                                justifyContent={"flex-end"}
+                            >
+                                <Box
                                     display={"flex"}
-                                    justifyContent={"flex-end"}
+                                    justifyContent={"center"}
+                                    p={4}
+                                    flexDirection={"column"}
+                                    gap={4}
+                                    width={{ xs: "100%" }}
+                                    alignSelf={"center"}
                                 >
-                                    <Box
-                                        display={"flex"}
-                                        justifyContent={"center"}
-                                        p={4}
-                                        flexDirection={"column"}
-                                        gap={4}
-                                        width={{ xs: "100%" }}
-                                        alignSelf={"center"}
-                                    >
-                                        <ScheduleUser
-                                            titleService={
-                                                serviceSelected
-                                                    ? serviceSelected.name
-                                                    : ""
-                                            }
-                                            duration={
-                                                serviceSelected
-                                                    ? serviceSelected.duration
-                                                    : 0
-                                            }
-                                        />
-                                    </Box>
-                                </Grid>{" "}
-                                {/* <Grid item xs={12} sm={2}>
+                                    <ScheduleUser
+                                        titleService={
+                                            serviceSelected
+                                                ? serviceSelected.name
+                                                : ""
+                                        }
+                                        duration={
+                                            serviceSelected
+                                                ? serviceSelected.duration
+                                                : 0
+                                        }
+                                    />
+                                </Box>
+                            </Grid>{" "}
+                            {/* <Grid item xs={12} sm={2}>
                                     <Box
                                         height={"100%"}
                                         display={"flex"}
@@ -317,34 +320,33 @@ const NewOrder = () => {
                                         />
                                     </Box>
                                 </Grid> */}
-                            </Grid>
-                        )}
-                        <Box
-                            sx={{
-                                display: "flex",
-                                flexDirection: "row",
-                                pt: 2,
-                            }}
+                        </Grid>
+                    )}
+                    <Box
+                        sx={{
+                            display: "flex",
+                            flexDirection: "row",
+                            pt: 2,
+                        }}
+                    >
+                        <Button
+                            color="inherit"
+                            disabled={activeStep === 0}
+                            onClick={handleBack}
+                            sx={{ mr: 1 }}
                         >
-                            <Button
-                                color="inherit"
-                                disabled={activeStep === 0}
-                                onClick={handleBack}
-                                sx={{ mr: 1 }}
-                            >
-                                Back
-                            </Button>
+                            Back
+                        </Button>
 
-                            <Button onClick={handleNext}>
-                                {activeStep === steps.length - 1
-                                    ? "Finish"
-                                    : "Next"}
-                            </Button>
-                        </Box>
-                    </>
-                )}
-            </Stack>
-        </Box>
+                        <Button onClick={handleNext}>
+                            {activeStep === steps.length - 1
+                                ? "Finish"
+                                : "Next"}
+                        </Button>
+                    </Box>
+                </>
+            )}
+        </Stack>
     );
 };
 

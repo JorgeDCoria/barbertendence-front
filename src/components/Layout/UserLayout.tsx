@@ -13,10 +13,25 @@ const UserLayout: React.FC<Props> = () => {
         { title: "Mi Perfil", url: "perfil", icon: <MenuIcon /> },
     ];
     return (
-        <Container maxWidth="xl" sx={{ mb: "24px" }}>
+        <Container
+            maxWidth="xl"
+            // boxSizing={"border-box"}
+            sx={{
+                mb: "24px",
+                minHeight: "100vh",
+            }}
+        >
             <NavBar items={itemsNav} />
-            <Box pt={10}></Box>
-            <Outlet />
+
+            <Box
+                sx={{ width: "100%", minHeight: "100vh" }}
+                pt={8}
+                display={"flex"}
+                justifyContent={"center"}
+                alignItems={"center"}
+            >
+                <Outlet />
+            </Box>
         </Container>
     );
 };

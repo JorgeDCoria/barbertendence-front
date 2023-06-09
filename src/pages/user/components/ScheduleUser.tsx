@@ -170,11 +170,7 @@ const ScheduleUser: React.FC<Props> = ({ titleService, duration }) => {
         cancelButton: "Cancelar",
     };
     return (
-        <Paper
-            sx={{
-                height: "80vh",
-            }}
-        >
+        <Paper sx={{ height: "70vh" }}>
             <Scheduler data={appointments}>
                 {" "}
                 <ViewState
@@ -190,7 +186,7 @@ const ScheduleUser: React.FC<Props> = ({ titleService, duration }) => {
                 <IntegratedEditing />
                 <WeekView
                     startDayHour={9}
-                    endDayHour={14}
+                    endDayHour={17}
                     excludedDays={[0, 6]}
                 />
                 {/* <MonthView /> */}
