@@ -1,5 +1,16 @@
 import { useState } from "react";
-import { Box, Stack, Typography, Theme, useTheme, Grid } from "@mui/material";
+import {
+    Box,
+    Stack,
+    Typography,
+    Theme,
+    useTheme,
+    Grid,
+    Stepper,
+    Step,
+    StepLabel,
+    Button,
+} from "@mui/material";
 import { Service } from "src/types/Service";
 import CardService from "./components/CardService";
 import CaruselCard from "./components/CaruselCard";
@@ -11,10 +22,43 @@ import { Order } from "src/types/Order";
 import ScheduleUser from "./components/ScheduleUser";
 const NewOrder = () => {
     const theme: Theme = useTheme();
+    const [activeStep, setActiveStep] = useState<number>(1);
     const [newOrder, setNewOrder] = useState<Order | null>(null);
     const [serviceSelected, setServiceSelected] = useState<Service | null>(
         null
     );
+    type Step = {
+        title: string;
+        subTitle: string;
+        note: string;
+    };
+    const steps: Step[] = [
+        {
+            title: "Nuestro Servicios",
+            subTitle: "Servicios",
+            note: "¡Renueva tu estilo en nuestra barbería-peluquería de primera clase! Experimenta cortes de cabello y barba excepcionales, con expertos estilistas que te brindarán un look impecable. Además, ofrecemos tratamientos para el cuidado capilar y facial, utilizando productos de alta calidad. Si buscas un servicio de excelencia y un ambiente acogedor, ¡visítanos hoy mismo y descubre tu mejor versión!",
+        },
+        {
+            title: "Los Mejores Profesionales",
+            subTitle: "Barber",
+            note: "Nuestros talentosos profesionales te esperan con sus habilidades excepcionales. Con años de experiencia y un amor apasionado por su oficio. Desde cortes de tendencia hasta estilos clásicos, su destreza te dejará impresionado. Confía en nuestras manos expertas para transformar tu imagen y realzar tu belleza.",
+        },
+        {
+            title: "Genial, Estas a un paso !!",
+            subTitle: "Seleccion de Fecha",
+            note: "Solo resta elegir cuando quieres ser atendido, selecciona la fecha y el jorario que mas se acomode a tus tiempos.",
+        },
+    ];
+
+    const handleNext = () => {
+        setActiveStep((prevActiveStep) => prevActiveStep + 1);
+    };
+    const handleBack = () => {
+        setActiveStep((prevActiveStep) => prevActiveStep - 1);
+    };
+    const handleReset = () => {
+        setActiveStep(0);
+    };
     const [barberSelected, setBarberSelected] = useState<Barber | null>(null);
 
     const services: Service[] = [
@@ -136,99 +180,169 @@ const NewOrder = () => {
                 alignItems={"center"}
                 width={"100%"}
             >
-                <Typography
-                    variant={"h4"}
-                    color={"primary"}
-                    textAlign={"center"}
-                >
-                    Agregar Un Nuevo Turno
-                </Typography>
-                <Box p={2} width={"100%"}>
-                    <CaruselCard>
-                        {services.map((s) => (
-                            <CardService
-                                handleSelectedService={handleSelectedService}
-                                key={s.id}
-                                service={s}
-                                selected={
-                                    serviceSelected
-                                        ? serviceSelected.id === s.id
-                                        : false
-                                }
-                            />
-                        ))}
-                    </CaruselCard>
-                </Box>
-                <Typography variant="h4" color={"primary"} textAlign={"center"}>
-                    Nuestros Profesionales
-                </Typography>
-                <Box p={2} width={"100%"}>
-                    <CaruselCard numDesktop={4}>
-                        {barbers.map((b) => (
-                            <CardBarber
-                                handleClick={handleSelectBarber}
-                                selected={
-                                    barberSelected
-                                        ? barberSelected.id === b.id
-                                        : false
-                                }
-                                key={b.name}
-                                barber={b}
-                            />
-                        ))}
-                    </CaruselCard>
-                </Box>
-                <Typography
-                    variant="h4"
-                    fontFamily={"Poppins"}
-                    color={"primary"}
-                    textAlign={"center"}
-                >
-                    ¿Cuando?
-                </Typography>
-                <Grid container>
-                    <Grid
-                        item
-                        xs={12}
-                        sm={10}
-                        display={"flex"}
-                        justifyContent={"flex-end"}
-                    >
-                        <Box
-                            display={"flex"}
-                            justifyContent={"center"}
-                            p={4}
-                            flexDirection={"column"}
-                            gap={4}
-                            width={{ xs: "100%" }}
-                            alignSelf={"center"}
+                {activeStep < steps.length && (
+                    <>
+                        <Typography
+                            variant={"h4"}
+                            color={"primary"}
+                            textAlign={"center"}
                         >
-                            <ScheduleUser
-                                titleService={
-                                    serviceSelected ? serviceSelected.name : ""
-                                }
-                                duration={
-                                    serviceSelected
-                                        ? serviceSelected.duration
-                                        : 0
-                                }
-                            />
-                        </Box>
-                    </Grid>{" "}
-                    <Grid item xs={12} sm={2}>
+                            {steps[activeStep].title}
+                        </Typography>
+                        <Typography textAlign={"center"} maxWidth={"80ch"}>
+                            {steps[activeStep].note}
+                        </Typography>
+                    </>
+                )}
+                <Stepper
+                    activeStep={activeStep}
+                    sx={{ width: { sm: "70%", xs: "100%" } }}
+                >
+                    {steps.map(({ subTitle }, index) => {
+                        const stepProps: { completed?: boolean } = {};
+                        const labelProps: { optional?: React.ReactNode } = {};
+                        return (
+                            <Step key={index} {...stepProps}>
+                                <StepLabel {...labelProps}>
+                                    {subTitle}
+                                </StepLabel>
+                            </Step>
+                        );
+                    })}
+                </Stepper>
+
+                {activeStep === steps.length ? (
+                    <>
+                        <Typography sx={{ mt: 2, mb: 1 }}>
+                            All steps completed - you&apos;re finished
+                        </Typography>
                         <Box
-                            height={"100%"}
-                            display={"flex"}
-                            justifyContent={{ xs: "center", md: "start" }}
-                            alignItems={"center"}
+                            sx={{
+                                display: "flex",
+                                flexDirection: "row",
+                                pt: 2,
+                            }}
                         >
-                            <ButtonLg
-                                label="Agregar Turno"
-                                handleClick={() => {}}
-                            />
+                            <Box sx={{ flex: "1 1 auto" }} />
+                            <Button onClick={handleReset}>Reset</Button>
                         </Box>
-                    </Grid>
-                </Grid>
+                    </>
+                ) : (
+                    <>
+                        {activeStep === 0 && (
+                            <Box p={2} width={"100%"}>
+                                <CaruselCard>
+                                    {services.map((s) => (
+                                        <CardService
+                                            handleSelectedService={
+                                                handleSelectedService
+                                            }
+                                            key={s.id}
+                                            service={s}
+                                            selected={
+                                                serviceSelected
+                                                    ? serviceSelected.id ===
+                                                      s.id
+                                                    : false
+                                            }
+                                        />
+                                    ))}
+                                </CaruselCard>
+                            </Box>
+                        )}
+
+                        {activeStep === 1 && (
+                            <Box p={2} width={"100%"}>
+                                <CaruselCard numDesktop={4}>
+                                    {barbers.map((b) => (
+                                        <CardBarber
+                                            handleClick={handleSelectBarber}
+                                            selected={
+                                                barberSelected
+                                                    ? barberSelected.id === b.id
+                                                    : false
+                                            }
+                                            key={b.name}
+                                            barber={b}
+                                        />
+                                    ))}
+                                </CaruselCard>
+                            </Box>
+                        )}
+                        {activeStep === 2 && (
+                            <Grid container justifyContent={"center"}>
+                                <Grid
+                                    item
+                                    xs={12}
+                                    sm={11}
+                                    display={"flex"}
+                                    justifyContent={"flex-end"}
+                                >
+                                    <Box
+                                        display={"flex"}
+                                        justifyContent={"center"}
+                                        p={4}
+                                        flexDirection={"column"}
+                                        gap={4}
+                                        width={{ xs: "100%" }}
+                                        alignSelf={"center"}
+                                    >
+                                        <ScheduleUser
+                                            titleService={
+                                                serviceSelected
+                                                    ? serviceSelected.name
+                                                    : ""
+                                            }
+                                            duration={
+                                                serviceSelected
+                                                    ? serviceSelected.duration
+                                                    : 0
+                                            }
+                                        />
+                                    </Box>
+                                </Grid>{" "}
+                                {/* <Grid item xs={12} sm={2}>
+                                    <Box
+                                        height={"100%"}
+                                        display={"flex"}
+                                        justifyContent={{
+                                            xs: "center",
+                                            md: "start",
+                                        }}
+                                        alignItems={"center"}
+                                    >
+                                        <ButtonLg
+                                            label="Agregar Turno"
+                                            handleClick={() => {}}
+                                        />
+                                    </Box>
+                                </Grid> */}
+                            </Grid>
+                        )}
+                        <Box
+                            sx={{
+                                display: "flex",
+                                flexDirection: "row",
+                                pt: 2,
+                            }}
+                        >
+                            <Button
+                                color="inherit"
+                                disabled={activeStep === 0}
+                                onClick={handleBack}
+                                sx={{ mr: 1 }}
+                            >
+                                Back
+                            </Button>
+
+                            <Button onClick={handleNext}>
+                                {activeStep === steps.length - 1
+                                    ? "Finish"
+                                    : "Next"}
+                            </Button>
+                        </Box>
+                    </>
+                )}
             </Stack>
         </Box>
     );

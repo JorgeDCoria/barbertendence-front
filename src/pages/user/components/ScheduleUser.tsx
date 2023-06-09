@@ -153,22 +153,12 @@ const ScheduleUser: React.FC<Props> = ({ titleService, duration }) => {
     };
 
     const onAddedAppointmentChange = (appointment: Appointemnt) => {
-        console.log("*********** esta en on addedappointmentchange *********");
-        console.log(appointment);
-
         appointment.title = addedAppointment.title;
-        console.log(
-            "🚀 ~ file: ScheduleUser.tsx:149 ~ onAddedAppointmentChange ~ appointment.title:",
-            appointment.title
-        );
+
         console.log(appointment);
         appointment.endDate = dayjs(appointment.startDate)
             .add(duration, "minutes")
             .toDate();
-        console.log(
-            "🚀 ~ file: ScheduleUser.tsx:166 ~ onAddedAppointmentChange ~ appointment.endDate:",
-            appointment.endDate
-        );
         setAddedAppointment(appointment);
         setIsAppointmentBeingCreated(true);
     };
