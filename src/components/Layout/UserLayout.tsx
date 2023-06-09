@@ -4,8 +4,7 @@ import NavBar from "./NavBar";
 import { Outlet } from "react-router-dom";
 import { TabNav } from "src/types/tabNav";
 import MenuIcon from "@mui/icons-material/Menu";
-import { LocalizationProvider } from "@mui/x-date-pickers";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+
 interface Props {}
 const UserLayout: React.FC<Props> = () => {
     const itemsNav: TabNav[] = [
@@ -14,12 +13,25 @@ const UserLayout: React.FC<Props> = () => {
         { title: "Mi Perfil", url: "perfil", icon: <MenuIcon /> },
     ];
     return (
-        <Container maxWidth="xl" sx={{ mb: "24px" }}>
+        <Container
+            maxWidth="xl"
+            // boxSizing={"border-box"}
+            sx={{
+                mb: "24px",
+                minHeight: "100vh",
+            }}
+        >
             <NavBar items={itemsNav} />
-            <Box pt={10}></Box>
-            <LocalizationProvider dateAdapter={AdapterDayjs}>
+
+            <Box
+                sx={{ width: "100%", minHeight: "100vh" }}
+                pt={8}
+                display={"flex"}
+                justifyContent={"center"}
+                alignItems={"center"}
+            >
                 <Outlet />
-            </LocalizationProvider>
+            </Box>
         </Container>
     );
 };
