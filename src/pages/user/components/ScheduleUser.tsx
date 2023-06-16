@@ -1,5 +1,11 @@
-import { useState, useCallback, useEffect } from "react";
-import { Box, Paper, Theme, useTheme } from "@mui/material";
+import {
+    useState,
+    useCallback,
+    useEffect,
+    Children,
+    PropsWithChildren,
+} from "react";
+import { Box, Button, Paper, Theme, useTheme } from "@mui/material";
 //@ts-ignore
 import {
     EditingState,
@@ -64,8 +70,15 @@ const ScheduleUser: React.FC<Props> = ({ titleService, duration }) => {
     );
     const [isAppointmentBeingCreated, setIsAppointmentBeingCreated] =
         useState<boolean>(false);
+    const [shiftTomorrow, setShifTomorrow] = useState<boolean>(true);
     const theme: Theme = useTheme();
 
+    const handleShiftTomorrow = (
+        e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+    ) => {
+        e.stopPropagation();
+        setShifTomorrow(!shiftTomorrow);
+    };
     const currentDateChange = (currentDate: string) => {
         setCurrentDate(currentDate);
     };
@@ -169,8 +182,33 @@ const ScheduleUser: React.FC<Props> = ({ titleService, duration }) => {
         deleteButton: "Eliminar",
         cancelButton: "Cancelar",
     };
+
+    //************** Toolbar personalizado ************************* */
+    interface CustomToolbarProps extends PropsWithChildren<Toolbar.RootProps> {
+        tomorrow: boolean;
+        handleClick: () => void;
+    }
+    const CustomToolbar: React.FC<CustomToolbarProps> = ({
+        tomorrow,
+        handleClick,
+        children,
+    }) => {
+        return (
+            <Toolbar.Root>
+                {children}
+                <Box sx={{ flexGrow: 1 }}>
+                    <Box sx={{ marginLeft: "auto" }}>
+                        <Button variant="outlined" onClick={handleClick}>
+                            {tomorrow ? "PM" : "AM"}
+                        </Button>
+                    </Box>
+                </Box>
+            </Toolbar.Root>
+        );
+    };
+
     return (
-        <Paper sx={{ height: "70vh" }}>
+        <Paper sx={{ position: "relative", height: "70vh" }}>
             <Scheduler data={appointments}>
                 {" "}
                 <ViewState
@@ -184,13 +222,31 @@ const ScheduleUser: React.FC<Props> = ({ titleService, duration }) => {
                 />
                 {/* <DayView /> */}
                 <IntegratedEditing />
-                <WeekView
-                    startDayHour={9}
-                    endDayHour={17}
-                    excludedDays={[0, 6]}
-                />
+                {shiftTomorrow ? (
+                    <WeekView
+                        startDayHour={8}
+                        endDayHour={12}
+                        cellDuration={15}
+                        excludedDays={[0, 6]}
+                    />
+                ) : (
+                    <WeekView
+                        startDayHour={16}
+                        endDayHour={20}
+                        cellDuration={15}
+                        excludedDays={[0, 6]}
+                    />
+                )}
                 {/* <MonthView /> */}
-                <Toolbar />
+                <Toolbar
+                    rootComponent={(toolbarPros: any) => (
+                        <CustomToolbar
+                            {...toolbarPros}
+                            tomorrow={shiftTomorrow}
+                            handleClick={handleShiftTomorrow}
+                        />
+                    )}
+                />
                 <DateNavigator />
                 <TodayButton />
                 <ConfirmationDialog messages={customDialogMessage} />
