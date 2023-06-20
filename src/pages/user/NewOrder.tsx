@@ -22,7 +22,7 @@ import { Order } from "src/types/Order";
 import ScheduleUser from "./components/ScheduleUser";
 const NewOrder = () => {
     const theme: Theme = useTheme();
-    const [activeStep, setActiveStep] = useState<number>(1);
+    const [activeStep, setActiveStep] = useState<number>(2);
     const [newOrder, setNewOrder] = useState<Order | null>(null);
     const [serviceSelected, setServiceSelected] = useState<Service | null>(
         null
@@ -172,6 +172,12 @@ const NewOrder = () => {
         else if (barberSelected.id === barber.id) setBarberSelected(null);
         else setBarberSelected(barber);
     };
+    const handleDisabledNext = (): boolean => {
+        if (activeStep === 0 && serviceSelected) return false;
+        if (activeStep === 1 && barberSelected) return false;
+        return true;
+    };
+
     return (
         <Stack
             component={"form"}
@@ -233,6 +239,7 @@ const NewOrder = () => {
                 </>
             ) : (
                 <>
+                    {/* ***************** Seleccion de Servicios ******************** */}
                     {activeStep === 0 && (
                         <Box p={2} width={"100%"}>
                             <CaruselCard>
@@ -253,7 +260,7 @@ const NewOrder = () => {
                             </CaruselCard>
                         </Box>
                     )}
-
+                    {/* ***************** Seleccion de barbero ******************** */}
                     {activeStep === 1 && (
                         <Box p={2} width={"100%"}>
                             <CaruselCard numDesktop={4}>
@@ -272,6 +279,7 @@ const NewOrder = () => {
                             </CaruselCard>
                         </Box>
                     )}
+                    {/* ***************** Seleccion de fecha ******************** */}
                     {activeStep === 2 && (
                         <Grid container justifyContent={"center"}>
                             <Grid
@@ -338,7 +346,10 @@ const NewOrder = () => {
                             Back
                         </Button>
 
-                        <Button onClick={handleNext}>
+                        <Button
+                            onClick={handleNext}
+                            disabled={handleDisabledNext()}
+                        >
                             {activeStep === steps.length - 1
                                 ? "Finish"
                                 : "Next"}
