@@ -1,4 +1,6 @@
-import { useState, useCallback, useEffect } from "react";
+
+import { useState, useCallback, useEffect,  Children,
+    PropsWithChildren, } from "react";
 import {
     Box,
     Modal,
@@ -85,9 +87,18 @@ const ScheduleUser: React.FC<Props> = ({
     );
     const [isAppointmentBeingCreated, setIsAppointmentBeingCreated] =
         useState<boolean>(false);
+
+    const [shiftTomorrow, setShifTomorrow] = useState<boolean>(true);
     const [showFormModal, setShowFormModal] = useState<boolean>(false);
+
     const theme: Theme = useTheme();
 
+    const handleShiftTomorrow = (
+        e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+    ) => {
+        e.stopPropagation();
+        setShifTomorrow(!shiftTomorrow);
+    };
     const currentDateChange = (currentDate: string) => {
         setCurrentDate(currentDate);
     };
@@ -314,6 +325,29 @@ const ScheduleUser: React.FC<Props> = ({
         cancelButton: "Cancelar",
     };
 
+
+    //************** Toolbar personalizado ************************* */
+    interface CustomToolbarProps extends PropsWithChildren<Toolbar.RootProps> {
+        tomorrow: boolean;
+        handleClick: () => void;
+    }
+    const CustomToolbar: React.FC<CustomToolbarProps> = ({
+        tomorrow,
+        handleClick,
+        children,
+    }) => {
+        return (
+            <Toolbar.Root>
+                {children}
+                <Box sx={{ flexGrow: 1 }}>
+                    <Box sx={{ marginLeft: "auto" }}>
+                        <Button variant="outlined" onClick={handleClick}>
+                            {tomorrow ? "PM" : "AM"}
+                        </Button>
+                    </Box>
+                </Box>
+            </Toolbar.Root>
+
     // interface CustomAppointmentFormProps
     //     extends AppointmentForm.BasicLayoutProps {
     //     appointment: Appointemnt;
@@ -373,59 +407,67 @@ const ScheduleUser: React.FC<Props> = ({
                     <button type="submit">Save</button>
                 </form>
             </Box>
+
         );
     };
 
     return (
-        <>
-            <Paper sx={{ height: "70vh" }}>
-                <Scheduler
-                    data={appointments}
-                    // onDoubleClick={handleSchedulerDoubleClick}
-                >
-                    {" "}
-                    <ViewState
-                        currentDate={currentDate}
-                        onCurrentDateChange={currentDateChange}
-                    />
-                    <EditingState
-                        onCommitChanges={handleCommitChange}
-                        addedAppointment={addedAppointment}
-                        onAddedAppointmentChange={onAddedAppointmentChange}
-                    />
-                    {/* <DayView /> */}
-                    <IntegratedEditing />
+
+        <Paper sx={{ position: "relative", height: "70vh" }}>
+            <Scheduler data={appointments}>
+                {" "}
+                <ViewState
+                    currentDate={currentDate}
+                    onCurrentDateChange={currentDateChange}
+                />
+                <EditingState
+                    onCommitChanges={handleCommitChange}
+                    addedAppointment={addedAppointment}
+                    onAddedAppointmentChange={onAddedAppointmentChange}
+                />
+                {/* <DayView /> */}
+                <IntegratedEditing />
+                {shiftTomorrow ? (
                     <WeekView
-                        startDayHour={9}
-                        endDayHour={17}
+                        startDayHour={8}
+                        endDayHour={12}
+                        cellDuration={15}
                         excludedDays={[0, 6]}
                     />
-                    {/* <MonthView /> */}
-                    <Toolbar />
-                    <DateNavigator />
-                    <TodayButton />
-                    <ConfirmationDialog messages={customDialogMessage} />
-                    <Appointments />
-                    <AppointmentTooltip
-                        headerComponent={CustomAppointmentTooltipHeader}
-                        commandButtonComponent={CustomCommandButton}
-                        showCloseButton
-                        showDeleteButton
+                ) : (
+                    <WeekView
+                        startDayHour={16}
+                        endDayHour={20}
+                        cellDuration={15}
+                        excludedDays={[0, 6]}
                     />
-                    <AppointmentForm
-                        appointmentData={addedAppointment}
-                        basicLayoutComponent={CustomAppointmentForm}
-                        //textEditorComponent={null}
-                        // textEditorComponent={TextEditor}
-                        // booleanEditorComponent={BooleanEditor}
-                        // dateEditorComponent={DateEditor}
-                    >
-                        {/* <BasicLayout /> */}
-                        {/* <CustomAppointmentForm /> */}
-                    </AppointmentForm>
-                </Scheduler>
-            </Paper>
-        </>
+                )}
+                {/* <MonthView /> */}
+                <Toolbar
+                    rootComponent={(toolbarPros: any) => (
+                        <CustomToolbar
+                            {...toolbarPros}
+                            tomorrow={shiftTomorrow}
+                            handleClick={handleShiftTomorrow}
+                        />
+                    )}
+                />
+                <DateNavigator />
+                <TodayButton />
+                <ConfirmationDialog messages={customDialogMessage} />
+                <Appointments />
+                <AppointmentTooltip
+                    headerComponent={CustomAppointmentTooltipHeader}
+                    commandButtonComponent={CustomCommandButton}
+                    showCloseButton
+                    showDeleteButton
+                />
+                <AppointmentForm
+                    radioGroupComponent={CustomRadioGroupComponent}
+                />
+            </Scheduler>
+        </Paper>
+
     );
 };
 
