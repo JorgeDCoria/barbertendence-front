@@ -245,25 +245,24 @@ const ScheduleUser: React.FC<Props> = ({ service, barber }) => {
 
         return (
             <Box
-                border={"2px solid red"}
                 display={"flex"}
-                p={{ md: 4 }}
+                p={{ md: 2 }}
                 flexDirection={"column"}
                 width={"100%"}
                 height={"100%"}
-                justifyContent={"center"}
+                justifyContent={"space-around"}
+                gap={1}
                 alignItems={"center"}
                 {...restProps}
             >
                 <Typography variant="h5" color={theme.palette.primary.main}>
                     Datos del Turno
                 </Typography>
-                <Typography variant="h6">{appointmentData.title}</Typography>
-                <Typography variant="h6">Fecha y Hora</Typography>
+
                 <Box display={"flex"} gap={2} alignItems={"center"}>
                     {" "}
-                    <Typography variant="h6">Inicio:</Typography>
-                    <Typography>
+                    <Typography variant="h6">Fecha y Hora</Typography>
+                    <Typography variant="h6" color={theme.palette.primary.main}>
                         {DateUtility.formattedDateTime(
                             appointmentData.startDate
                         )}
@@ -281,14 +280,9 @@ const ScheduleUser: React.FC<Props> = ({ service, barber }) => {
                     {barber && <CardBarber onlyRead barber={barber} />}
                 </Box>
 
-                <Box display={"flex"} gap={2} alignItems={"center"}>
-                    {" "}
-                    <Typography variant="h6">Finaliza (aprox):</Typography>
-                    <Typography>
-                        {DateUtility.formattedDateTime(appointmentData.endDate)}
-                    </Typography>
-                    DC
-                </Box>
+                <Typography mt={1}>
+                    Presione en "Save" para confirmar turno
+                </Typography>
             </Box>
         );
     };

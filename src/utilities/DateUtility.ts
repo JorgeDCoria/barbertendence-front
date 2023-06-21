@@ -1,3 +1,4 @@
+import dayjs from "dayjs";
 const DateUtility = {
   /**
    * formattedDate, funcion definida para dar formato a un objeto de tipo Date
@@ -25,8 +26,9 @@ const DateUtility = {
     let year = date.getFullYear();
     let month = String(date.getMonth() + 1).padStart(2, "0");
     let day = String(date.getDate()).padStart(2, "0");
-    let hour = String(date.getHours());
-    let min = String(date.getMinutes());
+    let hour = dayjs(date).hour() < 10 ? `0${dayjs(date).hour()}`: dayjs(date).hour()  ;
+    let min = dayjs(date).minute()< 10 ? `0${dayjs(date).minute()}`:dayjs(date).minute();
+
 
     return `${year}-${month}-${day}  ${hour}:${min}`;
 },
