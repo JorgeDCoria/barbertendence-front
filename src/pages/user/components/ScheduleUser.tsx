@@ -1,15 +1,5 @@
-
-import { useState, useCallback, useEffect,  Children,
-    PropsWithChildren, } from "react";
-import {
-    Box,
-    Modal,
-    Paper,
-    Stack,
-    Theme,
-    Typography,
-    useTheme,
-} from "@mui/material";
+import { useState, useEffect, PropsWithChildren } from "react";
+import { Box, Paper, Theme, Button, useTheme, Typography } from "@mui/material";
 //@ts-ignore
 import {
     EditingState,
@@ -21,11 +11,8 @@ import {
 import {
     AppointmentForm,
     Scheduler,
-    DayView,
     Appointments,
     WeekView,
-    MonthView,
-    ViewSwitcher,
     TodayButton,
     DateNavigator,
     Toolbar,
@@ -35,91 +22,75 @@ import {
 
 import * as dayjs from "dayjs";
 import header from "../../../assets/serviceImage.jpg";
-import { Appointemnt } from "src/types/Appointment";
+import { Appointment } from "src/types/Appointment";
+import DateUtility from "../../../utilities/DateUtility";
+import { Barber } from "src/types/Barber";
+import { Service } from "src/types/Service";
+import CardService from "./CardService";
 //import { WeekView } from "node_modules/@devexpress/dx-react-scheduler/dist/dx-react-scheduler";
 
-const appointmentsData: Appointemnt[] = [
+const appointmentsData: Appointment[] = [
     {
         id: 0,
-        startDate: "2023-06-06T09:45",
+        startDate: "2023-06-20T09:45",
         endDate: "2023-06-06T11:00",
         title: "Meeting",
     },
     {
         id: 1,
-        startDate: "2023-06-06T12:00",
+        startDate: "2023-06-20T12:00",
         endDate: "2023-06-06T13:30",
         title: "Go to a gym",
     },
 ];
-const formattedDate = (date: Date): string => {
-    let year = date.getFullYear();
-    let month = String(date.getMonth() + 1).padStart(2, "0");
-    let day = String(date.getDate()).padStart(2, "0");
 
-    return `${year}-${month}-${day}`;
-};
-const formattedDateTime = (date: Date): string => {
-    let year = date.getFullYear();
-    let month = String(date.getMonth() + 1).padStart(2, "0");
-    let day = String(date.getDate()).padStart(2, "0");
-    let hour = String(date.getHours());
-    let min = String(date.getMinutes());
-
-    return `${year}-${month}-${day}  ${hour}:${min}`;
-};
 interface Props {
-    titleService: string;
-    duration: number;
+    service: Service | null;
+    barber: Barber | null;
 }
 
-const ScheduleUser: React.FC<Props> = ({
-    titleService = "Titulo del Servicio",
-    duration = 30,
-}) => {
+const ScheduleUser: React.FC<Props> = ({ service, barber }) => {
     const [currentDate, setCurrentDate] = useState<string>(
-        formattedDate(new Date())
+        DateUtility.formattedDate(new Date())
     );
     const [appointments, setAppointments] =
-        useState<Appointemnt[]>(appointmentsData);
-    const [addedAppointment, setAddedAppointment] = useState<Appointemnt>(
-        {} as Appointemnt
+        useState<Appointment[]>(appointmentsData);
+
+    const [addedAppointment, setAddedAppointment] = useState<Appointment>(
+        {} as Appointment
     );
     const [isAppointmentBeingCreated, setIsAppointmentBeingCreated] =
         useState<boolean>(false);
-
+    /**
+     * variable shiftTomorrow definida para indicar si el scheduler muestre horarios
+     * de 8 a 12 || 16 a 20.
+     */
     const [shiftTomorrow, setShifTomorrow] = useState<boolean>(true);
-    const [showFormModal, setShowFormModal] = useState<boolean>(false);
 
     const theme: Theme = useTheme();
 
+    /**
+     * funcion encagada de cambiar el estado de shiftTomorrow.
+     * @param e
+     */
     const handleShiftTomorrow = (
         e: React.MouseEvent<HTMLButtonElement, MouseEvent>
     ) => {
         e.stopPropagation();
         setShifTomorrow(!shiftTomorrow);
     };
+
     const currentDateChange = (currentDate: string) => {
         setCurrentDate(currentDate);
     };
-    useEffect(() => {
-        setAddedAppointment({
-            title: titleService,
-        } as Appointemnt);
-    }, [titleService]);
 
-    const handleCloseModalForm = (
-        e: React.MouseEvent<HTMLDivElement, MouseEvent>
-    ): void => {
-        e.preventDefault();
-        setShowFormModal(false);
-    };
-    const handleSchedulerDoubleClick = (appointment: Appointemnt) => {
-        console.log("Estoy en double click");
-        setAddedAppointment(appointment);
-        setShowFormModal(true);
-    };
     // ************* custom command Button ****************
+    /**
+     * Componente definido para personalizar las propiedades del modal de schedule para
+     * una mejor visualizacion, afectan al boton de close y delete
+     * @param param0
+     * @returns
+     */
     const CustomCommandButton: React.FC<{}> = ({ ...restProp }) => (
         <AppointmentTooltip.CommandButton
             sx={{
@@ -139,6 +110,12 @@ const ScheduleUser: React.FC<Props> = ({
         children: React.ReactNode;
         image: string;
     };
+    /**
+     * Componente definido para personalizar el header del modal de schedule al
+     * visualizar un Appointment.
+     * @param param0
+     * @returns
+     */
     const CustomAppointmentTooltipHeader: React.FC<HeadersProps> = ({
         children,
         image = header,
@@ -155,104 +132,6 @@ const ScheduleUser: React.FC<Props> = ({
         ></AppointmentTooltip.Header>
     );
 
-    // ************************ custom Form ***********************
-
-    // const BasicLayout: React.FC<AppointmentForm.BasicLayoutProps> = ({
-    //     appointmentData,
-    //     ...restProps
-    // }) => {
-    //     const onCustomFieldChange = (nextValue: any) => {
-    //         onFieldChange({ customField: nextValue });
-    //     };
-
-    //     return (
-    //         <AppointmentForm.BasicLayout
-    //             appointmentData={appointmentData}
-    //             {...restProps}
-    //         >
-    //             <AppointmentForm.Label text="Custom Field" type="title" />
-    //             {/* <AppointmentForm.TextEditor
-    //                 value={appointmentData.customField}
-    //                 onValueChange={onCustomFieldChange}
-    //                 placeholder="Custom field"
-    //             /> */}
-    //             <div>
-    //                 <label>Date:</label>
-    //                 <span>
-    //                     {appointmentData.startDate.toLocaleDateString()}
-    //                 </span>
-    //             </div>
-    //         </AppointmentForm.BasicLayout>
-    //     );
-    // };
-    const CustomBasicLayout = (props: any) => null;
-
-    const BasicLayout: React.FC<AppointmentForm.BasicLayoutProps> = ({
-        appointmentData,
-        ...restProps
-    }) => {
-        // console.log("props de custom basic Layout");
-        // console.log(` title appointment ${appointmentData.title}`);
-
-        // console.log(...restProps);
-        //console.log(appointmentData);
-        // if (!appointmentData || !appointmentData.rRule) {
-        //     // Manejar el caso en el que appointmentData o rRule sean undefined
-        //     return null; // o algún otro valor o mensaje adecuado
-        //}
-        return (
-            <AppointmentForm.BasicLayout
-                appointmentData={appointmentData}
-                {...restProps}
-            >
-                <AppointmentForm.Label
-                    sx={{
-                        color: "red",
-                    }}
-                    text={"appointmentData.title"}
-                    type={"title"}
-                />
-                <div>
-                    <label>Date:</label>
-                    <span>
-                        {appointmentData.startDate.toLocaleDateString()}
-                    </span>
-                </div>
-            </AppointmentForm.BasicLayout>
-        );
-    };
-    const Layout: React.FC<AppointmentForm.LayoutProps> = ({
-        startDate,
-        endDate,
-        title,
-        ...restProps
-    }) => {
-        console.log("props de custom  Layout");
-        //console.log(` custom  Layout ${..}`);
-
-        // console.log(...restProps);
-        //console.log(appointmentData);
-        // if (!appointmentData || !appointmentData.rRule) {
-        //     // Manejar el caso en el que appointmentData o rRule sean undefined
-        //     return null; // o algún otro valor o mensaje adecuado
-        //}
-
-        return (
-            <AppointmentForm.Layout
-                {...restProps}
-                recurrenceLayoutComponent={recurrenceLayout}
-            >
-                <div>
-                    <label>Date:</label>
-                    <span>
-                        {startDate
-                            ? startDate.toLocaleDateString()
-                            : "no lee la fecha"}
-                    </span>
-                </div>
-            </AppointmentForm.Layout>
-        );
-    };
     const TextEditor = (props: any) => {
         // eslint-disable-next-line react/destructuring-assignment
         if (props.type === "multilineTextEditor") {
@@ -307,15 +186,17 @@ const ScheduleUser: React.FC<Props> = ({
         setIsAppointmentBeingCreated(false);
     };
 
-    const onAddedAppointmentChange = (appointment: Appointemnt) => {
-        appointment.title = addedAppointment.title;
+    const onAddedAppointmentChange = (appointment: Appointment) => {
+        if (service !== null) {
+            appointment.title = service.name;
 
-        appointment.endDate = dayjs(appointment.startDate)
-            .add(duration, "minutes")
-            .toDate();
-        //console.log(appointment);
-        setAddedAppointment(appointment);
-        setIsAppointmentBeingCreated(true);
+            appointment.endDate = dayjs(appointment.startDate)
+                .add(service.duration, "minutes")
+                .toDate();
+            //console.log(appointment);
+            setAddedAppointment(appointment);
+            setIsAppointmentBeingCreated(true);
+        }
     };
 
     const customDialogMessage: ConfirmationDialog.LocalizationMessages = {
@@ -324,7 +205,6 @@ const ScheduleUser: React.FC<Props> = ({
         deleteButton: "Eliminar",
         cancelButton: "Cancelar",
     };
-
 
     //************** Toolbar personalizado ************************* */
     interface CustomToolbarProps extends PropsWithChildren<Toolbar.RootProps> {
@@ -347,72 +227,62 @@ const ScheduleUser: React.FC<Props> = ({
                     </Box>
                 </Box>
             </Toolbar.Root>
+        );
+    };
 
-    // interface CustomAppointmentFormProps
-    //     extends AppointmentForm.BasicLayoutProps {
-    //     appointment: Appointemnt;
-    // }
-    const CustomAppointmentForm: React.FC<AppointmentForm.BasicLayoutProps> = ({
+    interface CustomAppointmentFormProps
+        extends AppointmentForm.BasicLayoutProps {
+        appointmentData: Appointment;
+        restProps: any;
+    }
+    const CustomAppointmentForm: React.FC<CustomAppointmentFormProps> = ({
         appointmentData,
-        onFieldChange,
-        onSave,
         ...restProps
     }) => {
-        const [customField, setCustomField] = useState(
-            appointmentData.customField
-        );
-
-        const handleCustomFieldChange = (value: string) => {
-            setCustomField(value);
-            onFieldChange({ customField: value });
-        };
-
-        const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-            event.preventDefault();
-            // Realizar acciones adicionales antes de guardar los cambios, si es necesario
-            // ...
-            // Guardar los cambios
-            onSave();
-        };
-        console.log(appointmentData);
+        console.log({ ...restProps });
+        console.log(typeof appointmentData);
 
         return (
             <Box
                 border={"2px solid red"}
                 display={"flex"}
+                p={8}
+                flexDirection={"column"}
                 width={"100%"}
                 height={"100%"}
                 justifyContent={"center"}
+                alignItems={"center"}
+                {...restProps}
             >
                 <Typography variant="h5" color={theme.palette.primary.main}>
                     Datos del Turno
                 </Typography>
-                <Typography>
-                    {formattedDateTime(appointmentData.startDate)}
-                </Typography>
-                <Typography>
-                    {formattedDateTime(appointmentData.endDate)}
-                </Typography>
-                <form onSubmit={handleSubmit}>
-                    {/* Agregar los componentes personalizados que desees */}
-                    <h3>Custom Form</h3>
-                    <p>Custom field: {customField}</p>
-                    <input
-                        type="text"
-                        value={customField}
-                        onChange={(e) =>
-                            handleCustomFieldChange(e.target.value)
-                        }
-                    />
-                    <button type="submit">Save</button>
-                </form>
-            </Box>
+                <Typography variant="h6">{appointmentData.title}</Typography>
+                <Typography variant="h6">Fecha y Hora</Typography>
+                <Box display={"flex"} gap={2} alignItems={"center"}>
+                    {" "}
+                    <Typography variant="h6">Inicio:</Typography>
+                    <Typography>
+                        {DateUtility.formattedDateTime(
+                            appointmentData.startDate
+                        )}
+                    </Typography>
+                </Box>
+                {service && <CardService onlyRead service={service} />}
 
+                <Box display={"flex"} gap={2} alignItems={"center"}>
+                    {" "}
+                    <Typography variant="h6">Finaliza (aprox):</Typography>
+                    <Typography>
+                        {DateUtility.formattedDateTime(appointmentData.endDate)}
+                    </Typography>
+                    DC
+                </Box>
+            </Box>
         );
     };
 
     return (
-
         <Paper sx={{ position: "relative", height: "70vh" }}>
             <Scheduler data={appointments}>
                 {" "}
@@ -444,9 +314,9 @@ const ScheduleUser: React.FC<Props> = ({
                 )}
                 {/* <MonthView /> */}
                 <Toolbar
-                    rootComponent={(toolbarPros: any) => (
+                    rootComponent={(toolbarProps: any) => (
                         <CustomToolbar
-                            {...toolbarPros}
+                            {...toolbarProps}
                             tomorrow={shiftTomorrow}
                             handleClick={handleShiftTomorrow}
                         />
@@ -463,11 +333,19 @@ const ScheduleUser: React.FC<Props> = ({
                     showDeleteButton
                 />
                 <AppointmentForm
-                    radioGroupComponent={CustomRadioGroupComponent}
+                    basicLayoutComponent={(
+                        props: AppointmentForm.BasicLayout
+                    ) => (
+                        <CustomAppointmentForm
+                            appointmentData={addedAppointment}
+                            service={service}
+                            barber={barber}
+                            {...props}
+                        />
+                    )}
                 />
             </Scheduler>
         </Paper>
-
     );
 };
 

@@ -27,6 +27,7 @@ const NewOrder = () => {
     const [serviceSelected, setServiceSelected] = useState<Service | null>(
         null
     );
+    const [barberSelected, setBarberSelected] = useState<Barber | null>(null);
     type Step = {
         title: string;
         subTitle: string;
@@ -59,7 +60,6 @@ const NewOrder = () => {
     const handleReset = () => {
         setActiveStep(0);
     };
-    const [barberSelected, setBarberSelected] = useState<Barber | null>(null);
 
     const services: Service[] = [
         {
@@ -299,15 +299,15 @@ const NewOrder = () => {
                                     alignSelf={"center"}
                                 >
                                     <ScheduleUser
-                                        titleService={
+                                        service={
                                             serviceSelected
-                                                ? serviceSelected.name
-                                                : ""
+                                                ? serviceSelected
+                                                : null
                                         }
-                                        duration={
-                                            serviceSelected
-                                                ? serviceSelected.duration
-                                                : 0
+                                        barber={
+                                            barberSelected
+                                                ? barberSelected
+                                                : null
                                         }
                                     />
                                 </Box>
