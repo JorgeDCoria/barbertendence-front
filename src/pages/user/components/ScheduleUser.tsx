@@ -27,6 +27,7 @@ import DateUtility from "../../../utilities/DateUtility";
 import { Barber } from "src/types/Barber";
 import { Service } from "src/types/Service";
 import CardService from "./CardService";
+import CardBarber from "./CardBarber";
 //import { WeekView } from "node_modules/@devexpress/dx-react-scheduler/dist/dx-react-scheduler";
 
 const appointmentsData: Appointment[] = [
@@ -246,7 +247,7 @@ const ScheduleUser: React.FC<Props> = ({ service, barber }) => {
             <Box
                 border={"2px solid red"}
                 display={"flex"}
-                p={8}
+                p={{ md: 4 }}
                 flexDirection={"column"}
                 width={"100%"}
                 height={"100%"}
@@ -268,7 +269,17 @@ const ScheduleUser: React.FC<Props> = ({ service, barber }) => {
                         )}
                     </Typography>
                 </Box>
-                {service && <CardService onlyRead service={service} />}
+                <Box
+                    display={"flex"}
+                    justifyContent={"space-around"}
+                    alignItems={"center"}
+                    width={"100%"}
+                    gap={2}
+                    flexDirection={{ xs: "column", sm: "row" }}
+                >
+                    {service && <CardService onlyRead service={service} />}
+                    {barber && <CardBarber onlyRead barber={barber} />}
+                </Box>
 
                 <Box display={"flex"} gap={2} alignItems={"center"}>
                     {" "}
