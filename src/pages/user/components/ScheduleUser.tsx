@@ -1,5 +1,5 @@
-import { useState, useEffect, PropsWithChildren } from "react";
-import { Box, Paper, Theme, Button, useTheme, Typography } from "@mui/material";
+import { useState, PropsWithChildren } from "react";
+import { Box, Paper, Theme, Button, useTheme } from "@mui/material";
 //@ts-ignore
 import {
     EditingState,
@@ -26,22 +26,22 @@ import { Appointment } from "src/types/Appointment";
 import DateUtility from "../../../utilities/DateUtility";
 import { Barber } from "src/types/Barber";
 import { Service } from "src/types/Service";
-import CardService from "./CardService";
-import CardBarber from "./CardBarber";
+import CustomAppointmentForm from "./CustomAppointmentForm";
+import { useNotification } from "../../../context/notification.context";
 //import { WeekView } from "node_modules/@devexpress/dx-react-scheduler/dist/dx-react-scheduler";
 
 const appointmentsData: Appointment[] = [
     {
         id: 0,
         startDate: "2023-06-20T09:45",
-        endDate: "2023-06-06T11:00",
-        title: "Meeting",
+        endDate: "2023-06-20T11:00",
+        title: "Reserved",
     },
     {
         id: 1,
-        startDate: "2023-06-20T12:00",
-        endDate: "2023-06-06T13:30",
-        title: "Go to a gym",
+        startDate: "2023-06-20T08:00",
+        endDate: "2023-06-20T09:00",
+        title: "Reserved",
     },
 ];
 
@@ -51,17 +51,11 @@ interface Props {
 }
 
 const ScheduleUser: React.FC<Props> = ({ service, barber }) => {
-    const [currentDate, setCurrentDate] = useState<string>(
-        DateUtility.formattedDate(new Date())
-    );
-    const [appointments, setAppointments] =
-        useState<Appointment[]>(appointmentsData);
+    const [currentDate, setCurrentDate] = useState<string>(DateUtility.formattedDate(new Date()));
+    const [appointments, setAppointments] = useState<Appointment[]>(appointmentsData);
 
-    const [addedAppointment, setAddedAppointment] = useState<Appointment>(
-        {} as Appointment
-    );
-    const [isAppointmentBeingCreated, setIsAppointmentBeingCreated] =
-        useState<boolean>(false);
+    const [addedAppointment, setAddedAppointment] = useState<Appointment>({} as Appointment);
+    const [isAppointmentBeingCreated, setIsAppointmentBeingCreated] = useState<boolean>(false);
     /**
      * variable shiftTomorrow definida para indicar si el scheduler muestre horarios
      * de 8 a 12 || 16 a 20.
@@ -69,20 +63,70 @@ const ScheduleUser: React.FC<Props> = ({ service, barber }) => {
     const [shiftTomorrow, setShifTomorrow] = useState<boolean>(true);
 
     const theme: Theme = useTheme();
+    const { getError } = useNotification();
 
     /**
      * funcion encagada de cambiar el estado de shiftTomorrow.
      * @param e
      */
-    const handleShiftTomorrow = (
-        e: React.MouseEvent<HTMLButtonElement, MouseEvent>
-    ) => {
+    const handleShiftTomorrow = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         e.stopPropagation();
         setShifTomorrow(!shiftTomorrow);
     };
 
     const currentDateChange = (currentDate: string) => {
         setCurrentDate(currentDate);
+    };
+
+    const handleCommitChange = ({
+        added,
+        changed,
+        deleted,
+    }: {
+        added?: Partial<AppointmentModel>;
+        changed?: { [key: string]: object };
+        deleted?: number | string;
+    }) => {
+        if (added) {
+            const startingAddedId =
+                appointments.length > 0 ? appointments[appointments.length - 1].id + 1 : 0;
+            setAppointments([...appointments, { id: startingAddedId, ...added }]);
+        }
+        if (changed) {
+            setAppointments(
+                appointments.map((appointment) =>
+                    changed[appointment.id]
+                        ? { ...appointment, ...changed[appointment.id] }
+                        : appointment
+                )
+            );
+        }
+        if (deleted !== undefined) {
+            setAppointments(appointments.filter((appointment) => appointment.id !== deleted));
+        }
+        setIsAppointmentBeingCreated(false);
+    };
+
+    const onAddedAppointmentChange = (appointment: Appointment) => {
+        const today = new Date();
+        if (service !== null) {
+            if (appointment.startDate < today)
+                getError(
+                    `Solo se asignan turnos despues de la fecha: ${DateUtility.formattedDateTime(
+                        today
+                    )}`
+                );
+            else {
+                appointment.title = service.name;
+
+                appointment.endDate = dayjs(appointment.startDate)
+                    .add(service.duration, "minutes")
+                    .toDate();
+                //console.log(appointment);
+                setAddedAppointment(appointment);
+                setIsAppointmentBeingCreated(true);
+            }
+        }
     };
 
     // ************* custom command Button ****************
@@ -133,76 +177,11 @@ const ScheduleUser: React.FC<Props> = ({ service, barber }) => {
         ></AppointmentTooltip.Header>
     );
 
-    const TextEditor = (props: any) => {
-        // eslint-disable-next-line react/destructuring-assignment
-        if (props.type === "multilineTextEditor") {
-            return null;
-        }
-        return <AppointmentForm.TextEditor {...props} />;
-    };
-
-    const BooleanEditor = (props: any) => {
-        return null;
-    };
-
-    const DateEditor = (props: any) => {
-        console.log("Props en Date");
-        console.log(props);
-        return null;
-    };
-
-    const handleCommitChange = ({
-        added,
-        changed,
-        deleted,
-    }: {
-        added?: Partial<AppointmentModel>;
-        changed?: { [key: string]: object };
-        deleted?: number | string;
-    }) => {
-        if (added) {
-            const startingAddedId =
-                appointments.length > 0
-                    ? appointments[appointments.length - 1].id + 1
-                    : 0;
-            setAppointments([
-                ...appointments,
-                { id: startingAddedId, ...added },
-            ]);
-        }
-        if (changed) {
-            setAppointments(
-                appointments.map((appointment) =>
-                    changed[appointment.id]
-                        ? { ...appointment, ...changed[appointment.id] }
-                        : appointment
-                )
-            );
-        }
-        if (deleted !== undefined) {
-            setAppointments(
-                appointments.filter((appointment) => appointment.id !== deleted)
-            );
-        }
-        setIsAppointmentBeingCreated(false);
-    };
-
-    const onAddedAppointmentChange = (appointment: Appointment) => {
-        if (service !== null) {
-            appointment.title = service.name;
-
-            appointment.endDate = dayjs(appointment.startDate)
-                .add(service.duration, "minutes")
-                .toDate();
-            //console.log(appointment);
-            setAddedAppointment(appointment);
-            setIsAppointmentBeingCreated(true);
-        }
-    };
-
+    /**
+     * Objeto que contiene los valores de los textos a mostrar en el schedule
+     */
     const customDialogMessage: ConfirmationDialog.LocalizationMessages = {
-        confirmDeleteMessage:
-            "Estas seguro de que quieres eleiminar este Turno?",
+        confirmDeleteMessage: "Estas seguro de que quieres eleiminar este Turno?",
         deleteButton: "Eliminar",
         cancelButton: "Cancelar",
     };
@@ -212,11 +191,7 @@ const ScheduleUser: React.FC<Props> = ({ service, barber }) => {
         tomorrow: boolean;
         handleClick: () => void;
     }
-    const CustomToolbar: React.FC<CustomToolbarProps> = ({
-        tomorrow,
-        handleClick,
-        children,
-    }) => {
+    const CustomToolbar: React.FC<CustomToolbarProps> = ({ tomorrow, handleClick, children }) => {
         return (
             <Toolbar.Root>
                 {children}
@@ -231,70 +206,11 @@ const ScheduleUser: React.FC<Props> = ({ service, barber }) => {
         );
     };
 
-    interface CustomAppointmentFormProps
-        extends AppointmentForm.BasicLayoutProps {
-        appointmentData: Appointment;
-        restProps: any;
-    }
-    const CustomAppointmentForm: React.FC<CustomAppointmentFormProps> = ({
-        appointmentData,
-        ...restProps
-    }) => {
-        console.log({ ...restProps });
-        console.log(typeof appointmentData);
-
-        return (
-            <Box
-                display={"flex"}
-                p={{ md: 2 }}
-                flexDirection={"column"}
-                width={"100%"}
-                height={"100%"}
-                justifyContent={"space-around"}
-                gap={1}
-                alignItems={"center"}
-                {...restProps}
-            >
-                <Typography variant="h5" color={theme.palette.primary.main}>
-                    Datos del Turno
-                </Typography>
-
-                <Box display={"flex"} gap={2} alignItems={"center"}>
-                    {" "}
-                    <Typography variant="h6">Fecha y Hora</Typography>
-                    <Typography variant="h6" color={theme.palette.primary.main}>
-                        {DateUtility.formattedDateTime(
-                            appointmentData.startDate
-                        )}
-                    </Typography>
-                </Box>
-                <Box
-                    display={"flex"}
-                    justifyContent={"space-around"}
-                    alignItems={"center"}
-                    width={"100%"}
-                    gap={2}
-                    flexDirection={{ xs: "column", sm: "row" }}
-                >
-                    {service && <CardService onlyRead service={service} />}
-                    {barber && <CardBarber onlyRead barber={barber} />}
-                </Box>
-
-                <Typography mt={1}>
-                    Presione en "Save" para confirmar turno
-                </Typography>
-            </Box>
-        );
-    };
-
     return (
         <Paper sx={{ position: "relative", height: "70vh" }}>
             <Scheduler data={appointments}>
                 {" "}
-                <ViewState
-                    currentDate={currentDate}
-                    onCurrentDateChange={currentDateChange}
-                />
+                <ViewState currentDate={currentDate} onCurrentDateChange={currentDateChange} />
                 <EditingState
                     onCommitChanges={handleCommitChange}
                     addedAppointment={addedAppointment}
@@ -338,9 +254,7 @@ const ScheduleUser: React.FC<Props> = ({ service, barber }) => {
                     showDeleteButton
                 />
                 <AppointmentForm
-                    basicLayoutComponent={(
-                        props: AppointmentForm.BasicLayout
-                    ) => (
+                    basicLayoutComponent={(props: AppointmentForm.BasicLayout) => (
                         <CustomAppointmentForm
                             appointmentData={addedAppointment}
                             service={service}
