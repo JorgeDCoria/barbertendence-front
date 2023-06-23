@@ -1,32 +1,16 @@
 import { useState } from "react";
-import {
-    Box,
-    Stack,
-    Typography,
-    Theme,
-    useTheme,
-    Grid,
-    Stepper,
-    Step,
-    StepLabel,
-    Button,
-} from "@mui/material";
+import { Box, Stack, Typography, Grid, Stepper, Step, StepLabel, Button } from "@mui/material";
 import { Service } from "src/types/Service";
 import CardService from "./components/CardService";
 import CaruselCard from "./components/CaruselCard";
 import { Barber } from "src/types/Barber";
 import CardBarber from "./components/CardBarber";
 
-import ButtonLg from "./components/ButtonLg";
-import { Order } from "src/types/Order";
-import ScheduleUser from "./components/ScheduleUser";
+import ScheduleUser from "../../components/schedule/ScheduleUser";
 const NewOrder = () => {
-    const theme: Theme = useTheme();
+    //const theme: Theme = useTheme();
     const [activeStep, setActiveStep] = useState<number>(2);
-    const [newOrder, setNewOrder] = useState<Order | null>(null);
-    const [serviceSelected, setServiceSelected] = useState<Service | null>(
-        null
-    );
+    const [serviceSelected, setServiceSelected] = useState<Service | null>(null);
     const [barberSelected, setBarberSelected] = useState<Barber | null>(null);
     type Step = {
         title: string;
@@ -68,8 +52,7 @@ const NewOrder = () => {
             duration: 30,
             image: "",
             price: 800,
-            description:
-                "corte de pelo ya sea clasico o con degradado. No incluye diseño/lavado",
+            description: "corte de pelo ya sea clasico o con degradado. No incluye diseño/lavado",
         },
 
         {
@@ -87,8 +70,7 @@ const NewOrder = () => {
             duration: 60,
             image: "",
             price: 800,
-            description:
-                "Arreglo de barba con disminucion, afeitado completo y/o perfilado.",
+            description: "Arreglo de barba con disminucion, afeitado completo y/o perfilado.",
         },
         {
             id: "4",
@@ -105,8 +87,7 @@ const NewOrder = () => {
             duration: 60,
             image: "",
             price: 800,
-            description:
-                "Corte de pelo clasico o degradado para niños hasta 12 años ",
+            description: "Corte de pelo clasico o degradado para niños hasta 12 años ",
         },
         {
             id: "6",
@@ -191,25 +172,15 @@ const NewOrder = () => {
         >
             {activeStep < steps.length && (
                 <>
-                    <Typography
-                        variant={"h4"}
-                        color={"primary"}
-                        textAlign={"center"}
-                    >
+                    <Typography variant={"h4"} color={"primary"} textAlign={"center"}>
                         {steps[activeStep].title}
                     </Typography>
-                    <Typography
-                        textAlign={"center"}
-                        maxWidth={{ xs: "95%", md: "70%" }}
-                    >
+                    <Typography textAlign={"center"} maxWidth={{ xs: "95%", md: "70%" }}>
                         {steps[activeStep].note}
                     </Typography>
                 </>
             )}
-            <Stepper
-                activeStep={activeStep}
-                sx={{ width: { sm: "70%", xs: "100%" } }}
-            >
+            <Stepper activeStep={activeStep} sx={{ width: { sm: "70%", xs: "100%" } }}>
                 {steps.map(({ subTitle }, index) => {
                     const stepProps: { completed?: boolean } = {};
                     const labelProps: { optional?: React.ReactNode } = {};
@@ -245,15 +216,11 @@ const NewOrder = () => {
                             <CaruselCard>
                                 {services.map((s) => (
                                     <CardService
-                                        handleSelectedService={
-                                            handleSelectedService
-                                        }
+                                        handleSelectedService={handleSelectedService}
                                         key={s.id}
                                         service={s}
                                         selected={
-                                            serviceSelected
-                                                ? serviceSelected.id === s.id
-                                                : false
+                                            serviceSelected ? serviceSelected.id === s.id : false
                                         }
                                     />
                                 ))}
@@ -268,9 +235,7 @@ const NewOrder = () => {
                                     <CardBarber
                                         handleClick={handleSelectBarber}
                                         selected={
-                                            barberSelected
-                                                ? barberSelected.id === b.id
-                                                : false
+                                            barberSelected ? barberSelected.id === b.id : false
                                         }
                                         key={b.name}
                                         barber={b}
@@ -282,13 +247,7 @@ const NewOrder = () => {
                     {/* ***************** Seleccion de fecha ******************** */}
                     {activeStep === 2 && (
                         <Grid container justifyContent={"center"}>
-                            <Grid
-                                item
-                                xs={12}
-                                md={8}
-                                display={"flex"}
-                                justifyContent={"flex-end"}
-                            >
+                            <Grid item xs={12} md={8} display={"flex"} justifyContent={"flex-end"}>
                                 <Box
                                     display={"flex"}
                                     justifyContent={"center"}
@@ -299,16 +258,8 @@ const NewOrder = () => {
                                     alignSelf={"center"}
                                 >
                                     <ScheduleUser
-                                        service={
-                                            serviceSelected
-                                                ? serviceSelected
-                                                : null
-                                        }
-                                        barber={
-                                            barberSelected
-                                                ? barberSelected
-                                                : null
-                                        }
+                                        service={serviceSelected ? serviceSelected : null}
+                                        barber={barberSelected ? barberSelected : null}
                                     />
                                 </Box>
                             </Grid>{" "}
@@ -346,13 +297,8 @@ const NewOrder = () => {
                             Back
                         </Button>
 
-                        <Button
-                            onClick={handleNext}
-                            disabled={handleDisabledNext()}
-                        >
-                            {activeStep === steps.length - 1
-                                ? "Finish"
-                                : "Next"}
+                        <Button onClick={handleNext} disabled={handleDisabledNext()}>
+                            {activeStep === steps.length - 1 ? "Finish" : "Next"}
                         </Button>
                     </Box>
                 </>

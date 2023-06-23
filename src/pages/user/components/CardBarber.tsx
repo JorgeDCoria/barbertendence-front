@@ -1,22 +1,12 @@
 import { useState } from "react";
 import { Barber } from "src/types/Barber";
-import {
-    Card,
-    CardMedia,
-    Box,
-    Theme,
-    useTheme,
-    Typography,
-} from "@mui/material";
+import { Card, CardMedia, Box, Theme, useTheme, Typography } from "@mui/material";
 import perfil from "../../../assets/perfil.jpg";
 interface Props {
-    onlyRead: boolean;
+    onlyRead?: boolean;
     barber: Barber;
     selected?: boolean;
-    handleClick?: (
-        e: React.MouseEvent<HTMLDivElement, MouseEvent>,
-        barber: Barber
-    ) => void;
+    handleClick?: (e: React.MouseEvent<HTMLDivElement, MouseEvent>, barber: Barber) => void;
 }
 const CardBarber: React.FC<Props> = ({
     onlyRead = false,
@@ -26,15 +16,11 @@ const CardBarber: React.FC<Props> = ({
 }) => {
     const theme: Theme = useTheme();
     const [isHovered, setIsHovered] = useState<boolean>(false);
-    const handleMouseEnter = (
-        e: React.MouseEvent<HTMLDivElement, MouseEvent>
-    ) => {
+    const handleMouseEnter = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
         e.stopPropagation();
         setIsHovered(true);
     };
-    const handleMouseLeave = (
-        e: React.MouseEvent<HTMLDivElement, MouseEvent>
-    ) => {
+    const handleMouseLeave = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
         e.stopPropagation();
         setIsHovered(false);
     };
@@ -57,9 +43,7 @@ const CardBarber: React.FC<Props> = ({
                         component={"img"}
                         src={perfil}
                         sx={{
-                            height: `${
-                                isHovered || selected ? "100%" : "200px"
-                            }`,
+                            height: `${isHovered || selected ? "100%" : "200px"}`,
                             width: "100%",
                             objectFit: "cover",
                             borderRadius: "16px",
@@ -103,9 +87,7 @@ const CardBarber: React.FC<Props> = ({
                             borderRadius={"16px"}
                             sx={{
                                 background: `${
-                                    isHovered || selected
-                                        ? theme.palette.primary.main
-                                        : "#282528"
+                                    isHovered || selected ? theme.palette.primary.main : "#282528"
                                 }`,
 
                                 width: "90%",
@@ -156,11 +138,7 @@ const CardBarber: React.FC<Props> = ({
                                 borderRadius: "16px",
                             }}
                         >
-                            <Typography
-                                variant="h6"
-                                textAlign={"center"}
-                                color={"white"}
-                            >
+                            <Typography variant="h6" textAlign={"center"} color={"white"}>
                                 {barber.name}
                             </Typography>
                         </Box>

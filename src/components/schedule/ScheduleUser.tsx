@@ -21,13 +21,14 @@ import {
 } from "@devexpress/dx-react-scheduler-material-ui";
 
 import * as dayjs from "dayjs";
-import header from "../../../assets/serviceImage.jpg";
+import header from "../../assets/serviceImage.jpg";
 import { Appointment } from "src/types/Appointment";
-import DateUtility from "../../../utilities/DateUtility";
+import DateUtility from "../../utilities/DateUtility";
 import { Barber } from "src/types/Barber";
 import { Service } from "src/types/Service";
 import CustomAppointmentForm from "./CustomAppointmentForm";
-import { useNotification } from "../../../context/notification.context";
+import { useNotification } from "../../context/notification.context";
+import CustomTimeTableCell from "./CustomTimeTableCell";
 //import { WeekView } from "node_modules/@devexpress/dx-react-scheduler/dist/dx-react-scheduler";
 
 const appointmentsData: Appointment[] = [
@@ -78,6 +79,7 @@ const ScheduleUser: React.FC<Props> = ({ service, barber }) => {
         setCurrentDate(currentDate);
     };
 
+    const today = new Date();
     const handleCommitChange = ({
         added,
         changed,
@@ -108,7 +110,6 @@ const ScheduleUser: React.FC<Props> = ({ service, barber }) => {
     };
 
     const onAddedAppointmentChange = (appointment: Appointment) => {
-        const today = new Date();
         if (service !== null) {
             if (appointment.startDate < today)
                 getError(
@@ -218,21 +219,13 @@ const ScheduleUser: React.FC<Props> = ({ service, barber }) => {
                 />
                 {/* <DayView /> */}
                 <IntegratedEditing />
-                {shiftTomorrow ? (
-                    <WeekView
-                        startDayHour={8}
-                        endDayHour={12}
-                        cellDuration={15}
-                        excludedDays={[0, 6]}
-                    />
-                ) : (
-                    <WeekView
-                        startDayHour={16}
-                        endDayHour={20}
-                        cellDuration={15}
-                        excludedDays={[0, 6]}
-                    />
-                )}
+                <WeekView
+                    startDayHour={shiftTomorrow ? 8 : 16}
+                    endDayHour={shiftTomorrow ? 12 : 20}
+                    cellDuration={15}
+                    excludedDays={[0, 6]}
+                    timeTableCellComponent={CustomTimeTableCell}
+                />
                 {/* <MonthView /> */}
                 <Toolbar
                     rootComponent={(toolbarProps: any) => (

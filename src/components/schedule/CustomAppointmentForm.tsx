@@ -1,8 +1,8 @@
 import { AppointmentForm } from "@devexpress/dx-react-scheduler-material-ui";
 import { Box, Typography, useTheme, Theme } from "@mui/material";
-import DateUtility from "../../../utilities/DateUtility";
-import CardService from "./CardService";
-import CardBarber from "./CardBarber";
+import DateUtility from "../../utilities/DateUtility";
+import CardService from "../../pages/user/components/CardService";
+import CardBarber from "../../pages/user/components/CardBarber";
 import { Service } from "src/types/Service";
 import { Barber } from "src/types/Barber";
 import { Appointment } from "src/types/Appointment";
@@ -55,9 +55,7 @@ const CustomAppointmentForm: React.FC<CustomAppointmentFormProps> = ({
                 {barber && <CardBarber onlyRead barber={barber} />}
             </Box>
 
-            <Typography mt={1}>
-                Presione en "Save" para confirmar turno
-            </Typography>
+            <Typography mt={1}>Presione en "Save" para confirmar turno</Typography>
         </Box>
     );
 };
