@@ -2,9 +2,11 @@ import { AlertColor } from "@mui/material";
 import { createContext, useContext, useState } from "react";
 import Notification from "../../src/components/notification/Notification";
 
+// Propiedades del contexto
 type ContextProps = {
-    getError: (msg: string) => void;
+    showNotification: (msg: string, serverity: AlertColor) => void;
 };
+//creando contexto con sus props definidas
 const NotificationContext = createContext<ContextProps | null>(null);
 
 export const NotificationProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -16,13 +18,13 @@ export const NotificationProvider: React.FC<{ children: React.ReactNode }> = ({ 
     const handleClose = () => {
         setOpen(false);
     };
-    const getError = (msg: string) => {
-        setSeverity("error");
+    const showNotification = (msg: string, severity: AlertColor) => {
+        setSeverity(severity);
         setOpen(true);
         setMessage(msg);
     };
     const value = {
-        getError,
+        showNotification,
     };
     return (
         <NotificationContext.Provider value={value}>

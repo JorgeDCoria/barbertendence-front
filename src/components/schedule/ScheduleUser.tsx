@@ -64,7 +64,7 @@ const ScheduleUser: React.FC<Props> = ({ service, barber }) => {
     const [shiftTomorrow, setShifTomorrow] = useState<boolean>(true);
 
     const theme: Theme = useTheme();
-    const { getError } = useNotification();
+    const { showNotification } = useNotification();
 
     /**
      * funcion encagada de cambiar el estado de shiftTomorrow.
@@ -111,22 +111,14 @@ const ScheduleUser: React.FC<Props> = ({ service, barber }) => {
 
     const onAddedAppointmentChange = (appointment: Appointment) => {
         if (service !== null) {
-            if (appointment.startDate < today)
-                getError(
-                    `Solo se asignan turnos despues de la fecha: ${DateUtility.formattedDateTime(
-                        today
-                    )}`
-                );
-            else {
-                appointment.title = service.name;
+            appointment.title = service.name;
 
-                appointment.endDate = dayjs(appointment.startDate)
-                    .add(service.duration, "minutes")
-                    .toDate();
-                //console.log(appointment);
-                setAddedAppointment(appointment);
-                setIsAppointmentBeingCreated(true);
-            }
+            appointment.endDate = dayjs(appointment.startDate)
+                .add(service.duration, "minutes")
+                .toDate();
+            //console.log(appointment);
+            setAddedAppointment(appointment);
+            setIsAppointmentBeingCreated(true);
         }
     };
 

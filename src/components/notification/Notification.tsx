@@ -11,11 +11,11 @@ const Notification: React.FC<NotificationProps> = ({ open, handleClose, message,
     return (
         <Snackbar
             anchorOrigin={{ vertical: "top", horizontal: "right" }}
-            autoHideDuration={2500}
+            autoHideDuration={3000}
             open={open}
             onClose={handleClose}
         >
-            <Alert onClose={handleClose}>
+            <Alert onClose={handleClose} severity={severity} variant={"filled"}>
                 <Typography>{message}</Typography>
             </Alert>
         </Snackbar>
