@@ -15,7 +15,7 @@ const CustomTimeTableCell: React.FC<WeekView.TimeTableCellProps> = (props) => {
                 isInvalid
                     ? () => {
                           showNotification(
-                              "No es posible otorgar turnos con horarios y fechas ya transcurridas",
+                              "No es posible otorgar turnos en horarios y fechas ya transcurridas",
                               "warning"
                           );
                       }

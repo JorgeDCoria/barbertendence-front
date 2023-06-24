@@ -21,6 +21,7 @@ import {
 } from "@devexpress/dx-react-scheduler-material-ui";
 
 import * as dayjs from "dayjs";
+
 import header from "../../assets/serviceImage.jpg";
 import { Appointment } from "src/types/Appointment";
 import DateUtility from "../../utilities/DateUtility";
@@ -52,7 +53,8 @@ interface Props {
 }
 
 const ScheduleUser: React.FC<Props> = ({ service, barber }) => {
-    const [currentDate, setCurrentDate] = useState<string>(DateUtility.formattedDate(new Date()));
+    const [currentDate, setCurrentDate] = useState<Date>(new Date());
+    const [currentWeekStart, setCurrentWeekStart] = useState<dayjs.Dayjs>(dayjs().startOf("week"));
     const [appointments, setAppointments] = useState<Appointment[]>(appointmentsData);
 
     const [addedAppointment, setAddedAppointment] = useState<Appointment>({} as Appointment);
@@ -64,8 +66,9 @@ const ScheduleUser: React.FC<Props> = ({ service, barber }) => {
     const [shiftTomorrow, setShifTomorrow] = useState<boolean>(true);
 
     const theme: Theme = useTheme();
-    const { showNotification } = useNotification();
-
+    const today: Date = new Date();
+    const numWeeksToShow = 3;
+    const maxDate: Date = new Date(dayjs(today).add(numWeeksToShow, "week").toISOString());
     /**
      * funcion encagada de cambiar el estado de shiftTomorrow.
      * @param e
@@ -75,11 +78,11 @@ const ScheduleUser: React.FC<Props> = ({ service, barber }) => {
         setShifTomorrow(!shiftTomorrow);
     };
 
-    const currentDateChange = (currentDate: string) => {
-        setCurrentDate(currentDate);
+    const currentDateChange = (currentDate: Date) => {
+        console.log(currentDate);
+        if (currentDate > today && currentDate < maxDate) setCurrentDate(currentDate);
     };
 
-    const today = new Date();
     const handleCommitChange = ({
         added,
         changed,
@@ -185,6 +188,7 @@ const ScheduleUser: React.FC<Props> = ({ service, barber }) => {
         handleClick: () => void;
     }
     const CustomToolbar: React.FC<CustomToolbarProps> = ({ tomorrow, handleClick, children }) => {
+        console.log(children);
         return (
             <Toolbar.Root>
                 {children}
