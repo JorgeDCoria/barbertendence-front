@@ -1,4 +1,4 @@
-import { useState, PropsWithChildren } from "react";
+import { useState, PropsWithChildren, useEffect } from "react";
 import { Box, Paper, Theme, Button, useTheme } from "@mui/material";
 //@ts-ignore
 import {
@@ -68,7 +68,15 @@ const ScheduleUser: React.FC<Props> = ({ service, barber }) => {
     const theme: Theme = useTheme();
     const today: Date = new Date();
     const numWeeksToShow = 3;
-    const maxDate: Date = new Date(dayjs(today).add(numWeeksToShow, "week").toISOString());
+    const maxDate: Date = new Date(
+        dayjs(today)
+            .add(numWeeksToShow - 1, "week")
+            .toISOString()
+    );
+
+    // useEffect(() => {
+    //     console.log(`se renderiza`);
+    // }, [currentDate]);
     /**
      * funcion encagada de cambiar el estado de shiftTomorrow.
      * @param e
@@ -79,8 +87,8 @@ const ScheduleUser: React.FC<Props> = ({ service, barber }) => {
     };
 
     const currentDateChange = (currentDate: Date) => {
-        console.log(currentDate);
-        if (currentDate > today && currentDate < maxDate) setCurrentDate(currentDate);
+        const auxToday = new Date(new Date(today).setHours(0, 0, 0, 0));
+        if (currentDate >= auxToday && currentDate < maxDate) setCurrentDate(currentDate);
     };
 
     const handleCommitChange = ({
