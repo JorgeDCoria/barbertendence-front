@@ -7,6 +7,7 @@ import { Barber } from "src/types/Barber";
 import CardBarber from "./components/CardBarber";
 
 import ScheduleUser from "../../components/schedule/ScheduleUser";
+
 const NewOrder = () => {
     //const theme: Theme = useTheme();
     const [activeStep, setActiveStep] = useState<number>(2);
@@ -42,6 +43,8 @@ const NewOrder = () => {
         setActiveStep((prevActiveStep) => prevActiveStep - 1);
     };
     const handleReset = () => {
+        setServiceSelected(null);
+        setBarberSelected(null);
         setActiveStep(0);
     };
 
@@ -258,27 +261,12 @@ const NewOrder = () => {
                                     alignSelf={"center"}
                                 >
                                     <ScheduleUser
+                                        handleReset={handleReset}
                                         service={serviceSelected ? serviceSelected : null}
                                         barber={barberSelected ? barberSelected : null}
                                     />
                                 </Box>
                             </Grid>{" "}
-                            {/* <Grid item xs={12} sm={2}>
-                                    <Box
-                                        height={"100%"}
-                                        display={"flex"}
-                                        justifyContent={{
-                                            xs: "center",
-                                            md: "start",
-                                        }}
-                                        alignItems={"center"}
-                                    >
-                                        <ButtonLg
-                                            label="Agregar Turno"
-                                            handleClick={() => {}}
-                                        />
-                                    </Box>
-                                </Grid> */}
                         </Grid>
                     )}
                     <Box

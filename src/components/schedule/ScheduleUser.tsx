@@ -32,27 +32,27 @@ import { useNotification } from "../../context/notification.context";
 import CustomTimeTableCell from "./CustomTimeTableCell";
 //import { WeekView } from "node_modules/@devexpress/dx-react-scheduler/dist/dx-react-scheduler";
 
+interface Props {
+    service: Service | null;
+    barber: Barber | null;
+    handleReset: () => void;
+}
 const appointmentsData: Appointment[] = [
     {
         id: 0,
-        startDate: "2023-06-20T09:45",
-        endDate: "2023-06-20T11:00",
+        startDate: "Tue Jun 28 2023 09:45:00 GMT-0300",
+        endDate: "Tue Jun 28 2023 11:00:00 GMT-0300",
         title: "Reserved",
     },
     {
         id: 1,
-        startDate: "2023-06-20T08:00",
-        endDate: "2023-06-20T09:00",
+        startDate: "Tue Jun 28 2023 08:00:00 GMT-0300",
+        endDate: "Tue Jun 28 2023 09:00:00 GMT-0300",
         title: "Reserved",
     },
 ];
 
-interface Props {
-    service: Service | null;
-    barber: Barber | null;
-}
-
-const ScheduleUser: React.FC<Props> = ({ service, barber }) => {
+const ScheduleUser: React.FC<Props> = ({ service, barber, handleReset }) => {
     const [currentDate, setCurrentDate] = useState<Date>(new Date());
     const [currentWeekStart, setCurrentWeekStart] = useState<dayjs.Dayjs>(dayjs().startOf("week"));
     const [appointments, setAppointments] = useState<Appointment[]>(appointmentsData);
@@ -74,9 +74,6 @@ const ScheduleUser: React.FC<Props> = ({ service, barber }) => {
             .toISOString()
     );
 
-    // useEffect(() => {
-    //     console.log(`se renderiza`);
-    // }, [currentDate]);
     /**
      * funcion encagada de cambiar el estado de shiftTomorrow.
      * @param e
@@ -104,6 +101,7 @@ const ScheduleUser: React.FC<Props> = ({ service, barber }) => {
             const startingAddedId =
                 appointments.length > 0 ? appointments[appointments.length - 1].id + 1 : 0;
             setAppointments([...appointments, { id: startingAddedId, ...added }]);
+            //handleReset();
         }
         if (changed) {
             setAppointments(
@@ -122,6 +120,7 @@ const ScheduleUser: React.FC<Props> = ({ service, barber }) => {
 
     const onAddedAppointmentChange = (appointment: Appointment) => {
         if (service !== null) {
+            console.log("estoy en onAdded");
             appointment.title = service.name;
 
             appointment.endDate = dayjs(appointment.startDate)
@@ -228,7 +227,14 @@ const ScheduleUser: React.FC<Props> = ({ service, barber }) => {
                     endDayHour={shiftTomorrow ? 12 : 20}
                     cellDuration={15}
                     excludedDays={[0, 6]}
-                    timeTableCellComponent={CustomTimeTableCell}
+                    timeTableCellComponent={(props: WeekView.TimeTableCellProps) => (
+                        <CustomTimeTableCell
+                            today={today}
+                            props={props}
+                            data={appointments}
+                            serviceDuration={service ? service.duration : 0}
+                        />
+                    )}
                 />
                 {/* <MonthView /> */}
                 <Toolbar
