@@ -8,24 +8,26 @@ interface CustomTimeTableCellProps {
     props: WeekView.TimeTableCellProps;
     data: Appointment[];
     serviceDuration: number;
+    closeHour: number;
 }
 const CustomTimeTableCell: React.FC<CustomTimeTableCellProps> = ({
     today,
     props,
     data,
     serviceDuration,
+    closeHour,
 }) => {
     const { showNotification } = useNotification();
     const { startDate, onDoubleClick } = props;
     const isInvalid = startDate < today;
     console.log("soy cada celda");
 
-    const verifyAvailableHours = (): boolean => {
+    //no se entiende por que las comparaciones funcionan con el operador && y no con el ||
+    const verifyAvailableHours = (startDate: Date, endDate: Date): boolean => {
         let invalid = false;
-        const end = new Date(dayjs(startDate).add(serviceDuration, "minute").toISOString());
         data.forEach((e) => {
             console.log(e);
-            if (startDate < new Date(e.endDate) && end > new Date(e.startDate)) {
+            if (startDate < new Date(e.endDate) && endDate > new Date(e.startDate)) {
                 invalid = true;
                 return;
             }
@@ -34,14 +36,14 @@ const CustomTimeTableCell: React.FC<CustomTimeTableCellProps> = ({
     };
 
     const checkAvailableHours = () => {
-        const end = new Date(dayjs(startDate).add(serviceDuration, "minute").toISOString());
-        console.log("datos de la celda");
+        const endDate = new Date(dayjs(startDate).add(serviceDuration, "minute").toISOString());
 
-        console.log(startDate);
-        console.log(end);
-        console.log(verifyAvailableHours());
-
-        if (verifyAvailableHours())
+        if (dayjs(endDate) > dayjs(startDate).hour(closeHour).minute(0).second(0)) {
+            showNotification(
+                `SU servicio elegido requiere de mayor tiempo, lo sentimos, nuestras instalaciones finalizan su jornada a las ${closeHour}hs`,
+                "warning"
+            );
+        } else if (verifyAvailableHours(startDate, endDate))
             showNotification(
                 "El tiempo de su servicio requiere de tiempo disponible mayor",
                 "warning"

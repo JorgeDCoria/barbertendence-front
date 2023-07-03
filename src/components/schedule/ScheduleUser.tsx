@@ -67,6 +67,8 @@ const ScheduleUser: React.FC<Props> = ({ service, barber, handleReset }) => {
 
     const theme: Theme = useTheme();
     const today: Date = new Date();
+    const closeMorningHour: number = 12;
+    const closeAfternoonHour: number = 20;
     const numWeeksToShow = 3;
     const maxDate: Date = new Date(
         dayjs(today)
@@ -224,11 +226,12 @@ const ScheduleUser: React.FC<Props> = ({ service, barber, handleReset }) => {
                 <IntegratedEditing />
                 <WeekView
                     startDayHour={shiftTomorrow ? 8 : 16}
-                    endDayHour={shiftTomorrow ? 12 : 20}
+                    endDayHour={shiftTomorrow ? closeMorningHour : closeAfternoonHour}
                     cellDuration={15}
                     excludedDays={[0, 6]}
                     timeTableCellComponent={(props: WeekView.TimeTableCellProps) => (
                         <CustomTimeTableCell
+                            closeHour={shiftTomorrow ? closeMorningHour : closeAfternoonHour}
                             today={today}
                             props={props}
                             data={appointments}
