@@ -1,5 +1,5 @@
 import { useState, PropsWithChildren, useEffect } from "react";
-import { Box, Paper, Theme, Button, useTheme } from "@mui/material";
+import { Box, Paper, Theme, Button, useTheme, Modal, Popper } from "@mui/material";
 //@ts-ignore
 import {
     EditingState,
@@ -30,6 +30,7 @@ import { Service } from "src/types/Service";
 import CustomAppointmentForm from "./CustomAppointmentForm";
 import { useNotification } from "../../context/notification.context";
 import CustomTimeTableCell from "./CustomTimeTableCell";
+import CustomAppointments from "./CustomAppointments";
 //import { WeekView } from "node_modules/@devexpress/dx-react-scheduler/dist/dx-react-scheduler";
 
 interface Props {
@@ -54,11 +55,11 @@ const appointmentsData: Appointment[] = [
 
 const ScheduleUser: React.FC<Props> = ({ service, barber, handleReset }) => {
     const [currentDate, setCurrentDate] = useState<Date>(new Date());
-    const [currentWeekStart, setCurrentWeekStart] = useState<dayjs.Dayjs>(dayjs().startOf("week"));
     const [appointments, setAppointments] = useState<Appointment[]>(appointmentsData);
 
     const [addedAppointment, setAddedAppointment] = useState<Appointment>({} as Appointment);
     const [isAppointmentBeingCreated, setIsAppointmentBeingCreated] = useState<boolean>(false);
+
     /**
      * variable shiftTomorrow definida para indicar si el scheduler muestre horarios
      * de 8 a 12 || 16 a 20.
@@ -99,6 +100,8 @@ const ScheduleUser: React.FC<Props> = ({ service, barber, handleReset }) => {
         changed?: { [key: string]: object };
         deleted?: number | string;
     }) => {
+        console.log("******* actuando handle commit change ********");
+
         if (added) {
             const startingAddedId =
                 appointments.length > 0 ? appointments[appointments.length - 1].id + 1 : 0;
@@ -252,13 +255,13 @@ const ScheduleUser: React.FC<Props> = ({ service, barber, handleReset }) => {
                 <DateNavigator />
                 <TodayButton />
                 <ConfirmationDialog messages={customDialogMessage} />
-                <Appointments />
-                <AppointmentTooltip
+                <Appointments appointmentComponent={CustomAppointments} />
+                {/* <AppointmentTooltip
                     headerComponent={CustomAppointmentTooltipHeader}
                     commandButtonComponent={CustomCommandButton}
                     showCloseButton
                     showDeleteButton
-                />
+                /> */}
                 <AppointmentForm
                     basicLayoutComponent={(props: AppointmentForm.BasicLayout) => (
                         <CustomAppointmentForm

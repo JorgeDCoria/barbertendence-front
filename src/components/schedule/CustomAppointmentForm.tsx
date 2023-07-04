@@ -20,6 +20,8 @@ const CustomAppointmentForm: React.FC<CustomAppointmentFormProps> = ({
     ...restProps
 }) => {
     const theme: Theme = useTheme();
+    console.log("************ abrindo form **************");
+
     return (
         <Box
             display={"flex"}
