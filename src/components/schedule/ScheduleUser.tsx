@@ -1,5 +1,5 @@
-import { useState, PropsWithChildren, useEffect } from "react";
-import { Box, Paper, Theme, Button, useTheme, Modal, Popper } from "@mui/material";
+import { useState, PropsWithChildren } from "react";
+import { Box, Paper, Theme, Button, useTheme } from "@mui/material";
 //@ts-ignore
 import {
     EditingState,
@@ -192,6 +192,8 @@ const ScheduleUser: React.FC<Props> = ({ service, barber, handleReset }) => {
         confirmDeleteMessage: "Estas seguro de que quieres eleiminar este Turno?",
         deleteButton: "Eliminar",
         cancelButton: "Cancelar",
+        confirmCancelMessage: "¿Esta seguro de descartar el horario y seleccionar otro?",
+        discardButton: "Descartar",
     };
 
     //************** Toolbar personalizado ************************* */
