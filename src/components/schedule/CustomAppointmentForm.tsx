@@ -33,7 +33,6 @@ const CustomAppointmentForm: React.FC<CustomAppointmentFormProps> = ({
             justifyContent={"space-around"}
             gap={1}
             alignItems={"center"}
-            border={"1px solid red"}
             {...restProps}
         >
             <Typography variant="h5" color={theme.palette.primary.main}>

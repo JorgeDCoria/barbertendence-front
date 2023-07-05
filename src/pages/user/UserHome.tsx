@@ -189,7 +189,7 @@ const UserHome: React.FC<{}> = ({}) => {
                     variant="h4"
                     textAlign={"center"}
                 >
-                    Turnos Pendientes
+                    Mis Turnos
                 </Typography>
                 <Grid container justifyContent={"center"}>
                     <Grid item xs={12} sm={9}>
@@ -252,18 +252,12 @@ const UserHome: React.FC<{}> = ({}) => {
                             alignItems: "center",
                         }}
                     >
-                        <Box
-                            display={"flex"}
-                            justifyContent={"end"}
-                            alignItems={"center"}
-                        ></Box>
+                        <Box display={"flex"} justifyContent={"end"} alignItems={"center"}></Box>
                         <Typography color={"white"} textAlign={"center"}>
-                            Lorem ipsum, dolor sit amet consectetur adipisicing
-                            elit. Consequatur ipsa facere distinctio iusto quod
-                            ducimus assumenda cupiditate beatae blanditiis
-                            voluptate, laudantium voluptatum itaque fuga
-                            reiciendis doloribus harum consequuntur dolore
-                            laborum.
+                            Lorem ipsum, dolor sit amet consectetur adipisicing elit. Consequatur
+                            ipsa facere distinctio iusto quod ducimus assumenda cupiditate beatae
+                            blanditiis voluptate, laudantium voluptatum itaque fuga reiciendis
+                            doloribus harum consequuntur dolore laborum.
                         </Typography>
                     </CardContent>
                 </Card>

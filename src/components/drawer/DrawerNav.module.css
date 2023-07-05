@@ -1,4 +1,4 @@
 .link {
-  text-decoration: "none" !important;
-  color:gray
+  text-decoration: none; /* Elimina el subrayado */
+  color: inherit; /* Utiliza el color heredado del padre */
 }

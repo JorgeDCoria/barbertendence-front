@@ -22,7 +22,7 @@ import ScheduleUser from "../../components/schedule/ScheduleUser";
 
 const NewOrder = () => {
     //const theme: Theme = useTheme();
-    const [activeStep, setActiveStep] = useState<number>(2);
+    const [activeStep, setActiveStep] = useState<number>(0);
     const [serviceSelected, setServiceSelected] = useState<Service | null>(null);
     const [barberSelected, setBarberSelected] = useState<Barber | null>(null);
     const theme: Theme = useTheme();

@@ -29,6 +29,8 @@ import { Service } from "src/types/Service";
 import CustomAppointmentForm from "./CustomAppointmentForm";
 import CustomTimeTableCell from "./CustomTimeTableCell";
 import CustomAppointments from "./CustomAppointments";
+import { useNotification } from "../../context/notification.context";
+import { useNavigate } from "react-router-dom";
 //import { WeekView } from "node_modules/@devexpress/dx-react-scheduler/dist/dx-react-scheduler";
 
 interface Props {
@@ -58,12 +60,6 @@ const ScheduleUser: React.FC<Props> = ({ service, barber, handleReset }) => {
     const [addedAppointment, setAddedAppointment] = useState<Appointment>({} as Appointment);
     const [isAppointmentBeingCreated, setIsAppointmentBeingCreated] = useState<boolean>(false);
 
-    /**
-     * variable shiftTomorrow definida para indicar si el scheduler muestre horarios
-     * de 8 a 12 || 16 a 20.
-     */
-    const [shiftTomorrow, setShifTomorrow] = useState<boolean>(true);
-
     const theme: Theme = useTheme();
     const today: Date = new Date();
     const closeMorningHour: number = 12;
@@ -74,7 +70,13 @@ const ScheduleUser: React.FC<Props> = ({ service, barber, handleReset }) => {
             .add(numWeeksToShow - 1, "week")
             .toISOString()
     );
-
+    /**
+     * variable shiftTomorrow definida para indicar si el scheduler muestre horarios
+     * de 8 a 12 || 16 a 20.
+     */
+    const [shiftTomorrow, setShifTomorrow] = useState<boolean>(today.getHours() < closeMorningHour);
+    const { showNotification } = useNotification();
+    const navigate = useNavigate();
     /**
      * funcion encagada de cambiar el estado de shiftTomorrow.
      * @param e
@@ -104,7 +106,8 @@ const ScheduleUser: React.FC<Props> = ({ service, barber, handleReset }) => {
             const startingAddedId =
                 appointments.length > 0 ? appointments[appointments.length - 1].id + 1 : 0;
             setAppointments([...appointments, { id: startingAddedId, ...added }]);
-            //handleReset();
+            showNotification("Turno Agendado", "success");
+            navigate("/user");
         }
         if (changed) {
             setAppointments(
