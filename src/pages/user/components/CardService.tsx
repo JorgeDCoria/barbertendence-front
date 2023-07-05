@@ -7,6 +7,7 @@ import {
     useTheme,
     Box,
     Typography,
+    useMediaQuery,
 } from "@mui/material";
 import image from "../../../assets/service.jpg";
 
@@ -23,10 +24,9 @@ const CardService: React.FC<Props> = ({
     handleSelectedService,
 }) => {
     const theme: Theme = useTheme();
-    const handleClick = (
-        e: React.MouseEvent<HTMLDivElement, MouseEvent>,
-        service: Service
-    ) => {
+    const isXs = useMediaQuery(theme.breakpoints.only("xs"));
+    const isSm = useMediaQuery(theme.breakpoints.only("sm"));
+    const handleClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>, service: Service) => {
         e.stopPropagation();
         handleSelectedService && handleSelectedService(service);
     };
@@ -37,8 +37,8 @@ const CardService: React.FC<Props> = ({
                 <Card
                     onClick={(e) => handleClick(e, service)}
                     sx={{
-                        width: { xs: "300px", sm: "350px" },
-                        height: { xs: "250px", sm: "250px" },
+                        width: { xs: "250px", sm: "275px", md: "350px" },
+                        height: { xs: "225px", sm: "225px", md: "250px" },
                         color: "white",
                         boxShadow: `${
                             selected
@@ -76,9 +76,7 @@ const CardService: React.FC<Props> = ({
                             justifyContent={"center"}
                             sx={{
                                 background: `${
-                                    selected
-                                        ? "rgba(61,16,61,0.9)"
-                                        : "rgba(0,0,6,0.7)"
+                                    selected ? "rgba(61,16,61,0.9)" : "rgba(0,0,6,0.7)"
                                 }`,
                                 "&:hover": { background: "rgba(61,16,61,0.8)" },
                             }}
@@ -92,27 +90,30 @@ const CardService: React.FC<Props> = ({
                                     height: "100%",
                                 }}
                             >
-                                <Typography textAlign={"center"} variant="h4">
+                                <Typography
+                                    textAlign={"center"}
+                                    variant={isXs || isSm ? "h6" : "h4"}
+                                >
                                     ${service.price}
                                 </Typography>
 
                                 <Typography
                                     color={theme.palette.secondary.main}
                                     textTransform={"capitalize"}
-                                    variant="h4"
+                                    variant={isXs || isSm ? "h6" : "h4"}
                                     fontWeight={600}
                                     textAlign={"center"}
                                 >
                                     {service.name}
                                 </Typography>
-                                <Typography
-                                    textAlign={"center"}
-                                    fontSize={"12px"}
-                                >
+                                <Typography textAlign={"center"} fontSize={"12px"}>
                                     {service.description}
                                 </Typography>
-                                <Typography textAlign={"center"} variant="h5">
-                                    {service.duration}
+                                <Typography
+                                    textAlign={"center"}
+                                    variant={isXs || isSm ? "h6" : "h5"}
+                                >
+                                    {service.duration}min
                                 </Typography>
                             </CardContent>
                         </Box>
@@ -179,10 +180,7 @@ const CardService: React.FC<Props> = ({
                                 >
                                     {service.name}
                                 </Typography>
-                                <Typography
-                                    textAlign={"center"}
-                                    fontSize={"12px"}
-                                >
+                                <Typography textAlign={"center"} fontSize={"12px"}>
                                     {service.description}
                                 </Typography>
                                 <Typography textAlign={"center"} variant="h6">

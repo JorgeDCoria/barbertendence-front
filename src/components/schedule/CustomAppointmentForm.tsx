@@ -1,3 +1,4 @@
+//@ts-ignore
 import { AppointmentForm } from "@devexpress/dx-react-scheduler-material-ui";
 import { Box, Typography, useTheme, Theme } from "@mui/material";
 import DateUtility from "../../utilities/DateUtility";
@@ -25,20 +26,26 @@ const CustomAppointmentForm: React.FC<CustomAppointmentFormProps> = ({
     return (
         <Box
             display={"flex"}
-            p={{ md: 2 }}
+            p={{ xs: 1, md: 2 }}
             flexDirection={"column"}
             width={"100%"}
-            height={"100%"}
+            minHeight={"350px"}
             justifyContent={"space-around"}
             gap={1}
             alignItems={"center"}
+            border={"1px solid red"}
             {...restProps}
         >
             <Typography variant="h5" color={theme.palette.primary.main}>
                 Datos del Turno
             </Typography>
 
-            <Box display={"flex"} gap={2} alignItems={"center"}>
+            <Box
+                display={"flex"}
+                gap={{ xs: 0, sm: 2 }}
+                alignItems={"center"}
+                flexDirection={{ xs: "column", sm: "row" }}
+            >
                 {" "}
                 <Typography variant="h6">Fecha y Hora</Typography>
                 <Typography variant="h6" color={theme.palette.primary.main}>

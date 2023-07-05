@@ -1,3 +1,4 @@
+//@ts-ignore
 import { WeekView } from "@devexpress/dx-react-scheduler-material-ui";
 import { useNotification } from "../../context/notification.context";
 import { Appointment } from "src/types/Appointment";
@@ -56,6 +57,16 @@ const CustomTimeTableCell: React.FC<CustomTimeTableCellProps> = ({
             sx={{}}
             isShaded={isInvalid}
             onDoubleClick={
+                isInvalid
+                    ? () => {
+                          showNotification(
+                              "No es posible otorgar turnos en horarios y fechas ya transcurridas",
+                              "warning"
+                          );
+                      }
+                    : checkAvailableHours
+            }
+            onTouchStart={
                 isInvalid
                     ? () => {
                           showNotification(

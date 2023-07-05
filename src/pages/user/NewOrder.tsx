@@ -1,5 +1,17 @@
 import { useState } from "react";
-import { Box, Stack, Typography, Grid, Stepper, Step, StepLabel, Button } from "@mui/material";
+import {
+    Box,
+    Stack,
+    Typography,
+    Grid,
+    Stepper,
+    Step,
+    StepLabel,
+    Button,
+    useMediaQuery,
+    Theme,
+    useTheme,
+} from "@mui/material";
 import { Service } from "src/types/Service";
 import CardService from "./components/CardService";
 import CaruselCard from "./components/CaruselCard";
@@ -13,6 +25,8 @@ const NewOrder = () => {
     const [activeStep, setActiveStep] = useState<number>(2);
     const [serviceSelected, setServiceSelected] = useState<Service | null>(null);
     const [barberSelected, setBarberSelected] = useState<Barber | null>(null);
+    const theme: Theme = useTheme();
+    const isXs = useMediaQuery(theme.breakpoints.only("xs"));
     type Step = {
         title: string;
         subTitle: string;
@@ -179,7 +193,9 @@ const NewOrder = () => {
                         {steps[activeStep].title}
                     </Typography>
                     <Typography textAlign={"center"} maxWidth={{ xs: "95%", md: "70%" }}>
-                        {steps[activeStep].note}
+                        {isXs
+                            ? steps[activeStep].note.substring(0, 100) + "..."
+                            : steps[activeStep].note}
                     </Typography>
                 </>
             )}

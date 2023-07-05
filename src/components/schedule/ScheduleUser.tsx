@@ -1,12 +1,4 @@
 import { useState, PropsWithChildren } from "react";
-import { Box, Paper, Theme, Button, useTheme } from "@mui/material";
-//@ts-ignore
-import {
-    EditingState,
-    ViewState,
-    IntegratedEditing,
-    AppointmentModel,
-} from "@devexpress/dx-react-scheduler";
 //@ts-ignore
 import {
     AppointmentForm,
@@ -19,16 +11,22 @@ import {
     AppointmentTooltip,
     ConfirmationDialog,
 } from "@devexpress/dx-react-scheduler-material-ui";
+//@ts-ignore
+import {
+    EditingState,
+    ViewState,
+    IntegratedEditing,
+    AppointmentModel,
+} from "@devexpress/dx-react-scheduler";
 
+import { Box, Paper, Theme, Button, useTheme } from "@mui/material";
 import * as dayjs from "dayjs";
 
 import header from "../../assets/serviceImage.jpg";
 import { Appointment } from "src/types/Appointment";
-import DateUtility from "../../utilities/DateUtility";
 import { Barber } from "src/types/Barber";
 import { Service } from "src/types/Service";
 import CustomAppointmentForm from "./CustomAppointmentForm";
-import { useNotification } from "../../context/notification.context";
 import CustomTimeTableCell from "./CustomTimeTableCell";
 import CustomAppointments from "./CustomAppointments";
 //import { WeekView } from "node_modules/@devexpress/dx-react-scheduler/dist/dx-react-scheduler";

@@ -16,7 +16,7 @@ const Notification: React.FC<NotificationProps> = ({ open, handleClose, message,
             onClose={handleClose}
         >
             <Alert onClose={handleClose} severity={severity} variant={"filled"}>
-                <Typography width={"70ch"}>{message}</Typography>
+                <Typography maxWidth={"70ch"}>{message}</Typography>
             </Alert>
         </Snackbar>
     );
