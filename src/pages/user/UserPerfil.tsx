@@ -1,99 +1,136 @@
 import {
-    Avatar,
     Box,
-    Button,
-    FormControl,
+    Card,
+    CardMedia,
     Grid,
-    Stack,
-    TextField,
     Theme,
-    Typography,
     useTheme,
+    Modal,
+    Typography,
+    Stack,
+    Button,
 } from "@mui/material";
-import React from "react";
-import logo from "../../assets/perfil.jpg";
-import AddAPhotoIcon from "@mui/icons-material/AddAPhoto";
+import { useState } from "react";
+import file from "../../assets/file.jpg";
+import logo from "../../assets/logo.png";
+import UserInformationProfile from "./components/UserInformationProfile";
+import UserFormProfile from "./components/UserFormProfile";
+import InputPassword from "../login/components/InputPassword";
 
 const UserPerfil = () => {
+    const [editUser, setEditUser] = useState<boolean>(true);
+    const [showChangePassword, setShowChangePassword] = useState<boolean>(false);
     const theme: Theme = useTheme();
+
+    const handleEditUser = (): void => {
+        setEditUser((prevEditUser) => !prevEditUser);
+    };
+
+    const handleShowChangePassword = (): void => {
+        setShowChangePassword((prevShowChange) => !prevShowChange);
+    };
     return (
         <Box sx={{ width: "100%" }} display={"flex"}>
-            <Grid container justifyContent={"center"} alignItems={"center"} gap={{ xs: 1, sm: 2 }}>
-                <Grid item xs={12} sm={4}>
-                    <Stack justifyContent={"center"} alignItems={"center"}>
-                        <Box
-                            width={{ xs: "150px", sm: "250px" }}
-                            minHeight={"150px"}
-                            position={"relative"}
+            <Grid container justifyContent={"center"} alignItems={"center"} gap={{ xs: 0, sm: 2 }}>
+                <Grid item xs={12}>
+                    <Box
+                        width={"100%"}
+                        display={"flex"}
+                        justifyContent={"center"}
+                        alignItems={"center"}
+                    >
+                        <Card
+                            sx={{
+                                width: { xs: "50%", sm: "40%", md: "20%" },
+                                minHeight: "200px",
+
+                                boxShadow: "none",
+                            }}
                         >
-                            <Avatar
-                                alt="Remy Sharp"
-                                src={logo}
+                            <CardMedia
+                                component={"img"}
                                 sx={{
-                                    width: { xs: "150px", sm: "250px" },
-                                    height: { xs: "150px", sm: "250px" },
+                                    width: "100%",
+                                    height: "100%",
                                 }}
+                                image={logo}
+                                alt="image logo"
                             />
-                            <Box
-                                position={"absolute"}
-                                bottom={{ xs: 0, sm: 5 }}
-                                right={{ xs: 0, sm: 5 }}
-                                sx={{
-                                    cursor: "pointer",
-                                }}
-                            >
-                                <AddAPhotoIcon
-                                    sx={{
-                                        color: theme.palette.primary.main,
-                                        fontSize: "36px",
-                                    }}
-                                />
-                            </Box>
-                        </Box>
-                        <Typography
-                            variant="h5"
-                            textAlign={"center"}
-                            color={theme.palette.primary.main}
-                        >
-                            Nombre de Usuario
-                        </Typography>
-                    </Stack>
+                        </Card>
+                    </Box>
                 </Grid>
-                <Grid item xs={12} sm={5}>
-                    {" "}
-                    <Stack width={"100%"} gap={2} p={2}>
-                        <Typography variant="h5">Mis Datos</Typography>
-                        <Typography>
-                            <span
-                                style={{
-                                    color: theme.palette.primary.main,
-                                    fontSize: "20px",
-                                    fontWeight: "500",
-                                }}
-                            >
-                                Telefono:{" "}
-                            </span>
-                            3884611503
-                        </Typography>
-                        <Typography>
-                            <span
-                                style={{
-                                    color: theme.palette.primary.main,
-                                    fontSize: "20px",
-                                    fontWeight: "500",
-                                }}
-                            >
-                                Email:{" "}
-                            </span>
-                            usuario@gmail.com
-                        </Typography>
-                        <Stack direction={{ md: "row" }} gap={{ xs: 2 }}>
-                            <Button variant="outlined">Editar Datos</Button>
-                            <Button variant="outlined">Cambiar Contraseña </Button>
-                        </Stack>
-                    </Stack>
+                <Grid item xs={12} container justifyContent={"center"}>
+                    <Grid item xs={5} display={{ xs: "none", sm: "block" }}>
+                        <Box
+                            width={"80%"}
+                            minHeight={"400px"}
+                            borderRadius={8}
+                            position={"relative"}
+                            sx={{
+                                background: `url(${file})`,
+                                backgroundPosition: "center",
+                                backgroundSize: "cover",
+                                backgroundRepeat: "no-repeat",
+                            }}
+                        ></Box>
+                    </Grid>
+                    <Grid item xs={12} sm={6} md={5}>
+                        {!editUser ? (
+                            <UserInformationProfile
+                                handleClickEdit={handleEditUser}
+                                handleClickChangePassword={handleShowChangePassword}
+                            />
+                        ) : (
+                            <UserFormProfile handleClickCancel={handleEditUser} />
+                        )}
+                    </Grid>
                 </Grid>
             </Grid>
+            {showChangePassword && (
+                <Modal
+                    open={showChangePassword}
+                    onClose={handleShowChangePassword}
+                    sx={{
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                    }}
+                >
+                    <Box
+                        sx={{
+                            width: "600px",
+                            minHeight: "350px",
+                            background: "white",
+                            borderRadius: "16px",
+                            p: 2,
+                            display: "flex",
+                            flexDirection: "column",
+                            justifyContent: "space-around",
+                        }}
+                    >
+                        <Typography
+                            textAlign={"center"}
+                            variant="h5"
+                            color={theme.palette.primary.main}
+                        >
+                            Cambio de Clave
+                        </Typography>
+                        <InputPassword label="Clave Actual" />
+                        <InputPassword label="Nueva Clave" />
+                        <InputPassword label="Confirmar Clave" />
+                        <Stack
+                            direction={{ xs: "column", md: "row" }}
+                            gap={2}
+                            justifyContent={"center"}
+                        >
+                            <Button variant="outlined" onClick={handleShowChangePassword}>
+                                Cancelar
+                            </Button>
+                            <Button variant="outlined">Guardar Cambios</Button>
+                        </Stack>
+                    </Box>
+                </Modal>
+            )}
         </Box>
     );
 };

@@ -6,8 +6,8 @@ import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
 interface Props {
     label: string;
     name: string;
-    sizeTextField: SizeSMValue;
-    sizeIcon: SizeSMLValue;
+    sizeTextField?: SizeSMValue;
+    sizeIcon?: SizeSMLValue;
     value: string;
     handleChange: Function;
     error: boolean;
@@ -17,8 +17,8 @@ interface Props {
 const InputPassword: React.FC<Props> = ({
     label,
     name,
-    sizeTextField,
-    sizeIcon,
+    sizeTextField = "medium",
+    sizeIcon = "large",
     value,
     handleChange,
     error,
