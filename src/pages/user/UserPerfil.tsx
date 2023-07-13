@@ -18,7 +18,7 @@ import UserFormProfile from "./components/UserFormProfile";
 import InputPassword from "../login/components/InputPassword";
 
 const UserPerfil = () => {
-    const [editUser, setEditUser] = useState<boolean>(true);
+    const [editUser, setEditUser] = useState<boolean>(false);
     const [showChangePassword, setShowChangePassword] = useState<boolean>(false);
     const theme: Theme = useTheme();
 

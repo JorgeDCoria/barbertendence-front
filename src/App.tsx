@@ -8,6 +8,7 @@ import UserLayout from "./components/Layout/UserLayout";
 import UserHome from "./pages/user/UserHome";
 import NewOrder from "./pages/user/NewOrder";
 import UserPerfil from "./pages/user/UserPerfil";
+import AdminHome from "./pages/admin/AdminHome";
 
 const App = () => {
     return (
@@ -23,6 +24,7 @@ const App = () => {
                     <Route path="newOrder" element={<NewOrder />} />
                     <Route path="perfil" element={<UserPerfil />} />
                 </Route>
+                <Route path="/admin" element={<AdminHome />} />
             </Routes>
         </>
     );
