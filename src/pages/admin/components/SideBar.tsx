@@ -1,3 +1,4 @@
+import { useState } from "react";
 import {
     Box,
     Theme,
@@ -10,12 +11,26 @@ import {
     InputLabel,
     Drawer,
     IconButton,
+    Accordion,
+    AccordionSummary,
+    AccordionDetails,
+    Typography,
+    Button,
+    List,
+    ListItem,
+    ListItemButton,
+    ListItemIcon,
+    ListItemText,
+    Divider,
 } from "@mui/material";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
-import logo from "../../../assets/logov1.png";
+import logo from "../../../assets/logoTitle.png";
+import { DateCalendar, DatePicker, StaticDatePicker } from "@mui/x-date-pickers";
 
+const listMenuTurnos: string[] = ["Pendientes", "Vencidas", "Otros"];
 interface Props {
     showSideBar: boolean | undefined;
     handleShowSideBar: () => void;
@@ -25,6 +40,11 @@ const SideBar: React.FC<Props> = ({ showSideBar, handleShowSideBar, isUpMd }) =>
     const theme: Theme = useTheme();
     const drawerWidth = 350;
     const draweHeaderHeight = 48;
+    const [expanded, setExpanded] = useState<string | false>(false);
+    const handleChangeAccordion =
+        (panel: string) => (event: React.SyntheticEvent, isExpanded: boolean) => {
+            setExpanded(isExpanded ? panel : false);
+        };
     return (
         <Drawer
             open={showSideBar}
@@ -41,6 +61,7 @@ const SideBar: React.FC<Props> = ({ showSideBar, handleShowSideBar, isUpMd }) =>
                     background: theme.palette.customDark,
                     width: drawerWidth,
                     height: "100%",
+                    overflowY: "auto",
                 }}
             >
                 <Box
@@ -53,6 +74,23 @@ const SideBar: React.FC<Props> = ({ showSideBar, handleShowSideBar, isUpMd }) =>
                         background: theme.palette.customDark,
                     }}
                 >
+                    <Card
+                        sx={{
+                            flex: 1,
+                            height: "100%",
+                            p: "8px",
+                            background: "none",
+                            boxShadow: "none",
+                        }}
+                    >
+                        <CardMedia
+                            sx={{
+                                width: "50%",
+                                height: "100%",
+                            }}
+                            image={logo}
+                        />
+                    </Card>
                     <IconButton
                         onClick={handleShowSideBar}
                         sx={{
@@ -70,69 +108,104 @@ const SideBar: React.FC<Props> = ({ showSideBar, handleShowSideBar, isUpMd }) =>
                     flexDirection={"column"}
                     justifyContent={"space-around"}
                     alignItems={"center"}
-                    border={"2px solid red"}
-                    sx={{ height: `calc(100% - ${draweHeaderHeight}px)` }}
+                    gap={2}
+                    px={2}
+                    sx={{
+                        minHeight: `calc(100% - ${draweHeaderHeight}px)`,
+                    }}
                 >
-                    <Card
-                        sx={{
-                            width: "200px",
-                            height: "200px",
-                            background: "none",
-                            boxShadow: "none",
-                        }}
-                    >
-                        <CardMedia
+                    <Box width={"100%"}>
+                        <Accordion
+                            expanded={expanded === "panel1"}
+                            onChange={handleChangeAccordion("panel1")}
                             sx={{
+                                background: "none",
+                                color: "white",
+                                boxShadow: "none",
+                                border: "1px solid gray",
                                 width: "100%",
-                                height: "100%",
                             }}
-                            image={logo}
+                        >
+                            <AccordionSummary
+                                expandIcon={
+                                    <ExpandMoreIcon
+                                        sx={{
+                                            color: "white",
+                                        }}
+                                    />
+                                }
+                                aria-controls="panel1a-content"
+                                id="panel1a-header"
+                            >
+                                <Typography>Turnos </Typography>
+                            </AccordionSummary>
+                            <AccordionDetails>
+                                <List>
+                                    {listMenuTurnos.map((item) => (
+                                        <ListItem key={item}>
+                                            <Divider sx={{ background: "white" }} />
+                                            <ListItemButton>
+                                                <ListItemText primary={item} />
+                                            </ListItemButton>
+                                        </ListItem>
+                                    ))}
+                                </List>
+                            </AccordionDetails>
+                        </Accordion>
+                    </Box>
+                    <Box width={"100%"}>
+                        <Accordion
+                            expanded={expanded === "panel2"}
+                            onChange={handleChangeAccordion("panel2")}
+                            sx={{
+                                background: "none",
+                                color: "white",
+                                boxShadow: "none",
+                                border: "1px solid gray",
+                                width: "100%",
+                            }}
+                        >
+                            <AccordionSummary
+                                expandIcon={
+                                    <ExpandMoreIcon
+                                        sx={{
+                                            color: "white",
+                                        }}
+                                    />
+                                }
+                                aria-controls="panel1a-content"
+                                id="panel1a-header"
+                            >
+                                <Typography>Barberos </Typography>
+                            </AccordionSummary>
+                            <AccordionDetails>
+                                <List>
+                                    {listMenuTurnos.map((item) => (
+                                        <ListItem key={item}>
+                                            <ListItemButton>
+                                                <ListItemText primary={item} />
+                                            </ListItemButton>{" "}
+                                            <Divider sx={{ background: "white" }} />
+                                        </ListItem>
+                                    ))}
+                                </List>
+                            </AccordionDetails>
+                        </Accordion>
+                    </Box>
+                    <Box display={"flex"} flexDirection={"column"} gap={1}>
+                        <Box>
+                            <Button variant="contained">Hoy</Button>
+                        </Box>
+
+                        <DateCalendar
+                            sx={{
+                                background: "white",
+                                borderRadius: "16px",
+                            }}
                         />
-                    </Card>
-                    <FormControl fullWidth>
-                        <InputLabel
-                            id="type-appointment"
-                            sx={{
-                                color: "white",
-                            }}
-                        >
-                            {" "}
-                            Turnos Pendientes
-                        </InputLabel>
-                        <Select
-                            labelId="type-appointment"
-                            value={""}
-                            sx={{
-                                border: "1px solid white",
-                            }}
-                        >
-                            <MenuItem value={10}>Ten</MenuItem>
-                            <MenuItem value={20}>Twenty</MenuItem>
-                            <MenuItem value={30}>Thirty</MenuItem>
-                        </Select>
-                    </FormControl>
-                    <FormControl fullWidth>
-                        <InputLabel
-                            id="barber"
-                            sx={{
-                                color: "white",
-                            }}
-                        >
-                            {" "}
-                            all
-                        </InputLabel>
-                        <Select
-                            labelId="barber"
-                            value={""}
-                            sx={{
-                                border: "1px solid white",
-                            }}
-                        >
-                            <MenuItem value={10}>Ten</MenuItem>
-                            <MenuItem value={20}>Twenty</MenuItem>
-                            <MenuItem value={30}>Thirty</MenuItem>
-                        </Select>
-                    </FormControl>
+                    </Box>
+
+                    <Button variant="contained">Clientes</Button>
                 </Box>
             </Box>
         </Drawer>
