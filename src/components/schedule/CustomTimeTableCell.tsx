@@ -21,7 +21,6 @@ const CustomTimeTableCell: React.FC<CustomTimeTableCellProps> = ({
     const { showNotification } = useNotification();
     const { startDate, onDoubleClick } = props;
     const isInvalid = startDate < today;
-    console.log("soy cada celda");
 
     //no se entiende por que las comparaciones funcionan con el operador && y no con el ||
     const verifyAvailableHours = (startDate: Date, endDate: Date): boolean => {

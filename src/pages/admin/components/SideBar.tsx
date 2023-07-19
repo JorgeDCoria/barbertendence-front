@@ -29,22 +29,37 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
 import logo from "../../../assets/logoTitle.png";
 import { DateCalendar, DatePicker, StaticDatePicker } from "@mui/x-date-pickers";
+import dayjs, { Dayjs } from "dayjs";
 
 const listMenuTurnos: string[] = ["Pendientes", "Vencidas", "Otros"];
 interface Props {
     showSideBar: boolean | undefined;
     handleShowSideBar: () => void;
     isUpMd: boolean;
+    currentDate: Date;
+    handleChangeDate: (date: Date) => void;
 }
-const SideBar: React.FC<Props> = ({ showSideBar, handleShowSideBar, isUpMd }) => {
+const SideBar: React.FC<Props> = ({
+    showSideBar,
+    handleShowSideBar,
+    isUpMd,
+    currentDate,
+    handleChangeDate,
+}) => {
     const theme: Theme = useTheme();
     const drawerWidth = 350;
     const draweHeaderHeight = 48;
     const [expanded, setExpanded] = useState<string | false>(false);
+    const dayCalendar = dayjs(currentDate);
     const handleChangeAccordion =
         (panel: string) => (event: React.SyntheticEvent, isExpanded: boolean) => {
             setExpanded(isExpanded ? panel : false);
         };
+
+    const handleChangeDateCalendar = (date: Dayjs) => {
+        const aux = new Date(date.toString());
+        handleChangeDate(aux);
+    };
     return (
         <Drawer
             open={showSideBar}
@@ -198,6 +213,8 @@ const SideBar: React.FC<Props> = ({ showSideBar, handleShowSideBar, isUpMd }) =>
                         </Box>
 
                         <DateCalendar
+                            value={dayCalendar}
+                            onChange={(newValue) => handleChangeDateCalendar(newValue)}
                             sx={{
                                 background: "white",
                                 borderRadius: "16px",
