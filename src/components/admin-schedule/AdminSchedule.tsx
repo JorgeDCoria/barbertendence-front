@@ -10,6 +10,9 @@ import {
     Toolbar,
     AppointmentTooltip,
     ConfirmationDialog,
+    DayView,
+    Resources,
+    GroupingPanel,
 } from "@devexpress/dx-react-scheduler-material-ui";
 //@ts-ignore
 import {
@@ -17,6 +20,8 @@ import {
     ViewState,
     IntegratedEditing,
     AppointmentModel,
+    IntegratedGrouping,
+    GroupingState,
 } from "@devexpress/dx-react-scheduler";
 
 import { Box, Paper, Theme, Button, useTheme } from "@mui/material";
@@ -32,17 +37,37 @@ import CustomAppointments from "../schedule/CustomAppointments";
 import { useNotification } from "../../context/notification.context";
 import { useNavigate } from "react-router-dom";
 import { data } from "../../data";
+interface BarberData {
+    text: string;
+    id: number;
+}
 
+const barberData: BarberData[] = [
+    { id: 1, text: "Alan" },
+    { id: 2, text: "Juan" },
+    { id: 3, text: "Jorge" },
+];
+
+interface Resource {
+    fieldName: string;
+    title: string;
+    instances: BarberData[];
+}
 interface AdminScheduleProps {
     currentDate: Date;
     handleChangeDate: (date: Date) => void;
 }
 const AdminSchedule: React.FC<AdminScheduleProps> = ({ currentDate, handleChangeDate }) => {
     const appointmentsData = data;
+
     const [appointments, setAppointments] = useState<Appointment[]>(appointmentsData);
     // const [currentDate, setCurrentDate] = useState<Date>(new Date());
     const [addedAppointment, setAddedAppointment] = useState<Appointment>({} as Appointment);
-
+    const resources: Resource[] = [
+        { fieldName: "barberId", title: "Barber", instances: barberData },
+    ];
+    const grouping = [{ resourceName: "barberId" }];
+    console.log(grouping);
     const theme: Theme = useTheme();
     const today: Date = new Date();
     const closeMorningHour: number = 12;
@@ -70,18 +95,18 @@ const AdminSchedule: React.FC<AdminScheduleProps> = ({ currentDate, handleChange
         setShifTomorrow(!shiftTomorrow);
     };
 
-    const currentDateChange = (currentDate: Date) => {
-        console.log("************" + currentDate + "*******************");
-        // const auxToday = new Date(new Date(today).setHours(0, 0, 0, 0));
-        // if (currentDate >= auxToday && currentDate < maxDate)
-        //setCurrentDate(currentDate);
-    };
+    // const currentDateChange = (currentDate: Date) => {
+    //     console.log("************" + currentDate + "*******************");
+    //     // const auxToday = new Date(new Date(today).setHours(0, 0, 0, 0));
+    //     // if (currentDate >= auxToday && currentDate < maxDate)
+    //     //setCurrentDate(currentDate);
+    // };
 
-    const handleCurrentDateChange = (currentDate: Date) => {
-        console.log("************" + currentDate + "*******************");
-        const date = dayjs(currentDate);
-        handleChangeDate(date);
-    };
+    // const handleCurrentDateChange = (currentDate: Date) => {
+    //     console.log("************" + currentDate + "*******************");
+    //     const date = dayjs(currentDate);
+    //     handleChangeDate(date);
+    // };
 
     const handleCommitChange = ({
         added,
@@ -219,8 +244,7 @@ const AdminSchedule: React.FC<AdminScheduleProps> = ({ currentDate, handleChange
                     addedAppointment={addedAppointment}
                     onAddedAppointmentChange={onAddedAppointmentChange}
                 />
-                {/* <DayView /> */}
-                <IntegratedEditing />
+                <GroupingState grouping={grouping} />
                 <WeekView
                     startDayHour={shiftTomorrow ? 8 : 16}
                     endDayHour={shiftTomorrow ? closeMorningHour : closeAfternoonHour}
@@ -236,6 +260,27 @@ const AdminSchedule: React.FC<AdminScheduleProps> = ({ currentDate, handleChange
                         />
                     )}
                 />
+                <Appointments appointmentComponent={CustomAppointments} />
+                <Resources data={resources} />
+                {/* <DayView /> */}
+                <IntegratedGrouping />
+                <IntegratedEditing />
+                {/* <GroupingState grouping={grouping} /> */}
+                {/* <DayView
+                    intervalCount={3}
+                    startDayHour={shiftTomorrow ? 8 : 16}
+                    endDayHour={shiftTomorrow ? closeMorningHour : closeAfternoonHour}
+                    cellDuration={15}
+                    timeTableCellComponent={(props: WeekView.TimeTableCellProps) => (
+                        <CustomTimeTableCell
+                            closeHour={shiftTomorrow ? closeMorningHour : closeAfternoonHour}
+                            today={today}
+                            props={props}
+                            data={appointments}
+                            serviceDuration={0}
+                        />
+                    )}
+                /> */}
                 {/* <MonthView /> */}
                 <Toolbar
                     rootComponent={(toolbarProps: any) => (
@@ -249,7 +294,6 @@ const AdminSchedule: React.FC<AdminScheduleProps> = ({ currentDate, handleChange
                 <DateNavigator />
                 <TodayButton />
                 <ConfirmationDialog messages={customDialogMessage} />
-                <Appointments appointmentComponent={CustomAppointments} />
                 {/* <AppointmentTooltip
             headerComponent={CustomAppointmentTooltipHeader}
             commandButtonComponent={CustomCommandButton}
@@ -266,6 +310,7 @@ const AdminSchedule: React.FC<AdminScheduleProps> = ({ currentDate, handleChange
                 //     />
                 // )}
                 />
+                <GroupingPanel />
             </Scheduler>
         </Paper>
     );

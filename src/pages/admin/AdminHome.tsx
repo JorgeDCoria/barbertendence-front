@@ -68,8 +68,8 @@ const AdminHome: React.FC = () => {
             <Box
                 id="admin-section"
                 sx={{
-                    border: "1px solid red",
                     minHeight: "80vh",
+                    paddingX: 4,
                     ml: isUpMd && showSideBar ? `${drawerWidth}px` : 0,
                 }}
             >
