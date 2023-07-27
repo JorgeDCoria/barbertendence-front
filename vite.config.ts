@@ -6,10 +6,7 @@ export default defineConfig({
   plugins: [react()],
   resolve: {
     alias: {
-      // '@mui': '@material-ui',
-      // '@mui/icons-material': '@material-ui/icons-material'
-    
-      '@/utilities': './src/utilities',
+      '@/utilities': '/src/utilities',
     },
     extensions: ['.js', '.jsx', '.ts', '.tsx'],
   },

@@ -1,20 +1,5 @@
 import { useState, PropsWithChildren, useEffect } from "react";
-//@ts-ignore
-import {
-    AppointmentForm,
-    Scheduler,
-    Appointments,
-    WeekView,
-    TodayButton,
-    DateNavigator,
-    Toolbar,
-    AppointmentTooltip,
-    ConfirmationDialog,
-    DayView,
-    Resources,
-    GroupingPanel,
-} from "@devexpress/dx-react-scheduler-material-ui";
-//@ts-ignore
+
 import {
     EditingState,
     ViewState,
@@ -23,29 +8,44 @@ import {
     IntegratedGrouping,
     GroupingState,
 } from "@devexpress/dx-react-scheduler";
-
-import { Box, Paper, Theme, Button, useTheme } from "@mui/material";
+import {
+    AppointmentForm,
+    Scheduler,
+    Appointments,
+    TodayButton,
+    DateNavigator,
+    Toolbar,
+    AppointmentTooltip,
+    ConfirmationDialog,
+    DayView,
+    WeekView,
+    Resources,
+    GroupingPanel,
+} from "@devexpress/dx-react-scheduler-material-ui";
+import { Box, Paper, Theme, Button, useTheme, Modal } from "@mui/material";
 import dayjs, { Dayjs } from "dayjs";
 
 import header from "../../assets/serviceImage.jpg";
 import { Appointment } from "src/types/Appointment";
 import { Barber } from "src/types/Barber";
 import { Service } from "src/types/Service";
-import CustomAppointmentForm from "./CustomAppointmentForm";
 import CustomTimeTableCell from "../schedule/CustomTimeTableCell";
 import CustomAppointments from "../schedule/CustomAppointments";
 import { useNotification } from "../../context/notification.context";
 import { useNavigate } from "react-router-dom";
-import { data } from "../../data";
+import { appointmentsBd } from "../../data/data";
+import CustomAdminAppointmentBasicLayout from "./CustomAdminAppointmentBasicLayout";
+import { AppointmentProps } from "src/types";
+import AdminCustomLayout from "./AdminCustomLayout";
 interface BarberData {
     text: string;
-    id: number;
+    id: string;
 }
 
 const barberData: BarberData[] = [
-    { id: 1, text: "Alan" },
-    { id: 2, text: "Juan" },
-    { id: 3, text: "Jorge" },
+    { text: "Alan", id: "1" },
+    { text: "Juan", id: "2" },
+    { text: "Jorge", id: "3" },
 ];
 
 interface Resource {
@@ -58,7 +58,7 @@ interface AdminScheduleProps {
     handleChangeDate: (date: Date) => void;
 }
 const AdminSchedule: React.FC<AdminScheduleProps> = ({ currentDate, handleChangeDate }) => {
-    const appointmentsData = data;
+    const appointmentsData = appointmentsBd;
 
     const [appointments, setAppointments] = useState<Appointment[]>(appointmentsData);
     // const [currentDate, setCurrentDate] = useState<Date>(new Date());
@@ -67,7 +67,7 @@ const AdminSchedule: React.FC<AdminScheduleProps> = ({ currentDate, handleChange
         { fieldName: "barberId", title: "Barber", instances: barberData },
     ];
     const grouping = [{ resourceName: "barberId" }];
-    console.log(grouping);
+
     const theme: Theme = useTheme();
     const today: Date = new Date();
     const closeMorningHour: number = 12;
@@ -95,19 +95,6 @@ const AdminSchedule: React.FC<AdminScheduleProps> = ({ currentDate, handleChange
         setShifTomorrow(!shiftTomorrow);
     };
 
-    // const currentDateChange = (currentDate: Date) => {
-    //     console.log("************" + currentDate + "*******************");
-    //     // const auxToday = new Date(new Date(today).setHours(0, 0, 0, 0));
-    //     // if (currentDate >= auxToday && currentDate < maxDate)
-    //     //setCurrentDate(currentDate);
-    // };
-
-    // const handleCurrentDateChange = (currentDate: Date) => {
-    //     console.log("************" + currentDate + "*******************");
-    //     const date = dayjs(currentDate);
-    //     handleChangeDate(date);
-    // };
-
     const handleCommitChange = ({
         added,
         changed,
@@ -124,7 +111,6 @@ const AdminSchedule: React.FC<AdminScheduleProps> = ({ currentDate, handleChange
                 appointments.length > 0 ? appointments[appointments.length - 1].id + 1 : 0;
             setAppointments([...appointments, { id: startingAddedId, ...added }]);
             showNotification("Turno Agendado", "success");
-            navigate("/user");
         }
         if (changed) {
             setAppointments(
@@ -141,18 +127,19 @@ const AdminSchedule: React.FC<AdminScheduleProps> = ({ currentDate, handleChange
     };
 
     const onAddedAppointmentChange = (appointment: Appointment) => {
-        // if (service !== null) {
-        //     console.log("estoy en onAdded");
-        //     appointment.title = service.name;
-        //     appointment.endDate = dayjs(appointment.startDate)
-        //         .add(service.duration, "minutes")
-        //         .toDate();
-        //     //console.log(appointment);
-        //     setAddedAppointment(appointment);
-        //     setIsAppointmentBeingCreated(true);
-        // }
+        console.log("*********** estoy en addded ***********");
+        console.log(JSON.stringify(appointment));
+        setAddedAppointment(appointment);
     };
 
+    const handleChangeAddedAppointment = <T extends AppointmentProps>(
+        prop: T,
+        value: Appointment[T]
+    ) => {
+        let aux = { ...addedAppointment };
+        aux[prop] = value;
+        setAddedAppointment(aux);
+    };
     // ************* custom command Button ****************
     /**
      * Componente definido para personalizar las propiedades del modal de schedule para
@@ -218,7 +205,6 @@ const AdminSchedule: React.FC<AdminScheduleProps> = ({ currentDate, handleChange
         handleClick: () => void;
     }
     const CustomToolbar: React.FC<CustomToolbarProps> = ({ tomorrow, handleClick, children }) => {
-        console.log(children);
         return (
             <Toolbar.Root>
                 {children}
@@ -245,7 +231,7 @@ const AdminSchedule: React.FC<AdminScheduleProps> = ({ currentDate, handleChange
                     onAddedAppointmentChange={onAddedAppointmentChange}
                 />
                 <GroupingState grouping={grouping} />
-                <WeekView
+                {/* <WeekView
                     startDayHour={shiftTomorrow ? 8 : 16}
                     endDayHour={shiftTomorrow ? closeMorningHour : closeAfternoonHour}
                     cellDuration={15}
@@ -259,29 +245,17 @@ const AdminSchedule: React.FC<AdminScheduleProps> = ({ currentDate, handleChange
                             serviceDuration={0}
                         />
                     )}
-                />
-                <Appointments appointmentComponent={CustomAppointments} />
-                <Resources data={resources} />
-                {/* <DayView /> */}
-                <IntegratedGrouping />
-                <IntegratedEditing />
-                {/* <GroupingState grouping={grouping} /> */}
-                {/* <DayView
-                    intervalCount={3}
+                /> */}
+                <DayView
+                    intervalCount={2}
                     startDayHour={shiftTomorrow ? 8 : 16}
                     endDayHour={shiftTomorrow ? closeMorningHour : closeAfternoonHour}
                     cellDuration={15}
-                    timeTableCellComponent={(props: WeekView.TimeTableCellProps) => (
-                        <CustomTimeTableCell
-                            closeHour={shiftTomorrow ? closeMorningHour : closeAfternoonHour}
-                            today={today}
-                            props={props}
-                            data={appointments}
-                            serviceDuration={0}
-                        />
-                    )}
-                /> */}
-                {/* <MonthView /> */}
+                />
+                <Appointments appointmentComponent={CustomAppointments} />
+                <Resources data={resources} />
+                <IntegratedGrouping />
+                <IntegratedEditing />
                 <Toolbar
                     rootComponent={(toolbarProps: any) => (
                         <CustomToolbar
@@ -301,14 +275,11 @@ const AdminSchedule: React.FC<AdminScheduleProps> = ({ currentDate, handleChange
             showDeleteButton
         /> */}
                 <AppointmentForm
-                // basicLayoutComponent={(props: AppointmentForm.BasicLayout) => (
-                //     <CustomAppointmentForm
-                //         appointmentData={addedAppointment}
-                //         service={service}
-                //         barber={barber}
-                //         {...props}
-                //     />
-                // )}
+                    // appointmentData={addedAppointment}
+                    // LayoutComponent={(props: AppointmentForm.LayoutProps) => (
+                    //     <AdminCustomLayout {...props} />
+                    // )}
+                    basicLayoutComponent={CustomAdminAppointmentBasicLayout}
                 />
                 <GroupingPanel />
             </Scheduler>

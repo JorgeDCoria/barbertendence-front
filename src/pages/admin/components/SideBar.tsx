@@ -28,8 +28,9 @@ import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
 import logo from "../../../assets/logoTitle.png";
-import { DateCalendar, DatePicker, StaticDatePicker } from "@mui/x-date-pickers";
+// import { DateCalendar, DatePicker, StaticDatePicker } from "@mui/x-date-pickers";
 import dayjs, { Dayjs } from "dayjs";
+import { CalendarPicker } from "@mui/x-date-pickers";
 
 const listMenuTurnos: string[] = ["Pendientes", "Vencidas", "Otros"];
 interface Props {
@@ -56,9 +57,11 @@ const SideBar: React.FC<Props> = ({
             setExpanded(isExpanded ? panel : false);
         };
 
-    const handleChangeDateCalendar = (date: Dayjs) => {
-        const aux = new Date(date.toString());
-        handleChangeDate(aux);
+    const handleChangeDateCalendar = (date: Dayjs | null) => {
+        if (date) {
+            const aux = new Date(date.toString());
+            handleChangeDate(aux);
+        }
     };
     return (
         <Drawer
@@ -212,13 +215,17 @@ const SideBar: React.FC<Props> = ({
                             <Button variant="contained">Hoy</Button>
                         </Box>
 
-                        <DateCalendar
+                        {/* <DateCalendar
                             value={dayCalendar}
                             onChange={(newValue) => handleChangeDateCalendar(newValue)}
                             sx={{
                                 background: "white",
                                 borderRadius: "16px",
                             }}
+                        /> */}
+                        <CalendarPicker
+                            date={dayCalendar}
+                            onChange={(newValue) => handleChangeDateCalendar(newValue)}
                         />
                     </Box>
 
