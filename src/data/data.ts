@@ -6,8 +6,8 @@ export const appointmentsBd:Appointment[] = [
     {
         title: "Website Re-Design Plan",
         barberId: "2",
-        startDate: new Date(2023, 6, 20, 9, 30),
-        endDate: new Date(2023, 6, 20, 10, 30),
+        startDate: new Date(2023, 6, 28, 9, 30),
+        endDate: new Date(2023, 6, 28, 10, 30),
         id: 0,
         serviceId: "1",
         clientId: "1",
@@ -17,8 +17,8 @@ export const appointmentsBd:Appointment[] = [
     {
         title: "Book Flights to San Fran for Sales Trip",
         barberId: "1",
-        startDate: new Date(2023, 6, 20, 8, 0),
-        endDate: new Date(2023, 6, 20, 9, 0),
+        startDate: new Date(2023, 6, 28, 8, 0),
+        endDate: new Date(2023, 6, 28, 9, 0),
         id: 1,        
         serviceId:"4" ,
         clientId: "2",
@@ -36,8 +36,8 @@ export const appointmentsBd:Appointment[] = [
     {
         title: "New Brochures",
         barberId: "2",
-        startDate: new Date(2023, 6, 19, 8, 30),
-        endDate: new Date(2023, 6, 19, 9, 30),
+        startDate: new Date(2023, 6, 28, 10, 45),
+        endDate: new Date(2023, 6, 28, 11, 0),
         id: 5,        
         serviceId:"4" ,
         clientId: "4",

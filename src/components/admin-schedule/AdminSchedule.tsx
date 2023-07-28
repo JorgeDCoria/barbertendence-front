@@ -219,6 +219,18 @@ const AdminSchedule: React.FC<AdminScheduleProps> = ({ currentDate, handleChange
         );
     };
 
+    const CustomAdminComandButtonComponent: React.FC<AppointmentForm.CommandLayoutProps> = (
+        props
+    ) => {
+        console.log(props);
+
+        return (
+            <AppointmentForm.CommandLayout {...props}>
+                <Button>hola</Button>
+            </AppointmentForm.CommandLayout>
+        );
+    };
+
     useEffect(() => {}, []);
     return (
         <Paper sx={{ position: "relative", height: "80vh", p: 4 }}>
@@ -279,6 +291,7 @@ const AdminSchedule: React.FC<AdminScheduleProps> = ({ currentDate, handleChange
                     // LayoutComponent={(props: AppointmentForm.LayoutProps) => (
                     //     <AdminCustomLayout {...props} />
                     // )}
+                    commandLayoutComponent={CustomAdminComandButtonComponent}
                     basicLayoutComponent={CustomAdminAppointmentBasicLayout}
                 />
                 <GroupingPanel />
