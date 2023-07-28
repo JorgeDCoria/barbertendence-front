@@ -37,6 +37,7 @@ import { appointmentsBd } from "../../data/data";
 import CustomAdminAppointmentBasicLayout from "./CustomAdminAppointmentBasicLayout";
 import { AppointmentProps } from "src/types";
 import AdminCustomLayout from "./AdminCustomLayout";
+import AdminCustomAppointment from "./AdminCustomAppointment";
 interface BarberData {
     text: string;
     id: string;
@@ -264,7 +265,7 @@ const AdminSchedule: React.FC<AdminScheduleProps> = ({ currentDate, handleChange
                     endDayHour={shiftTomorrow ? closeMorningHour : closeAfternoonHour}
                     cellDuration={15}
                 />
-                <Appointments appointmentComponent={CustomAppointments} />
+                <Appointments appointmentComponent={AdminCustomAppointment} />
                 <Resources data={resources} />
                 <IntegratedGrouping />
                 <IntegratedEditing />
