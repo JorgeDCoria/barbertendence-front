@@ -31,6 +31,7 @@ import logo from "../../../assets/logoTitle.png";
 // import { DateCalendar, DatePicker, StaticDatePicker } from "@mui/x-date-pickers";
 import dayjs, { Dayjs } from "dayjs";
 import { CalendarPicker } from "@mui/x-date-pickers";
+import s from "../admin.module.css";
 
 const listMenuTurnos: string[] = ["Pendientes", "Vencidas", "Otros"];
 interface Props {
@@ -215,15 +216,8 @@ const SideBar: React.FC<Props> = ({
                             <Button variant="contained">Hoy</Button>
                         </Box>
 
-                        {/* <DateCalendar
-                            value={dayCalendar}
-                            onChange={(newValue) => handleChangeDateCalendar(newValue)}
-                            sx={{
-                                background: "white",
-                                borderRadius: "16px",
-                            }}
-                        /> */}
                         <CalendarPicker
+                            className={s.calendar}
                             date={dayCalendar}
                             onChange={(newValue) => handleChangeDateCalendar(newValue)}
                         />

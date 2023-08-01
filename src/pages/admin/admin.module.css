@@ -1,0 +1,16 @@
+.calendar{
+  border: 1.5px solid gray;
+  border-radius: 16px;
+}
+.calendar, .calendar button, .calendar span{
+  color:white;
+}
+.calendar button{
+  background: none;
+}
+
+.calendar button:hover{
+  border: 1px solid #DA71D8;
+}
+
+
