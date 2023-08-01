@@ -22,22 +22,40 @@ import {
     Resources,
     GroupingPanel,
 } from "@devexpress/dx-react-scheduler-material-ui";
-import { Box, Paper, Theme, Button, useTheme, Modal } from "@mui/material";
-import dayjs, { Dayjs } from "dayjs";
-
-import header from "../../assets/serviceImage.jpg";
+import {
+    Box,
+    Paper,
+    Theme,
+    Button,
+    useTheme,
+    Modal,
+    Typography,
+    Accordion,
+    AccordionSummary,
+    AccordionDetails,
+    Table,
+    TableBody,
+    TableCell,
+    TableContainer,
+    TableHead,
+    TableRow,
+} from "@mui/material";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import dayjs from "dayjs";
 import { Appointment } from "src/types/Appointment";
-import { Barber } from "src/types/Barber";
-import { Service } from "src/types/Service";
 import CustomTimeTableCell from "../schedule/CustomTimeTableCell";
-import CustomAppointments from "../schedule/CustomAppointments";
+
 import { useNotification } from "../../context/notification.context";
 import { useNavigate } from "react-router-dom";
-import { appointmentsBd } from "../../data/data";
+import { appointmentsBd, clientsBd } from "../../data/data";
+import { historiesBd } from "../../data/histories";
 import CustomAdminAppointmentBasicLayout from "./CustomAdminAppointmentBasicLayout";
 import { AppointmentProps } from "src/types";
-import AdminCustomLayout from "./AdminCustomLayout";
+
 import AdminCustomAppointment from "./AdminCustomAppointment";
+import { User } from "src/types/User";
+import SentimentVeryDissatisfiedIcon from "@mui/icons-material/SentimentVeryDissatisfied";
+import SentimentVerySatisfiedIcon from "@mui/icons-material/SentimentVerySatisfied";
 interface BarberData {
     text: string;
     id: string;
@@ -73,12 +91,7 @@ const AdminSchedule: React.FC<AdminScheduleProps> = ({ currentDate, handleChange
     const today: Date = new Date();
     const closeMorningHour: number = 12;
     const closeAfternoonHour: number = 20;
-    const numWeeksToShow = 3;
-    // const maxDate: Date = new Date(
-    //     dayjs(today)
-    //         .add(numWeeksToShow - 1, "week")
-    //         .toISOString()
-    // );
+
     const currenDateSchedule = new Date(currentDate ? currentDate.toString() : "");
     /**
      * variable shiftTomorrow definida para indicar si el scheduler muestre horarios
@@ -151,44 +164,115 @@ const AdminSchedule: React.FC<AdminScheduleProps> = ({ currentDate, handleChange
     const CustomCommandButton: React.FC<{}> = ({ ...restProp }) => (
         <AppointmentTooltip.CommandButton
             sx={{
-                background: theme.palette.primary.light,
-                color: theme.palette.primary.main,
                 "&:hover": {
-                    background: theme.palette.primary.dark,
-                    color: theme.palette.primary.light,
+                    background: theme.palette.primary.light,
+                    color: theme.palette.primary.main,
                 },
             }}
             {...restProp}
         />
     );
 
-    // ***************** custom header *************
-    type HeadersProps = {
-        children: React.ReactNode;
-        image: string;
-    };
-    /**
-     * Componente definido para personalizar el header del modal de schedule al
-     * visualizar un Appointment.
-     * @param param0
-     * @returns
-     */
-    const CustomAppointmentTooltipHeader: React.FC<HeadersProps> = ({
-        children,
-        image = header,
+    const CustomContentComponentTooltip: React.FC<AppointmentTooltip.ContentProps> = ({
+        appointmentData,
+        appointmentResources,
         ...restProps
-    }) => (
-        <AppointmentTooltip.Header
-            sx={{
-                backgroundImage: `url(${image})`,
-                backgroundSize: "cover",
-                backgroundPosition: "center",
-                height: "15em",
-            }}
-            {...restProps}
-        ></AppointmentTooltip.Header>
-    );
+    }) => {
+        const client: User | undefined = clientsBd.find(
+            (user) => user.id === appointmentData.clientId
+        );
+        console.log({ ...restProps });
+        const histories = historiesBd;
 
+        return (
+            <AppointmentTooltip.Content
+                {...restProps}
+                appointmentResources={appointmentResources}
+                appointmentData={appointmentData}
+            >
+                <Box>
+                    {client ? (
+                        <Accordion>
+                            <AccordionSummary
+                                expandIcon={
+                                    <ExpandMoreIcon
+                                        sx={{
+                                            color: appointmentResources[0].color.A200,
+                                        }}
+                                    />
+                                }
+                                aria-controls="panel1a-content"
+                                id="panel1a-header"
+                                sx={{
+                                    background: appointmentResources[0].color[50],
+                                    "&:hover": {
+                                        background: appointmentResources[0].color[100],
+                                    },
+                                }}
+                            >
+                                <Typography>Historial de: {client.nombreApellido}</Typography>
+                            </AccordionSummary>
+                            <AccordionDetails
+                                sx={{
+                                    p: "8px 0px",
+                                }}
+                            >
+                                <TableContainer
+                                    sx={{
+                                        width: "100%",
+                                    }}
+                                >
+                                    <Table>
+                                        <TableHead>
+                                            <TableRow>
+                                                <TableCell>Servicio</TableCell>
+                                                <TableCell>Profesional</TableCell>
+                                                <TableCell>Fecha</TableCell>
+                                                <TableCell>Asistencia</TableCell>
+                                            </TableRow>{" "}
+                                        </TableHead>
+                                        <TableBody>
+                                            {histories.map((h) => (
+                                                <TableRow key={h.id}>
+                                                    <TableCell>{h.service.name}</TableCell>
+                                                    <TableCell>{h.barber.name}</TableCell>
+                                                    <TableCell>
+                                                        {dayjs(h.date).format(
+                                                            "dddd, MMM DD, YYYY - HH:MM"
+                                                        )}
+                                                    </TableCell>
+                                                    <TableCell>
+                                                        {h.state ? (
+                                                            <SentimentVerySatisfiedIcon
+                                                                sx={{
+                                                                    color: "green",
+                                                                }}
+                                                            />
+                                                        ) : (
+                                                            <SentimentVeryDissatisfiedIcon
+                                                                sx={{
+                                                                    color: "red",
+                                                                }}
+                                                            />
+                                                        )}
+                                                    </TableCell>
+                                                </TableRow>
+                                            ))}
+                                        </TableBody>
+                                    </Table>
+                                </TableContainer>
+                            </AccordionDetails>
+                        </Accordion>
+                    ) : (
+                        <Typography textAlign={"center"} color={"red"}>
+                            {" "}
+                            No se encontraron registros de cliente
+                        </Typography>
+                    )}
+                </Box>
+            </AppointmentTooltip.Content>
+        );
+    };
     /**
      * Objeto que contiene los valores de los textos a mostrar en el schedule
      */
@@ -269,6 +353,14 @@ const AdminSchedule: React.FC<AdminScheduleProps> = ({ currentDate, handleChange
                 <Resources data={resources} />
                 <IntegratedGrouping />
                 <IntegratedEditing />
+                <AppointmentTooltip
+                    // appointmentData={addedAppointment}
+                    // headerComponent={CustomAppointmentTooltipHeader}
+                    commandButtonComponent={CustomCommandButton}
+                    contentComponent={CustomContentComponentTooltip}
+                    showCloseButton
+                    showDeleteButton
+                />
                 <Toolbar
                     rootComponent={(toolbarProps: any) => (
                         <CustomToolbar
@@ -281,12 +373,6 @@ const AdminSchedule: React.FC<AdminScheduleProps> = ({ currentDate, handleChange
                 <DateNavigator />
                 <TodayButton />
                 <ConfirmationDialog messages={customDialogMessage} />
-                {/* <AppointmentTooltip
-            headerComponent={CustomAppointmentTooltipHeader}
-            commandButtonComponent={CustomCommandButton}
-            showCloseButton
-            showDeleteButton
-        /> */}
                 <AppointmentForm
                     // appointmentData={addedAppointment}
                     // LayoutComponent={(props: AppointmentForm.LayoutProps) => (

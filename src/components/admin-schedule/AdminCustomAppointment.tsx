@@ -14,7 +14,7 @@ const AdminCustomAppointment: React.FC<Appointments.AppointmentProps> = ({
     const theme: Theme = useTheme();
     const service: Service | undefined = servicesBd.find((s) => s.id === data.serviceId);
     const client: User | undefined = clientsBd.find((c) => c.id === data.clientId);
-    console.log(data);
+
     useEffect(() => {}, []);
 
     return (
@@ -23,6 +23,7 @@ const AdminCustomAppointment: React.FC<Appointments.AppointmentProps> = ({
                 onDoubleClick={() => {
                     console.log("que pasa bro");
                 }}
+                data={data}
                 {...restProps}
             >
                 <Stack
@@ -31,32 +32,34 @@ const AdminCustomAppointment: React.FC<Appointments.AppointmentProps> = ({
                     pt={2}
                     alignItems={"center"}
                     textAlign={"center"}
-                    height={"60%"}
+                    height={"80%"}
+                    color={"white"}
                 >
                     <Typography
                         sx={{
-                            fontSize: "12px",
+                            fontSize: "0.75rem",
                             fontWeight: "600",
                         }}
                     >
                         {service?.name}
                     </Typography>
-                    <Typography>{dayjs(data.startDate).format("HH:mm")}hs</Typography>
-                    <Link
-                        href="#"
+                    <Typography
                         sx={{
-                            transitionProperty: "font-size, color",
-                            transitionDuration: "1s",
-                            textDecoration: "none",
-                            fontSize: "16px",
-                            "&:hover": {
-                                fontSize: "18px",
-                                color: "white",
-                            },
+                            fontSize: "0.75rem",
+                            fontWeight: "600",
                         }}
                     >
-                        {client?.nombreApellido}
-                    </Link>
+                        {dayjs(data.startDate).format("HH:mm")}
+                    </Typography>
+                    <Typography
+                        sx={{
+                            fontSize: "0.75rem",
+                            fontWeight: "600",
+                        }}
+                    >
+                        {dayjs(data.endDate).format("HH:mm")}
+                    </Typography>
+                    <Typography>{client?.nombreApellido}</Typography>
                 </Stack>
             </Appointments.Appointment>
         </>
