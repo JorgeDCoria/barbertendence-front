@@ -56,6 +56,7 @@ import AdminCustomAppointment from "./AdminCustomAppointment";
 import { User } from "src/types/User";
 import SentimentVeryDissatisfiedIcon from "@mui/icons-material/SentimentVeryDissatisfied";
 import SentimentVerySatisfiedIcon from "@mui/icons-material/SentimentVerySatisfied";
+import { CustomError } from "../../types/CustomError";
 interface BarberData {
     text: string;
     id: string;
@@ -98,6 +99,7 @@ const AdminSchedule: React.FC<AdminScheduleProps> = ({ currentDate, handleChange
      * de 8 a 12 || 16 a 20.
      */
     const [shiftTomorrow, setShifTomorrow] = useState<boolean>(today.getHours() < closeMorningHour);
+    const [formError, setFormError] = useState<CustomError | null>(null);
     const { showNotification } = useNotification();
     const navigate = useNavigate();
     /**
@@ -146,14 +148,14 @@ const AdminSchedule: React.FC<AdminScheduleProps> = ({ currentDate, handleChange
         setAddedAppointment(appointment);
     };
 
-    const handleChangeAddedAppointment = <T extends AppointmentProps>(
-        prop: T,
-        value: Appointment[T]
-    ) => {
-        let aux = { ...addedAppointment };
-        aux[prop] = value;
-        setAddedAppointment(aux);
-    };
+    // const handleChangeAddedAppointment = <T extends AppointmentProps>(
+    //     prop: T,
+    //     value: Appointment[T]
+    // ) => {
+    //     let aux = { ...addedAppointment };
+    //     aux[prop] = value;
+    //     setAddedAppointment(aux);
+    // };
     // ************* custom command Button ****************
     /**
      * Componente definido para personalizar las propiedades del modal de schedule para
@@ -304,17 +306,57 @@ const AdminSchedule: React.FC<AdminScheduleProps> = ({ currentDate, handleChange
         );
     };
 
-    const CustomAdminComandButtonComponent: React.FC<AppointmentForm.CommandLayoutProps> = (
-        props
-    ) => {
-        console.log(props);
+    const CustomAdminComandButtonComponent: React.FC<AppointmentForm.CommandLayoutProps> = ({
+        onCommitButtonClick,
+        ...restProps
+    }) => {
+        console.log({ ...restProps });
+        console.log(formError);
 
+        const handleClick = (): void => {
+            //onCommitButtonClick();
+            if (formError?.state) {
+                showNotification(formError.message, "warning");
+            } else {
+                onCommitButtonClick();
+            }
+        };
         return (
-            <AppointmentForm.CommandLayout {...props}>
+            <AppointmentForm.CommandLayout onCommitButtonClick={handleClick} {...restProps}>
                 <Button>hola</Button>
             </AppointmentForm.CommandLayout>
         );
     };
+
+    //  ************** componentes que permiten agregar props *************
+
+    const getAdditionalProps = () => {
+        // Personaliza esta función para devolver las propiedades adicionales que necesitas pasar
+        return {
+            formError,
+            handleFormError: (value: CustomError | null): void => setFormError(value),
+            // Agrega más propiedades según sea necesario
+        };
+    };
+
+    const withAdditionalProps = <T extends object>(
+        WrappedComponent: React.FC<T>,
+        getAdditionalProps: () => {
+            formError: CustomError | null;
+            handleFormError: (value: CustomError | null) => void;
+        }
+    ) => {
+        const EnhancedComponent: React.FC<T> = (props) => {
+            const additionalProps = getAdditionalProps();
+
+            return <WrappedComponent {...props} {...additionalProps} />;
+        };
+        return EnhancedComponent;
+    };
+    const EnhancedCustomAdminAppointmentBasicLayout = withAdditionalProps(
+        CustomAdminAppointmentBasicLayout,
+        getAdditionalProps
+    );
 
     useEffect(() => {}, []);
     return (
@@ -379,7 +421,7 @@ const AdminSchedule: React.FC<AdminScheduleProps> = ({ currentDate, handleChange
                     //     <AdminCustomLayout {...props} />
                     // )}
                     commandLayoutComponent={CustomAdminComandButtonComponent}
-                    basicLayoutComponent={CustomAdminAppointmentBasicLayout}
+                    basicLayoutComponent={EnhancedCustomAdminAppointmentBasicLayout}
                 />
                 <GroupingPanel />
             </Scheduler>
