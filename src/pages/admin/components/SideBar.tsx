@@ -213,7 +213,12 @@ const SideBar: React.FC<Props> = ({
                     </Box>
                     <Box display={"flex"} flexDirection={"column"} gap={1}>
                         <Box>
-                            <Button variant="contained">Hoy</Button>
+                            <Button
+                                variant="contained"
+                                onClick={() => handleChangeDate(new Date())}
+                            >
+                                Hoy
+                            </Button>
                         </Box>
 
                         <CalendarPicker
