@@ -37,7 +37,6 @@ const AdminHome: React.FC = () => {
                 id="admin-nav"
                 display={"flex"}
                 flexDirection={"row"}
-                border={"2px solid red"}
                 justifyContent={showSideBar ? "flex-end" : "space-between"}
                 sx={{
                     ml: isUpMd && showSideBar ? `${drawerWidth}px` : 0,

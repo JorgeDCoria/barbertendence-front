@@ -344,6 +344,24 @@ const AdminSchedule: React.FC<AdminScheduleProps> = ({ currentDate, handleChange
         getAdditionalProps
     );
 
+    const AdminCustomTimeTableCell: React.FC<DayView.TimeTableCellProps> = ({
+        onDoubleClick,
+        ...restProps
+    }) => {
+        const isValid = restProps.startDate > new Date();
+        const handleClick = () => {
+            if (isValid) onDoubleClick();
+            else showNotification("No se permiten turnos anteriores a la fecha", "warning");
+        };
+        return (
+            <DayView.TimeTableCell
+                isShaded={!isValid}
+                {...restProps}
+                onDoubleClick={handleClick}
+                onTouchStart={handleClick}
+            />
+        );
+    };
     useEffect(() => {}, []);
     return (
         <Paper sx={{ position: "relative", height: "80vh", p: 4 }}>
@@ -376,14 +394,15 @@ const AdminSchedule: React.FC<AdminScheduleProps> = ({ currentDate, handleChange
                     startDayHour={shiftTomorrow ? 8 : 16}
                     endDayHour={shiftTomorrow ? closeMorningHour : closeAfternoonHour}
                     cellDuration={15}
+                    timeTableCellComponent={(props: DayView.TimeTableCellProps) => (
+                        <AdminCustomTimeTableCell {...props} />
+                    )}
                 />
                 <Appointments appointmentComponent={AdminCustomAppointment} />
                 <Resources data={resources} />
                 <IntegratedGrouping />
                 <IntegratedEditing />
                 <AppointmentTooltip
-                    // appointmentData={addedAppointment}
-                    // headerComponent={CustomAppointmentTooltipHeader}
                     commandButtonComponent={CustomCommandButton}
                     contentComponent={CustomContentComponentTooltip}
                     showCloseButton
