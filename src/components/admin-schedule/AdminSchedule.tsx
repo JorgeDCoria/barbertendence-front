@@ -39,6 +39,7 @@ import {
     TableContainer,
     TableHead,
     TableRow,
+    Avatar,
 } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import dayjs from "dayjs";
@@ -57,6 +58,7 @@ import { User } from "src/types/User";
 import SentimentVeryDissatisfiedIcon from "@mui/icons-material/SentimentVeryDissatisfied";
 import SentimentVerySatisfiedIcon from "@mui/icons-material/SentimentVerySatisfied";
 import { CustomError } from "../../types/CustomError";
+import logo from "../../assets/logo.png";
 interface BarberData {
     text: string;
     id: string;
@@ -148,14 +150,6 @@ const AdminSchedule: React.FC<AdminScheduleProps> = ({ currentDate, handleChange
         setAddedAppointment(appointment);
     };
 
-    // const handleChangeAddedAppointment = <T extends AppointmentProps>(
-    //     prop: T,
-    //     value: Appointment[T]
-    // ) => {
-    //     let aux = { ...addedAppointment };
-    //     aux[prop] = value;
-    //     setAddedAppointment(aux);
-    // };
     // ************* custom command Button ****************
     /**
      * Componente definido para personalizar las propiedades del modal de schedule para
@@ -310,22 +304,14 @@ const AdminSchedule: React.FC<AdminScheduleProps> = ({ currentDate, handleChange
         onCommitButtonClick,
         ...restProps
     }) => {
-        console.log({ ...restProps });
-        console.log(formError);
-
         const handleClick = (): void => {
-            //onCommitButtonClick();
             if (formError?.state) {
                 showNotification(formError.message, "warning");
             } else {
                 onCommitButtonClick();
             }
         };
-        return (
-            <AppointmentForm.CommandLayout onCommitButtonClick={handleClick} {...restProps}>
-                <Button>hola</Button>
-            </AppointmentForm.CommandLayout>
-        );
+        return <AppointmentForm.CommandLayout onCommitButtonClick={handleClick} {...restProps} />;
     };
 
     //  ************** componentes que permiten agregar props *************

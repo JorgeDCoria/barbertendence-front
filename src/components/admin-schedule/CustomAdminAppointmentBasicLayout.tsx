@@ -62,8 +62,7 @@ const CustomAdminAppointmentBasicLayout: React.FC<CustomAppointmentFormBasicLayo
         return invalid;
     };
 
-    const checkAvailableHours = (service: Service, barberId: string) => {
-        const endDate = dayjs(appointmentData.startDate).add(service.duration, "minute");
+    const checkAvailableHours = (barberId: string, endDate: Dayjs) => {
         const closeHour =
             dayjs(appointmentData.startDate).hour() < closeMorningHour
                 ? closeMorningHour
@@ -98,9 +97,14 @@ const CustomAdminAppointmentBasicLayout: React.FC<CustomAppointmentFormBasicLayo
         const serviceSelected: Service | undefined = services.find((s) => s.id === e.target.value);
 
         if (serviceSelected) {
-            checkAvailableHours(serviceSelected, appointmentData.barberId);
+            const endDate = dayjs(appointmentData.startDate).add(
+                serviceSelected.duration,
+                "minute"
+            );
+            checkAvailableHours(appointmentData.barberId, endDate);
+            onFieldChange({ ["endDate"]: endDate.toDate() });
+            onFieldChange({ [e.target.name]: e.target.value });
         }
-        onFieldChange({ [e.target.name]: e.target.value });
     };
     useEffect(() => {
         const barberFound = barbers.find((b) => b.id === appointmentData.barberId);
