@@ -418,7 +418,7 @@ const AdminSchedule: React.FC<AdminScheduleProps> = ({ currentDate, handleChange
                     )}
                 />
                 <DateNavigator />
-                <TodayButton />
+                <TodayButton messages={{ today: "Hoy" }} />
                 <ConfirmationDialog messages={customDialogMessage} />
                 <AppointmentForm
                     // appointmentData={addedAppointment}
