@@ -32,8 +32,31 @@ import logo from "../../../assets/logoTitle.png";
 import dayjs, { Dayjs } from "dayjs";
 import { CalendarPicker } from "@mui/x-date-pickers";
 import s from "../admin.module.css";
+import { Barber } from "../../../types/Barber";
+import { useDispatch } from "react-redux";
+import { actionGetAppointmentsByBarber } from "../../../redux/actions/appointmentActions";
 
 const listMenuTurnos: string[] = ["Pendientes", "Vencidas", "Otros"];
+const barbers: Barber[] = [
+    {
+        avatar: "",
+        description: "",
+        id: "1",
+        name: "Alan",
+    },
+    {
+        avatar: "",
+        description: "",
+        id: "2",
+        name: "Juan",
+    },
+    {
+        avatar: "",
+        description: "",
+        id: "3",
+        name: "Jorge",
+    },
+];
 interface Props {
     showSideBar: boolean | undefined;
     handleShowSideBar: () => void;
@@ -48,6 +71,7 @@ const SideBar: React.FC<Props> = ({
     currentDate,
     handleChangeDate,
 }) => {
+    const dispatch = useDispatch();
     const theme: Theme = useTheme();
     const drawerWidth = 350;
     const draweHeaderHeight = 48;
@@ -199,10 +223,16 @@ const SideBar: React.FC<Props> = ({
                             </AccordionSummary>
                             <AccordionDetails>
                                 <List>
-                                    {listMenuTurnos.map((item) => (
-                                        <ListItem key={item}>
-                                            <ListItemButton>
-                                                <ListItemText primary={item} />
+                                    {barbers.map((barber) => (
+                                        <ListItem key={barber.id}>
+                                            <ListItemButton
+                                                onClick={() =>
+                                                    dispatch(
+                                                        actionGetAppointmentsByBarber(barber.id)
+                                                    )
+                                                }
+                                            >
+                                                <ListItemText primary={barber.name} />
                                             </ListItemButton>{" "}
                                             <Divider sx={{ background: "white" }} />
                                         </ListItem>

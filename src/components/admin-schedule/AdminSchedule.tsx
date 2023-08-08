@@ -58,6 +58,8 @@ import { User } from "src/types/User";
 import SentimentVeryDissatisfiedIcon from "@mui/icons-material/SentimentVeryDissatisfied";
 import SentimentVerySatisfiedIcon from "@mui/icons-material/SentimentVerySatisfied";
 import { CustomError } from "../../types/CustomError";
+import { useDispatch, useSelector } from "react-redux";
+import { actionGetAppointments } from "../../redux/actions/appointmentActions";
 import logo from "../../assets/logo.png";
 interface BarberData {
     text: string;
@@ -82,7 +84,8 @@ interface AdminScheduleProps {
 const AdminSchedule: React.FC<AdminScheduleProps> = ({ currentDate, handleChangeDate }) => {
     const appointmentsData = appointmentsBd;
 
-    const [appointments, setAppointments] = useState<Appointment[]>(appointmentsData);
+    // const [appointments, setAppointments] = useState<Appointment[]>(appointmentsData);
+    const { appointments } = useSelector((state) => state.appointments);
     // const [currentDate, setCurrentDate] = useState<Date>(new Date());
     const [addedAppointment, setAddedAppointment] = useState<Appointment>({} as Appointment);
     const resources: Resource[] = [
@@ -103,6 +106,7 @@ const AdminSchedule: React.FC<AdminScheduleProps> = ({ currentDate, handleChange
     const [shiftTomorrow, setShifTomorrow] = useState<boolean>(today.getHours() < closeMorningHour);
     const [formError, setFormError] = useState<CustomError | null>(null);
     const { showNotification } = useNotification();
+    const dispatch = useDispatch();
     const navigate = useNavigate();
     /**
      * funcion encagada de cambiar el estado de shiftTomorrow.
@@ -206,7 +210,7 @@ const AdminSchedule: React.FC<AdminScheduleProps> = ({ currentDate, handleChange
                                     },
                                 }}
                             >
-                                <Typography>Historial de: {client.nombreApellido}</Typography>
+                                <Typography>Historial de: {client.fullName}</Typography>
                             </AccordionSummary>
                             <AccordionDetails
                                 sx={{

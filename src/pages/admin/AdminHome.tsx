@@ -9,11 +9,17 @@ import {
     IconButton,
     Typography,
 } from "@mui/material";
+import { useDispatch, useSelector } from "react-redux";
 import React, { useEffect, useState } from "react";
 import SideBar from "./components/SideBar";
 import MenuIcon from "@mui/icons-material/Menu";
 import AdminSchedule from "../../components/admin-schedule/AdminSchedule";
 import dayjs, { Dayjs } from "dayjs";
+import {
+    actionGetAppointmentsByBarber,
+    actionGetAppointments,
+} from "../../redux/actions/appointmentActions";
+import Loading from "../../components/Loading/Loading";
 
 const AdminHome: React.FC = () => {
     const theme: Theme = useTheme();
@@ -21,6 +27,7 @@ const AdminHome: React.FC = () => {
     const [showSideBar, setShowSideBar] = useState<boolean>(isUpMd);
     const [currentDate, setCurrentDate] = useState<Date>(new Date());
 
+    const dispatch = useDispatch();
     const drawerWidth = 350;
     const handleShowSideBar = () => {
         setShowSideBar((prev) => !prev);
@@ -28,8 +35,12 @@ const AdminHome: React.FC = () => {
     const handleCurrentDate = (date: Date) => {
         setCurrentDate(date);
     };
+    const { appointments } = useSelector((state) => state.appointments);
+    console.log(appointments);
+
     useEffect(() => {
         setShowSideBar(isUpMd);
+        dispatch(actionGetAppointments());
     }, [isUpMd]);
     return (
         <Box minHeight={"100vh"}>
@@ -76,7 +87,11 @@ const AdminHome: React.FC = () => {
                     {" "}
                     Reservas
                 </Typography>
-                <AdminSchedule currentDate={currentDate} handleChangeDate={handleCurrentDate} />
+                {appointments ? (
+                    <AdminSchedule currentDate={currentDate} handleChangeDate={handleCurrentDate} />
+                ) : (
+                    <Loading />
+                )}
             </Box>
         </Box>
     );
