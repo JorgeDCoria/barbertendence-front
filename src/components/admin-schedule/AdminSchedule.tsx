@@ -278,6 +278,7 @@ const AdminSchedule: React.FC<AdminScheduleProps> = ({ currentDate, handleChange
         cancelButton: "Cancelar",
         confirmCancelMessage: "¿Esta seguro de descartar el horario y seleccionar otro?",
         discardButton: "Descartar",
+        commitCommand: "Guardar Turno",
     };
 
     //************** Toolbar personalizado ************************* */
@@ -304,6 +305,7 @@ const AdminSchedule: React.FC<AdminScheduleProps> = ({ currentDate, handleChange
         onCommitButtonClick,
         ...restProps
     }) => {
+        console.log(restProps);
         const handleClick = (): void => {
             if (formError?.state) {
                 showNotification(formError.message, "warning");
@@ -311,6 +313,7 @@ const AdminSchedule: React.FC<AdminScheduleProps> = ({ currentDate, handleChange
                 onCommitButtonClick();
             }
         };
+
         return <AppointmentForm.CommandLayout onCommitButtonClick={handleClick} {...restProps} />;
     };
 
@@ -421,10 +424,7 @@ const AdminSchedule: React.FC<AdminScheduleProps> = ({ currentDate, handleChange
                 <TodayButton messages={{ today: "Hoy" }} />
                 <ConfirmationDialog messages={customDialogMessage} />
                 <AppointmentForm
-                    // appointmentData={addedAppointment}
-                    // LayoutComponent={(props: AppointmentForm.LayoutProps) => (
-                    //     <AdminCustomLayout {...props} />
-                    // )}
+                    messages={customDialogMessage}
                     commandLayoutComponent={CustomAdminComandButtonComponent}
                     basicLayoutComponent={EnhancedCustomAdminAppointmentBasicLayout}
                 />
