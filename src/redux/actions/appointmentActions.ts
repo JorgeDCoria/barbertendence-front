@@ -1,9 +1,10 @@
 import { getAllAppointments, getAppointmentsByBarber } from "../slices/appointmentSlice";
-import { appointmentsBd } from "../../data/data";
 import { Appointment } from "../../types/Appointment";
+import appointmentService from "../../service/appointmentService";
+import { Dispatch } from "@reduxjs/toolkit";
 export const actionGetAppointments = () => {
-    return async (dispatch: any) => {
-        const appointments: Appointment[] = await appointmentsBd;
+    return async (dispatch: Dispatch) => {
+        const appointments: Appointment[] = await appointmentService.getAppointments();
         dispatch(getAllAppointments(appointments));
     };
 };
