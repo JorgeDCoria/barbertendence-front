@@ -11,14 +11,10 @@ export const appointmentSlice = createSlice({
         getAllAppointments: (state, action) => {
             state.appointments = action.payload;
         },
+        //reducer para filtrar appointments por el id de barber
         getAppointmentsByBarber: (state, action) => {
             let aux: Appointment[] = [...state.appointments];
-            console.log(state.appointments);
-            console.log(aux);
-
             aux = aux.filter((app) => app.barberId === action.payload);
-            console.log(aux);
-
             state.appointments = aux;
         },
     },

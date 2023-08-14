@@ -2,15 +2,24 @@ import { getAllAppointments, getAppointmentsByBarber } from "../slices/appointme
 import { Appointment } from "../../types/Appointment";
 import appointmentService from "../../service/appointmentService";
 import { Dispatch } from "@reduxjs/toolkit";
+import { clearError, setError } from "../slices/errorSlice";
+import { StateError } from "src/types/StateError";
+
 export const actionGetAppointments = () => {
     return async (dispatch: Dispatch) => {
-        const appointments: Appointment[] = await appointmentService.getAppointments();
-        dispatch(getAllAppointments(appointments));
+        try {
+            dispatch(clearError(null));
+            const appointments: Appointment[] = await appointmentService.getAppointments();
+            dispatch(getAllAppointments(appointments));
+        } catch (e: any) {
+            const error: StateError = { code: e.status, message: e.message };
+            dispatch(setError(error));
+        }
     };
 };
 
 export const actionGetAppointmentsByBarber = (id: string) => {
-    return (dispatch: any) => {
+    return (dispatch: Dispatch) => {
         dispatch(getAppointmentsByBarber(id));
     };
 };
