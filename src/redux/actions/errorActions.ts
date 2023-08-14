@@ -4,12 +4,12 @@ import { type StateError } from "../../types/StateError";
 
 export const actionsClearError = () => {
     return (dispatch: Dispatch) => {
-        dispatch(clearError(null));
+        dispatch(clearError());
     };
 };
 
 export const actionSetError = (error: StateError) => {
-    return (dispatch: Dispatch) => {
+    return async (dispatch: Dispatch) => {
         dispatch(setError(error));
     };
 };

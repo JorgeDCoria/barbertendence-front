@@ -8,7 +8,7 @@ import { StateError } from "src/types/StateError";
 export const actionGetAppointments = () => {
     return async (dispatch: Dispatch) => {
         try {
-            dispatch(clearError(null));
+            dispatch(clearError());
             const appointments: Appointment[] = await appointmentService.getAppointments();
             dispatch(getAllAppointments(appointments));
         } catch (e: any) {
