@@ -28,7 +28,6 @@ import {
     Theme,
     Button,
     useTheme,
-    Modal,
     Typography,
     Accordion,
     AccordionSummary,
@@ -39,59 +38,43 @@ import {
     TableContainer,
     TableHead,
     TableRow,
-    Avatar,
 } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import dayjs from "dayjs";
 import { Appointment } from "src/types/Appointment";
-import CustomTimeTableCell from "../schedule/CustomTimeTableCell";
 
 import { useNotification } from "../../context/notification.context";
-import { useNavigate } from "react-router-dom";
-import { appointmentsBd, clientsBd } from "../../data/data";
+
+import { clientsBd } from "../../data/data";
 import { historiesBd } from "../../data/histories";
 import CustomAdminAppointmentBasicLayout from "./CustomAdminAppointmentBasicLayout";
-import { AppointmentProps } from "src/types";
-
 import AdminCustomAppointment from "./AdminCustomAppointment";
 import { User } from "src/types/User";
 import SentimentVeryDissatisfiedIcon from "@mui/icons-material/SentimentVeryDissatisfied";
 import SentimentVerySatisfiedIcon from "@mui/icons-material/SentimentVerySatisfied";
 import { CustomError } from "../../types/CustomError";
-import { useDispatch, useSelector } from "react-redux";
-import { actionGetAppointments } from "../../redux/actions/appointmentActions";
-import logo from "../../assets/logo.png";
-interface BarberData {
-    text: string;
-    id: string;
-}
 
-const barberData: BarberData[] = [
-    { text: "Alan", id: "1" },
-    { text: "Juan", id: "2" },
-    { text: "Jorge", id: "3" },
-];
+import { useAppSelector } from "../../hook/useStore";
+import { BarberResource } from "src/types/BarberResource";
+import barberAdapter from "../../adapters/barberAdapter";
 
 interface Resource {
     fieldName: string;
     title: string;
-    instances: BarberData[];
+    instances: BarberResource[];
 }
 interface AdminScheduleProps {
     currentDate: Date;
     handleChangeDate: (date: Date) => void;
 }
 const AdminSchedule: React.FC<AdminScheduleProps> = ({ currentDate, handleChangeDate }) => {
-    const appointmentsData = appointmentsBd;
-
     // const [appointments, setAppointments] = useState<Appointment[]>(appointmentsData);
-    const { appointments } = useSelector((state) => state.appointments);
+    const { appointments } = useAppSelector((state) => state.appointments);
+    const { barbers } = useAppSelector((state) => state.barbers);
     // const [currentDate, setCurrentDate] = useState<Date>(new Date());
     const [addedAppointment, setAddedAppointment] = useState<Appointment>({} as Appointment);
-    const resources: Resource[] = [
-        { fieldName: "barberId", title: "Barber", instances: barberData },
-    ];
-    const grouping = [{ resourceName: "barberId" }];
+    const [barberData, setBarberData] = useState<BarberResource[]>([] as BarberResource[]);
+    const [resources, setResources] = useState<Resource[] | null>(null);
 
     const theme: Theme = useTheme();
     const today: Date = new Date();
@@ -106,8 +89,17 @@ const AdminSchedule: React.FC<AdminScheduleProps> = ({ currentDate, handleChange
     const [shiftTomorrow, setShifTomorrow] = useState<boolean>(today.getHours() < closeMorningHour);
     const [formError, setFormError] = useState<CustomError | null>(null);
     const { showNotification } = useNotification();
-    const dispatch = useDispatch();
-    const navigate = useNavigate();
+
+    useEffect(() => {
+        if (barbers) {
+            const aux: BarberResource[] = barberAdapter.mapBarberToBarberInstanceResource(barbers);
+            setBarberData(aux);
+            setResources([{ fieldName: "barberId", title: "Barber", instances: aux }]);
+        }
+    }, [barbers]);
+    console.log(barberData);
+    console.log(resources);
+    const grouping = [{ resourceName: "barberId" }];
     /**
      * funcion encagada de cambiar el estado de shiftTomorrow.
      * @param e
@@ -129,22 +121,22 @@ const AdminSchedule: React.FC<AdminScheduleProps> = ({ currentDate, handleChange
         console.log("******* actuando handle commit change ********");
 
         if (added) {
-            const startingAddedId =
-                appointments.length > 0 ? appointments[appointments.length - 1].id + 1 : 0;
-            setAppointments([...appointments, { id: startingAddedId, ...added }]);
+            // const startingAddedId =
+            //     appointments.length > 0 ? appointments[appointments.length - 1].id + 1 : 0;
+            //setAppointments([...appointments, { id: startingAddedId, ...added }]);
             showNotification("Turno Agendado", "success");
         }
         if (changed) {
-            setAppointments(
-                appointments.map((appointment) =>
-                    changed[appointment.id]
-                        ? { ...appointment, ...changed[appointment.id] }
-                        : appointment
-                )
-            );
+            // setAppointments(
+            //     appointments.map((appointment) =>
+            //         changed[appointment.id]
+            //             ? { ...appointment, ...changed[appointment.id] }
+            //             : appointment
+            //     )
+            // );
         }
         if (deleted !== undefined) {
-            setAppointments(appointments.filter((appointment) => appointment.id !== deleted));
+            //setAppointments(appointments.filter((appointment) => appointment.id !== deleted));
         }
     };
 
@@ -369,19 +361,20 @@ const AdminSchedule: React.FC<AdminScheduleProps> = ({ currentDate, handleChange
             />
         );
     };
-    useEffect(() => {}, []);
+
     return (
         <Paper sx={{ position: "relative", height: "80vh", p: 4 }}>
-            <Scheduler data={appointments}>
-                {" "}
-                <ViewState currentDate={currentDate} onCurrentDateChange={handleChangeDate} />
-                <EditingState
-                    onCommitChanges={handleCommitChange}
-                    addedAppointment={addedAppointment}
-                    onAddedAppointmentChange={onAddedAppointmentChange}
-                />
-                <GroupingState grouping={grouping} />
-                {/* <WeekView
+            {barbers && (
+                <Scheduler data={appointments}>
+                    {" "}
+                    <ViewState currentDate={currentDate} onCurrentDateChange={handleChangeDate} />
+                    <EditingState
+                        onCommitChanges={handleCommitChange}
+                        addedAppointment={addedAppointment}
+                        onAddedAppointmentChange={onAddedAppointmentChange}
+                    />
+                    <GroupingState grouping={grouping} />
+                    {/* <WeekView
                     startDayHour={shiftTomorrow ? 8 : 16}
                     endDayHour={shiftTomorrow ? closeMorningHour : closeAfternoonHour}
                     cellDuration={15}
@@ -396,44 +389,45 @@ const AdminSchedule: React.FC<AdminScheduleProps> = ({ currentDate, handleChange
                         />
                     )}
                 /> */}
-                <DayView
-                    intervalCount={2}
-                    startDayHour={shiftTomorrow ? 8 : 16}
-                    endDayHour={shiftTomorrow ? closeMorningHour : closeAfternoonHour}
-                    cellDuration={15}
-                    timeTableCellComponent={(props: DayView.TimeTableCellProps) => (
-                        <AdminCustomTimeTableCell {...props} />
-                    )}
-                />
-                <Appointments appointmentComponent={AdminCustomAppointment} />
-                <Resources data={resources} />
-                <IntegratedGrouping />
-                <IntegratedEditing />
-                <AppointmentTooltip
-                    commandButtonComponent={CustomCommandButton}
-                    contentComponent={CustomContentComponentTooltip}
-                    showCloseButton
-                    showDeleteButton
-                />
-                <Toolbar
-                    rootComponent={(toolbarProps: any) => (
-                        <CustomToolbar
-                            {...toolbarProps}
-                            tomorrow={shiftTomorrow}
-                            handleClick={handleShiftTomorrow}
-                        />
-                    )}
-                />
-                <DateNavigator />
-                <TodayButton messages={{ today: "Hoy" }} />
-                <ConfirmationDialog messages={customDialogMessage} />
-                <AppointmentForm
-                    messages={customDialogMessage}
-                    commandLayoutComponent={CustomAdminComandButtonComponent}
-                    basicLayoutComponent={EnhancedCustomAdminAppointmentBasicLayout}
-                />
-                <GroupingPanel />
-            </Scheduler>
+                    <DayView
+                        intervalCount={2}
+                        startDayHour={shiftTomorrow ? 8 : 16}
+                        endDayHour={shiftTomorrow ? closeMorningHour : closeAfternoonHour}
+                        cellDuration={15}
+                        timeTableCellComponent={(props: DayView.TimeTableCellProps) => (
+                            <AdminCustomTimeTableCell {...props} />
+                        )}
+                    />
+                    <Appointments appointmentComponent={AdminCustomAppointment} />
+                    <Resources data={resources} />
+                    <IntegratedGrouping />
+                    <IntegratedEditing />
+                    <AppointmentTooltip
+                        commandButtonComponent={CustomCommandButton}
+                        contentComponent={CustomContentComponentTooltip}
+                        showCloseButton
+                        showDeleteButton
+                    />
+                    <Toolbar
+                        rootComponent={(toolbarProps: any) => (
+                            <CustomToolbar
+                                {...toolbarProps}
+                                tomorrow={shiftTomorrow}
+                                handleClick={handleShiftTomorrow}
+                            />
+                        )}
+                    />
+                    <DateNavigator />
+                    <TodayButton messages={{ today: "Hoy" }} />
+                    <ConfirmationDialog messages={customDialogMessage} />
+                    <AppointmentForm
+                        messages={customDialogMessage}
+                        commandLayoutComponent={CustomAdminComandButtonComponent}
+                        basicLayoutComponent={EnhancedCustomAdminAppointmentBasicLayout}
+                    />
+                    <GroupingPanel />
+                </Scheduler>
+            )}
         </Paper>
     );
 };
