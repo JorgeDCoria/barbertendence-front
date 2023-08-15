@@ -5,10 +5,6 @@ import {
     useTheme,
     Card,
     CardMedia,
-    FormControl,
-    Select,
-    MenuItem,
-    InputLabel,
     Drawer,
     IconButton,
     Accordion,
@@ -19,7 +15,6 @@ import {
     List,
     ListItem,
     ListItemButton,
-    ListItemIcon,
     ListItemText,
     Divider,
 } from "@mui/material";
@@ -33,30 +28,12 @@ import dayjs, { Dayjs } from "dayjs";
 import { CalendarPicker } from "@mui/x-date-pickers";
 import s from "../admin.module.css";
 import { Barber } from "../../../types/Barber";
-import { useDispatch } from "react-redux";
 import { actionGetAppointmentsByBarber } from "../../../redux/actions/appointmentActions";
+import { useAppDispatch, useAppSelector } from "../../../hook/useStore";
+import { actionGetAllBarber } from "../../../redux/actions/barberActions";
 
 const listMenuTurnos: string[] = ["Pendientes", "Vencidas", "Otros"];
-const barbers: Barber[] = [
-    {
-        avatar: "",
-        description: "",
-        id: "1",
-        name: "Alan",
-    },
-    {
-        avatar: "",
-        description: "",
-        id: "2",
-        name: "Juan",
-    },
-    {
-        avatar: "",
-        description: "",
-        id: "3",
-        name: "Jorge",
-    },
-];
+
 interface Props {
     showSideBar: boolean | undefined;
     handleShowSideBar: () => void;
@@ -71,12 +48,14 @@ const SideBar: React.FC<Props> = ({
     currentDate,
     handleChangeDate,
 }) => {
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
     const theme: Theme = useTheme();
     const drawerWidth = 350;
     const draweHeaderHeight = 48;
     const [expanded, setExpanded] = useState<string | false>(false);
+    const { barbersSelected: barbers } = useAppSelector((state) => state.barbers);
     const dayCalendar = dayjs(currentDate);
+
     const handleChangeAccordion =
         (panel: string) => (event: React.SyntheticEvent, isExpanded: boolean) => {
             setExpanded(isExpanded ? panel : false);
@@ -88,6 +67,7 @@ const SideBar: React.FC<Props> = ({
             handleChangeDate(aux);
         }
     };
+
     return (
         <Drawer
             open={showSideBar}
@@ -223,20 +203,21 @@ const SideBar: React.FC<Props> = ({
                             </AccordionSummary>
                             <AccordionDetails>
                                 <List>
-                                    {barbers.map((barber) => (
-                                        <ListItem key={barber.id}>
-                                            <ListItemButton
-                                                onClick={() =>
-                                                    dispatch(
-                                                        actionGetAppointmentsByBarber(barber.id)
-                                                    )
-                                                }
-                                            >
-                                                <ListItemText primary={barber.name} />
-                                            </ListItemButton>{" "}
-                                            <Divider sx={{ background: "white" }} />
-                                        </ListItem>
-                                    ))}
+                                    {barbers &&
+                                        barbers.map((barber) => (
+                                            <ListItem key={barber.id}>
+                                                <ListItemButton
+                                                    onClick={() =>
+                                                        dispatch(
+                                                            actionGetAppointmentsByBarber(barber.id)
+                                                        )
+                                                    }
+                                                >
+                                                    <ListItemText primary={barber.name} />
+                                                </ListItemButton>{" "}
+                                                <Divider sx={{ background: "white" }} />
+                                            </ListItem>
+                                        ))}
                                 </List>
                             </AccordionDetails>
                         </Accordion>
