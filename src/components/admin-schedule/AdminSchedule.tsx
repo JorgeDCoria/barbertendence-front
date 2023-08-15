@@ -70,7 +70,7 @@ interface AdminScheduleProps {
 const AdminSchedule: React.FC<AdminScheduleProps> = ({ currentDate, handleChangeDate }) => {
     // const [appointments, setAppointments] = useState<Appointment[]>(appointmentsData);
     const { appointments } = useAppSelector((state) => state.appointments);
-    const { barbers } = useAppSelector((state) => state.barbers);
+    const { barbersSelected: barbers } = useAppSelector((state) => state.barbers);
     // const [currentDate, setCurrentDate] = useState<Date>(new Date());
     const [addedAppointment, setAddedAppointment] = useState<Appointment>({} as Appointment);
     const [barberData, setBarberData] = useState<BarberResource[]>([] as BarberResource[]);
@@ -364,7 +364,7 @@ const AdminSchedule: React.FC<AdminScheduleProps> = ({ currentDate, handleChange
 
     return (
         <Paper sx={{ position: "relative", height: "80vh", p: 4 }}>
-            {barbers && (
+            {barbers && resources && (
                 <Scheduler data={appointments}>
                     {" "}
                     <ViewState currentDate={currentDate} onCurrentDateChange={handleChangeDate} />

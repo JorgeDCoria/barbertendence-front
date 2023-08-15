@@ -18,12 +18,12 @@ export const barberSlice = createSlice({
         getAllBarbers: (state, action: PayloadAction<Barber[]>) => {
             state.barbers = action.payload;
         },
-        getBarbersSelect: (state, action: PayloadAction<Barber[]>) => {
+        setBarbersSelect: (state, action: PayloadAction<Barber[]>) => {
             state.barbersSelected = action.payload;
         },
     },
 });
 
-export const { getAllBarbers, getBarbersSelect } = barberSlice.actions;
+export const { getAllBarbers, setBarbersSelect } = barberSlice.actions;
 
 export default barberSlice.reducer;

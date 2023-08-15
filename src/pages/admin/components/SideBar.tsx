@@ -17,6 +17,7 @@ import {
     ListItemButton,
     ListItemText,
     Divider,
+    Checkbox,
 } from "@mui/material";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
@@ -31,6 +32,7 @@ import { Barber } from "../../../types/Barber";
 import { actionGetAppointmentsByBarber } from "../../../redux/actions/appointmentActions";
 import { useAppDispatch, useAppSelector } from "../../../hook/useStore";
 import { actionGetAllBarber } from "../../../redux/actions/barberActions";
+import ListBarbersCheck from "./ListBarbersCheck";
 
 const listMenuTurnos: string[] = ["Pendientes", "Vencidas", "Otros"];
 
@@ -201,25 +203,7 @@ const SideBar: React.FC<Props> = ({
                             >
                                 <Typography>Barberos </Typography>
                             </AccordionSummary>
-                            <AccordionDetails>
-                                <List>
-                                    {barbers &&
-                                        barbers.map((barber) => (
-                                            <ListItem key={barber.id}>
-                                                <ListItemButton
-                                                    onClick={() =>
-                                                        dispatch(
-                                                            actionGetAppointmentsByBarber(barber.id)
-                                                        )
-                                                    }
-                                                >
-                                                    <ListItemText primary={barber.name} />
-                                                </ListItemButton>{" "}
-                                                <Divider sx={{ background: "white" }} />
-                                            </ListItem>
-                                        ))}
-                                </List>
-                            </AccordionDetails>
+                            <AccordionDetails>{barbers && <ListBarbersCheck />}</AccordionDetails>
                         </Accordion>
                     </Box>
                     <Box display={"flex"} flexDirection={"column"} gap={1}>

@@ -1,5 +1,5 @@
 import { Dispatch } from "@reduxjs/toolkit";
-import { getAllBarbers, getBarbersSelect } from "../slices/barberSlice";
+import { getAllBarbers, setBarbersSelect } from "../slices/barberSlice";
 import { Barber } from "src/types/Barber";
 import { clearError, setError } from "../slices/errorSlice";
 import { StateError } from "src/types/StateError";
@@ -11,7 +11,7 @@ export const actionGetAllBarber = () => {
             dispatch(clearError());
             const barbers: Barber[] = await barberService.getAllBarbers();
             dispatch(getAllBarbers(barbers));
-            dispatch(getBarbersSelect(barbers));
+            dispatch(setBarbersSelect(barbers));
         } catch (e: any) {
             const error: StateError = { code: e.status, message: e.message };
             dispatch(setError(error));
@@ -19,8 +19,8 @@ export const actionGetAllBarber = () => {
     };
 };
 
-export const actionGetSelectBarber = (barbers: Barber[]) => {
+export const actionSetSelectBarber = (barbers: Barber[]) => {
     return (dispatch: Dispatch) => {
-        dispatch(getBarbersSelect(barbers));
+        dispatch(setBarbersSelect(barbers));
     };
 };
