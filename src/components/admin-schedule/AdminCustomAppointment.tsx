@@ -11,6 +11,8 @@ const AdminCustomAppointment: React.FC<Appointments.AppointmentProps> = ({
     data,
     ...restProps
 }) => {
+    console.log(data);
+
     const theme: Theme = useTheme();
     const service: Service | undefined = servicesBd.find((s) => s.id === data.serviceId);
     const client: User | undefined = clientsBd.find((c) => c.id === data.clientId);
@@ -59,7 +61,7 @@ const AdminCustomAppointment: React.FC<Appointments.AppointmentProps> = ({
                     >
                         {dayjs(data.endDate).format("HH:mm")}
                     </Typography>
-                    <Typography>{client?.nombreApellido}</Typography>
+                    <Typography>{client?.fullName}</Typography>
                 </Stack>
             </Appointments.Appointment>
         </>
