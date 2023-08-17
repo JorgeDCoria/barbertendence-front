@@ -16,9 +16,9 @@ const mapUsersApiToUsers = (data: any): User[] => {
     return data.map((serv: any) => mapUserApiToUser(serv));
 };
 
-const UserAdapter = {
+const userAdapter = {
     mapUserApiToUser,
     mapUsersApiToUsers,
 };
 
-export default UserAdapter;
+export default userAdapter;

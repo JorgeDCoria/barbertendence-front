@@ -2,17 +2,15 @@ import { type AppointmentState } from "src/types";
 import { Barber } from "./Barber";
 import { Service } from "./Service";
 import { User } from "./User";
+import { AppointmentModel } from "node_modules/@devexpress/dx-react-scheduler/dist/dx-react-scheduler";
 
-export type Appointment = {
-    id: string;
-    startDate: Date | string;
-    endDate: Date | string;
-    title: string;
+export interface Appointment extends AppointmentModel {
+    barberId: string | number;
     notes?: string;
-    barber: Barber;
-    service: Service;
-    user: User;
+    barber?: Barber;
+    service?: Service;
+    user?: User;
     state: AppointmentState;
-};
+}
 
 //pendiente, ausente, atendido, en curso, cancelado

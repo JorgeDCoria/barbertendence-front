@@ -27,6 +27,7 @@ const mapBarbersApiToBarbers = (data: any): Barber[] => {
 const barberAdapter = {
     mapBarberToBarberInstanceResource,
     mapBarbersApiToBarbers,
+    mapBarberApiToBarber,
 };
 
 export default barberAdapter;
