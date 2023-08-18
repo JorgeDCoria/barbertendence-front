@@ -1,10 +1,11 @@
 import { Appointment } from "src/types/Appointment";
-import { appointmentsBd } from "../data/data";
 import { StateError } from "src/types/StateError";
+import adapterAppointment from "../adapters/appointmentAdapter";
+import data from "../data/appointments.json";
 
 const getAppointments = (): Appointment[] => {
     try {
-        return appointmentsBd;
+        return adapterAppointment.mapAppointmentsApiToAppointments(data);
     } catch (e: any) {
         throw e;
     }

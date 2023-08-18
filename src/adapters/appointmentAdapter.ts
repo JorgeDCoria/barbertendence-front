@@ -3,6 +3,11 @@ import serviceAdapter from "./serviceAdapter";
 import userAdapter from "./userAdapter";
 import barberAdapter from "./barberAdapter";
 const mapAppointmentApiToAppointment = (data: any): Appointment => {
+    console.log(`barber ${data.barber.name}`);
+
+    console.log(new Date(data.endDate));
+    console.log(new Date(data.startDate));
+
     return {
         id: data.id,
         startDate: data.startDate,
