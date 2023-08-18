@@ -68,9 +68,11 @@ interface AdminScheduleProps {
 }
 const AdminSchedule: React.FC<AdminScheduleProps> = ({ currentDate, handleChangeDate }) => {
     // const [appointments, setAppointments] = useState<Appointment[]>(appointmentsData);
-    const { appointments: data } = useAppSelector((state) => state.appointments);
-    let appointments: Appointment[] = [...data];
-    // const usaTime = (date:string) => new Date(date).toLocaleString('en-US', { timeZone: 'America/Los_Angeles' });
+    const { appointments } = useAppSelector((state) => state.appointments);
+
+    console.log(appointments);
+
+    //const usaTime = (date:string) => new Date(date).toLocaleString('en-US', { timeZone: 'America/Los_Angeles' });
 
     const { barbersSelected: barbers } = useAppSelector((state) => state.barbers);
     // const [currentDate, setCurrentDate] = useState<Date>(new Date());
@@ -364,7 +366,7 @@ const AdminSchedule: React.FC<AdminScheduleProps> = ({ currentDate, handleChange
     return (
         <Paper sx={{ position: "relative", height: "80vh", p: 4 }}>
             {barbers && resources && appointments && (
-                <Scheduler data={appointments}>
+                <Scheduler data={appointments} locale="es-AR">
                     {console.log(appointments)}
                     <ViewState currentDate={currentDate} onCurrentDateChange={handleChangeDate} />
                     <EditingState

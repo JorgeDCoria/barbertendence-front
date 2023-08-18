@@ -5,13 +5,13 @@ import barberAdapter from "./barberAdapter";
 const mapAppointmentApiToAppointment = (data: any): Appointment => {
     console.log(`barber ${data.barber.name}`);
 
-    console.log(new Date(data.endDate));
-    console.log(new Date(data.startDate));
+    // console.log(new Date(data.endDate).toLocaleDateString());
+    // console.log(new Date(data.startDate).toDateString());
 
     return {
         id: data.id,
-        startDate: data.startDate,
-        endDate: data.endDate,
+        startDate: new Date(data.startDate).toISOString(),
+        endDate: new Date(data.endDate).toISOString(),
         title: data.service.name,
         service: serviceAdapter.mapServiceApiToService(data.service),
         barber: barberAdapter.mapBarberApiToBarber(data.barber),
