@@ -1,4 +1,8 @@
-import { getAllAppointments, getAppointmentsByBarber } from "../slices/appointmentSlice";
+import {
+    getAllAppointments,
+    getAppointmentsByBarber,
+    getAppointmentsByState,
+} from "../slices/appointmentSlice";
 import { Appointment } from "../../types/Appointment";
 import appointmentService from "../../service/appointmentService";
 import { Dispatch } from "@reduxjs/toolkit";
@@ -21,5 +25,17 @@ export const actionGetAppointments = () => {
 export const actionGetAppointmentsByBarber = (id: string) => {
     return (dispatch: Dispatch) => {
         dispatch(getAppointmentsByBarber(id));
+    };
+};
+
+export const actionGetAppointmentsByState = (state: string) => {
+    return async (dispatch: Dispatch) => {
+        try {
+            const appointments: Appointment[] = appointmentService.getAppointments(state);
+            dispatch(getAppointmentsByState(appointments));
+        } catch (e: any) {
+            const error: StateError = { code: e.status, message: e.message };
+            dispatch(setError(error));
+        }
     };
 };

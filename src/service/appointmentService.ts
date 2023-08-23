@@ -1,11 +1,15 @@
 import { Appointment } from "src/types/Appointment";
-import { StateError } from "src/types/StateError";
 import appointmentAdapter from "../adapters/appointmentAdapter";
 import data from "../data/appointments.json";
 
-const getAppointments = (): Appointment[] => {
+const getAppointments = (state: string = "ALL"): Appointment[] => {
     try {
-        return appointmentAdapter.mapAppointmentsApiToAppointments(data);
+        if (state === "ALL") return appointmentAdapter.mapAppointmentsApiToAppointments(data);
+        else {
+            return appointmentAdapter.mapAppointmentsApiToAppointments(
+                data.filter((app) => app.state.toUpperCase() === state.toUpperCase())
+            );
+        }
     } catch (e: any) {
         throw e;
     }

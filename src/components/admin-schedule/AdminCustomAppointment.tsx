@@ -59,9 +59,13 @@ const AdminCustomAppointment: React.FC<Appointments.AppointmentProps> = ({
                     >
                         {dayjs(data.endDate).format("HH:mm")}
                     </Typography>
-                    <Typography>
-                        {/* {data.client?.fullName} */}
-                        fullname
+                    <Typography
+                        sx={{
+                            fontSize: "0.9rem",
+                            fontWeight: "600",
+                        }}
+                    >
+                        {data.user?.fullName}
                     </Typography>
                 </Stack>
             </Appointments.Appointment>

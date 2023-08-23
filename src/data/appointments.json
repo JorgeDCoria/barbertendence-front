@@ -1,8 +1,8 @@
 [
   {
     "title": "Website Re-Design Plan",
-    "startDate": "2023-08-18T10:30:00.000Z",
-    "endDate": "2023-08-18T11:30:00.000Z",
+    "startDate": "2023-08-23T10:30:00.000Z",
+    "endDate": "2023-08-23T11:30:00.000Z",
     "id": "0",
     "service": {
       "id": "6",
@@ -30,10 +30,10 @@
     "state": "atendido"
   },
   {
-    "id": 1,
+    "id": "1",
     "title": "Book Flights to San Fran for Sales Trip",
-    "startDate": "2023-08-19T11:30:00.000Z",
-    "endDate": "2023-08-19T12:00:00.000Z",
+    "startDate": "2023-08-23T11:30:00.000Z",
+    "endDate": "2023-08-23T12:00:00.000Z",
     "service": {
       "id": "5",
       "name": "corte niño",
@@ -60,10 +60,10 @@
     "state": "pendiente"
   },
   {
-    "id": 2,
+    "id": "2",
     "title": "Install New Router in Dev Room",
-    "startDate": "2023-08-19T08:30:00.000Z",
-    "endDate": "2023-08-19T09:30:00.000Z",
+    "startDate": "2023-08-23T08:30:00.000Z",
+    "endDate": "2023-08-23T09:30:00.000Z",
     "service": {
       "id": "4",
       "name": "afeitado tradicional",
@@ -87,13 +87,13 @@
       "description": "cuento con 5 años de experiencia, animate te espero",
       "avatar": ""
     },
-    "state": "pendiente"
+    "state": "Cancelado"
   },
   {
     "id": "5",
     "title": "New Brochures",
-    "startDate": "2023-08-18T10:45:00.000Z",
-    "endDate": "2023-08-18T11:15:00.000Z",
+    "startDate": "2023-08-24T10:45:00.000Z",
+    "endDate": "2023-08-24T11:15:00.000Z",
     "service": {
       "id": "2",
       "name": "corte Premium",
@@ -122,8 +122,8 @@
   {
     "id": "6",
     "title": "Install New Database",
-    "startDate": "2023-08-18T11:30:00.000Z",
-    "endDate": "2023-08-18T12:00:00.000Z",
+    "startDate": "2023-08-24T11:30:00.000Z",
+    "endDate": "2023-08-24T12:00:00.000Z",
     "service": {
       "id": "1",
       "name": "corte de pelo",
@@ -147,13 +147,13 @@
       "description": "cuento con 5 años de experiencia, animate te espero",
       "avatar": ""
     },
-    "state": "pendiente"
+    "state": "En Proceso"
   },
   {
     "id": "7",
     "title": "Approve New Online Marketing Strategy",
-    "startDate": "2023-08-18T09:30:00.000Z",
-    "endDate": "2023-08-18T10:30:00.000Z",
+    "startDate": "2023-08-24T09:30:00.000Z",
+    "endDate": "2023-08-24T10:30:00.000Z",
     "service": {
       "id": "5",
       "name": "corte niño",
@@ -182,8 +182,8 @@
   {
     "id": "8",
     "title": "Upgrade Personal Computers",
-    "startDate": "2023-08-19T10:30:00.000Z",
-    "endDate": "2023-08-19T11:30:00.000Z",
+    "startDate": "2023-08-23T10:30:00.000Z",
+    "endDate": "2023-08-23T11:30:00.000Z",
     "service": {
       "id": "4",
       "name": "afeitado tradicional",

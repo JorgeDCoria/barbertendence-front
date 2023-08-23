@@ -17,7 +17,6 @@ import {
     ListItemButton,
     ListItemText,
     Divider,
-    Checkbox,
 } from "@mui/material";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
@@ -29,13 +28,15 @@ import dayjs, { Dayjs } from "dayjs";
 import { CalendarPicker } from "@mui/x-date-pickers";
 import s from "../admin.module.css";
 import { useAppDispatch, useAppSelector } from "../../../hook/useStore";
+import { actionGetAppointmentsByState } from "../../../redux/actions/appointmentActions";
 import ListBarbersCheck from "./ListBarbersCheck";
-const listMenuTurnos: string[] = [
-    "Pendientes",
-    "Cancelados",
-    "En Proceso",
-    "Ausentes",
-    "Atendidos",
+const listMenuTurnos = [
+    { title: "Todos", value: "ALL" },
+    { title: "Pendientes", value: "Pendiente" },
+    { title: "Cancelados", value: "Cancelado" },
+    { title: "En Proceso", value: "En Proceso" },
+    { title: "Ausentes", value: "Ausente" },
+    { title: "Atendidos", value: "Atendido" },
 ];
 
 interface Props {
@@ -70,6 +71,10 @@ const SideBar: React.FC<Props> = ({
             const aux = new Date(date.toString());
             handleChangeDate(aux);
         }
+    };
+
+    const handleClickFilterByState = (state: string) => {
+        dispatch(actionGetAppointmentsByState(state));
     };
 
     return (
@@ -169,10 +174,12 @@ const SideBar: React.FC<Props> = ({
                             <AccordionDetails>
                                 <List>
                                     {listMenuTurnos.map((item) => (
-                                        <ListItem key={item}>
+                                        <ListItem key={item.title}>
                                             <Divider sx={{ background: "white" }} />
-                                            <ListItemButton>
-                                                <ListItemText primary={item} />
+                                            <ListItemButton
+                                                onClick={() => handleClickFilterByState(item.value)}
+                                            >
+                                                <ListItemText primary={item.title} />
                                             </ListItemButton>
                                         </ListItem>
                                     ))}
