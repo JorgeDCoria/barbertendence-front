@@ -2,6 +2,7 @@ import { Appointment } from "src/types/Appointment";
 import serviceAdapter from "./serviceAdapter";
 import userAdapter from "./userAdapter";
 import barberAdapter from "./barberAdapter";
+import { SchedulerDateTime } from "node_modules/@devexpress/dx-react-scheduler/dist/dx-react-scheduler";
 const mapAppointmentApiToAppointment = (data: any): Appointment => {
     console.log(`barber ${data.barber.name}`);
 
@@ -10,8 +11,8 @@ const mapAppointmentApiToAppointment = (data: any): Appointment => {
 
     return {
         id: data.id,
-        startDate: new Date(data.startDate).toISOString(),
-        endDate: new Date(data.endDate).toISOString(),
+        startDate: data.startDate,
+        endDate: data.endDate,
         title: data.service.name,
         service: serviceAdapter.mapServiceApiToService(data.service),
         barber: barberAdapter.mapBarberApiToBarber(data.barber),
@@ -25,9 +26,21 @@ const mapAppointmentsApiToAppointments = (array: any): Appointment[] => {
     return array.map((app: any) => mapAppointmentApiToAppointment(app));
 };
 
-const adapterAppointment = {
+const mapDateToDateSchedule = (date: Date | string | SchedulerDateTime): Date => {
+    const aux = new Date(date);
+
+    return new Date(
+        aux.getUTCFullYear(),
+        aux.getUTCMonth(),
+        aux.getUTCDate(),
+        aux.getUTCHours(),
+        aux.getUTCMinutes()
+    );
+};
+const appointmentAdapter = {
     mapAppointmentApiToAppointment,
     mapAppointmentsApiToAppointments,
+    mapDateToDateSchedule,
 };
 
-export default adapterAppointment;
+export default appointmentAdapter;
