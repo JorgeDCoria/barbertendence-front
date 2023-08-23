@@ -28,13 +28,15 @@ import logo from "../../../assets/logoTitle.png";
 import dayjs, { Dayjs } from "dayjs";
 import { CalendarPicker } from "@mui/x-date-pickers";
 import s from "../admin.module.css";
-import { Barber } from "../../../types/Barber";
-import { actionGetAppointmentsByBarber } from "../../../redux/actions/appointmentActions";
 import { useAppDispatch, useAppSelector } from "../../../hook/useStore";
-import { actionGetAllBarber } from "../../../redux/actions/barberActions";
 import ListBarbersCheck from "./ListBarbersCheck";
-
-const listMenuTurnos: string[] = ["Pendientes", "Vencidas", "Otros"];
+const listMenuTurnos: string[] = [
+    "Pendientes",
+    "Cancelados",
+    "En Proceso",
+    "Ausentes",
+    "Atendidos",
+];
 
 interface Props {
     showSideBar: boolean | undefined;

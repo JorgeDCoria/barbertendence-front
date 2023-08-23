@@ -39,24 +39,23 @@ import {
     TableHead,
     TableRow,
 } from "@mui/material";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import dayjs from "dayjs";
-import { Appointment } from "src/types/Appointment";
-
 import { useNotification } from "../../context/notification.context";
-
-import { clientsBd } from "../../data/data";
-import { historiesBd } from "../../data/histories";
 import CustomAdminAppointmentBasicLayout from "./CustomAdminAppointmentBasicLayout";
 import AdminCustomAppointment from "./AdminCustomAppointment";
-import { User } from "src/types/User";
-import SentimentVeryDissatisfiedIcon from "@mui/icons-material/SentimentVeryDissatisfied";
-import SentimentVerySatisfiedIcon from "@mui/icons-material/SentimentVerySatisfied";
-import { CustomError } from "../../types/CustomError";
 
 import { useAppSelector } from "../../hook/useStore";
 import { BarberResource } from "src/types/BarberResource";
+import { CustomError } from "../../types/CustomError";
+import { Appointment } from "src/types/Appointment";
+import { User } from "src/types/User";
 import barberAdapter from "../../adapters/barberAdapter";
+
+import SentimentVeryDissatisfiedIcon from "@mui/icons-material/SentimentVeryDissatisfied";
+import SentimentVerySatisfiedIcon from "@mui/icons-material/SentimentVerySatisfied";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import { clientsBd } from "../../data/data";
+import { historiesBd } from "../../data/histories";
 
 interface Resource {
     fieldName: string;
@@ -70,6 +69,11 @@ interface AdminScheduleProps {
 const AdminSchedule: React.FC<AdminScheduleProps> = ({ currentDate, handleChangeDate }) => {
     // const [appointments, setAppointments] = useState<Appointment[]>(appointmentsData);
     const { appointments } = useAppSelector((state) => state.appointments);
+
+    console.log(appointments);
+
+    //const usaTime = (date:string) => new Date(date).toLocaleString('en-US', { timeZone: 'America/Los_Angeles' });
+
     const { barbersSelected: barbers } = useAppSelector((state) => state.barbers);
     // const [currentDate, setCurrentDate] = useState<Date>(new Date());
     const [addedAppointment, setAddedAppointment] = useState<Appointment>({} as Appointment);
@@ -97,8 +101,7 @@ const AdminSchedule: React.FC<AdminScheduleProps> = ({ currentDate, handleChange
             setResources([{ fieldName: "barberId", title: "Barber", instances: aux }]);
         }
     }, [barbers]);
-    console.log(barberData);
-    console.log(resources);
+
     const grouping = [{ resourceName: "barberId" }];
     /**
      * funcion encagada de cambiar el estado de shiftTomorrow.
@@ -173,7 +176,6 @@ const AdminSchedule: React.FC<AdminScheduleProps> = ({ currentDate, handleChange
         const client: User | undefined = clientsBd.find(
             (user) => user.id === appointmentData.clientId
         );
-        console.log({ ...restProps });
         const histories = historiesBd;
 
         return (
@@ -301,7 +303,6 @@ const AdminSchedule: React.FC<AdminScheduleProps> = ({ currentDate, handleChange
         onCommitButtonClick,
         ...restProps
     }) => {
-        console.log(restProps);
         const handleClick = (): void => {
             if (formError?.state) {
                 showNotification(formError.message, "warning");
@@ -364,9 +365,9 @@ const AdminSchedule: React.FC<AdminScheduleProps> = ({ currentDate, handleChange
 
     return (
         <Paper sx={{ position: "relative", height: "80vh", p: 4 }}>
-            {barbers && resources && (
-                <Scheduler data={appointments}>
-                    {" "}
+            {barbers && resources && appointments && (
+                <Scheduler data={appointments} locale="es-AR">
+                    {console.log(appointments)}
                     <ViewState currentDate={currentDate} onCurrentDateChange={handleChangeDate} />
                     <EditingState
                         onCommitChanges={handleCommitChange}

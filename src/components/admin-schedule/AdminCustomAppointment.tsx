@@ -2,7 +2,7 @@
 import { Appointments } from "@devexpress/dx-react-scheduler-material-ui";
 import React, { useEffect } from "react";
 import { Box, Typography, Divider, Stack, Theme, useTheme, Button, Link } from "@mui/material";
-import barberLogo from "../../assets/perfil.jpg";
+
 import { servicesBd, clientsBd } from "../../data/data";
 import { Service } from "src/types/Service";
 import dayjs from "dayjs";
@@ -12,8 +12,8 @@ const AdminCustomAppointment: React.FC<Appointments.AppointmentProps> = ({
     ...restProps
 }) => {
     const theme: Theme = useTheme();
-    const service: Service | undefined = servicesBd.find((s) => s.id === data.serviceId);
-    const client: User | undefined = clientsBd.find((c) => c.id === data.clientId);
+    // const service: Service | undefined = servicesBd.find((s) => s.id === data.);
+    // const client: User | undefined = clientsBd.find((c) => c.id === data.clientId);
 
     useEffect(() => {}, []);
 
@@ -41,7 +41,7 @@ const AdminCustomAppointment: React.FC<Appointments.AppointmentProps> = ({
                             fontWeight: "600",
                         }}
                     >
-                        {service?.name}
+                        {data.title}
                     </Typography>
                     <Typography
                         sx={{
@@ -59,7 +59,10 @@ const AdminCustomAppointment: React.FC<Appointments.AppointmentProps> = ({
                     >
                         {dayjs(data.endDate).format("HH:mm")}
                     </Typography>
-                    <Typography>{client?.nombreApellido}</Typography>
+                    <Typography>
+                        {/* {data.client?.fullName} */}
+                        fullname
+                    </Typography>
                 </Stack>
             </Appointments.Appointment>
         </>
