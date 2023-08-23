@@ -2,6 +2,7 @@ import {
     getAllAppointments,
     getAppointmentsByBarber,
     getAppointmentsByState,
+    setState,
 } from "../slices/appointmentSlice";
 import { Appointment } from "../../types/Appointment";
 import appointmentService from "../../service/appointmentService";
@@ -28,11 +29,12 @@ export const actionGetAppointmentsByBarber = (id: string) => {
     };
 };
 
-export const actionGetAppointmentsByState = (state: string) => {
+export const actionGetAppointmentsByState = (state: string = "ALL") => {
     return async (dispatch: Dispatch) => {
         try {
             const appointments: Appointment[] = appointmentService.getAppointments(state);
             dispatch(getAppointmentsByState(appointments));
+            dispatch(setState(state));
         } catch (e: any) {
             const error: StateError = { code: e.status, message: e.message };
             dispatch(setError(error));

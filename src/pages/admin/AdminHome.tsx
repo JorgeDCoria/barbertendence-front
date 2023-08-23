@@ -40,7 +40,7 @@ const AdminHome: React.FC = () => {
         dispatch(actionGetAppointments());
     }, [isUpMd]);
 
-    if (!appointments && !barbers) return <>Loading ...</>;
+    if (!appointments.appointments && !barbers) return <>Loading ...</>;
     else
         return (
             <Box minHeight={"100vh"}>
@@ -85,9 +85,9 @@ const AdminHome: React.FC = () => {
                 >
                     <Typography variant="h5" align="center" color={theme.palette.primary.main}>
                         {" "}
-                        Reservas
+                        Reservas {appointments.state !== "ALL" ? `(${appointments.state})` : ""}
                     </Typography>
-                    {appointments ? (
+                    {appointments.appointments ? (
                         <AdminSchedule
                             currentDate={currentDate}
                             handleChangeDate={handleCurrentDate}
