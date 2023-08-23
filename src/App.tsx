@@ -9,6 +9,8 @@ import UserHome from "./pages/user/UserHome";
 import NewOrder from "./pages/user/NewOrder";
 import UserPerfil from "./pages/user/UserPerfil";
 import AdminHome from "./pages/admin/AdminHome";
+import ClientTable from "./pages/admin/components/ClientTable";
+import AdminLayout from "./pages/admin/AdminLayout";
 
 const App = () => {
     return (
@@ -24,7 +26,10 @@ const App = () => {
                     <Route path="newOrder" element={<NewOrder />} />
                     <Route path="perfil" element={<UserPerfil />} />
                 </Route>
-                <Route path="/admin" element={<AdminHome />} />
+                <Route path="/admin/" element={<AdminLayout />}>
+                    <Route index element={<AdminHome />} />
+                    <Route path="clients" element={<ClientTable />} />
+                </Route>
             </Routes>
         </>
     );

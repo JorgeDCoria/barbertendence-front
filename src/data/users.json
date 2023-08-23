@@ -1,0 +1,84 @@
+[
+ {
+    "id": "1",
+    "fullName": "coria josue",
+    "birthDate": "1995-08-24T00:00:00.000Z",
+    "numberPhone": "3884611502",
+    "email": "coria@gmail.com",
+    "rol": "user",
+    "token": " "
+},
+{
+  "id": "2",
+  "fullName": "tolaba juan",
+  "birthDate": "1997-05-24T00:00:00.000Z",
+  "numberPhone": "3884611502",
+  "email": "gomez@gmail.com",
+  "rol": "user",
+  "token": " "
+},
+{
+  "id": "3",
+  "fullName": "Vaca Rolando",
+  "birthDate": "1991-08-20T00:00:00.000Z",
+  "numberPhone": "3884611502",
+  "email": "rolando@gmail.com",
+  "rol": "user",
+  "token": " "
+},
+{
+  "id": "4",
+  "fullName": "Cuevas Matias",
+  "birthDate": "1995-08-24T00:00:00.000Z",
+  "numberPhone": "3884611502",
+  "email": "mattcuevas@gmail.com",
+  "rol": "user",
+  "token": " "
+},
+{
+  "id": "5",
+  "fullName": "Martinez ignacio",
+  "birthDate": "1987-01-24T00:00:00.000Z",
+  "numberPhone": "3884611502",
+  "email": "ingacio@gmail.com",
+  "rol": "user",
+  "token": " "
+},
+{
+  "id": "6",
+  "fullName": "Mercedes serrrano",
+  "birthDate": "1998-06-04T00:00:00.000Z",
+  "numberPhone": "3884611502",
+  "email": "merce_serrano@gmail.com",
+  "rol": "user",
+  "token": " "
+},
+{
+  "id": "7",
+  "fullName": "Farfan Marcos",
+  "birthDate": "1995-08-24T00:00:00.000Z",
+  "numberPhone": "3884611502",
+  "email": "farfan@gmail.com",
+  "rol": "user",
+  "token": " "
+},
+{
+  "id": "8",
+  "fullName": "Fernandez Brian",
+  "birthDate": "1998-04-24T00:00:00.000Z",
+  "numberPhone": "3884611502",
+  "email": "brianfer@gmail.com",
+  "rol": "user",
+  "token": " "
+},
+{
+  "id": "9",
+  "fullName": "Elizondo Daniel",
+  "birthDate": "1995-08-24T00:00:00.000Z",
+  "numberPhone": "3884611502",
+  "email": "ElDaniel@gmail.com",
+  "rol": "user",
+  "token": " "
+}
+
+]
