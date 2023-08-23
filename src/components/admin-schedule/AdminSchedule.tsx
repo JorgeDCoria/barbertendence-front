@@ -43,6 +43,7 @@ import dayjs from "dayjs";
 import { useNotification } from "../../context/notification.context";
 import CustomAdminAppointmentBasicLayout from "./CustomAdminAppointmentBasicLayout";
 import AdminCustomAppointment from "./AdminCustomAppointment";
+import appointmentAdapter from "../../adapters/appointmentAdapter";
 
 import { useAppSelector } from "../../hook/useStore";
 import { BarberResource } from "src/types/BarberResource";
@@ -68,9 +69,8 @@ interface AdminScheduleProps {
 }
 const AdminSchedule: React.FC<AdminScheduleProps> = ({ currentDate, handleChangeDate }) => {
     // const [appointments, setAppointments] = useState<Appointment[]>(appointmentsData);
-    const { appointments } = useAppSelector((state) => state.appointments);
-
-    console.log(appointments);
+    const { appointments: data } = useAppSelector((state) => state.appointments);
+    const [appointments, setAppointments] = useState<Appointment[] | null>(null);
 
     //const usaTime = (date:string) => new Date(date).toLocaleString('en-US', { timeZone: 'America/Los_Angeles' });
 
@@ -95,12 +95,25 @@ const AdminSchedule: React.FC<AdminScheduleProps> = ({ currentDate, handleChange
     const { showNotification } = useNotification();
 
     useEffect(() => {
-        if (barbers) {
+        if (barbers && data) {
             const aux: BarberResource[] = barberAdapter.mapBarberToBarberInstanceResource(barbers);
             setBarberData(aux);
             setResources([{ fieldName: "barberId", title: "Barber", instances: aux }]);
+
+            const updatedAppointments = data.map((element) => {
+                const startDate = appointmentAdapter.mapDateToDateSchedule(element.startDate);
+                const endDate =
+                    element.endDate != undefined
+                        ? appointmentAdapter.mapDateToDateSchedule(element.endDate)
+                        : undefined;
+
+                return { ...element, startDate, endDate };
+            });
+            console.log(updatedAppointments);
+
+            setAppointments(updatedAppointments);
         }
-    }, [barbers]);
+    }, [barbers, data]);
 
     const grouping = [{ resourceName: "barberId" }];
     /**
@@ -366,7 +379,7 @@ const AdminSchedule: React.FC<AdminScheduleProps> = ({ currentDate, handleChange
     return (
         <Paper sx={{ position: "relative", height: "80vh", p: 4 }}>
             {barbers && resources && appointments && (
-                <Scheduler data={appointments} locale="es-AR">
+                <Scheduler data={appointments}>
                     {console.log(appointments)}
                     <ViewState currentDate={currentDate} onCurrentDateChange={handleChangeDate} />
                     <EditingState
