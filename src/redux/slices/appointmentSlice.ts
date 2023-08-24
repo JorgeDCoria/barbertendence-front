@@ -1,13 +1,16 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { Appointment } from "../../types/Appointment";
+import { AppointmentHistory } from "../../types/AppointmentHistory";
 
 interface AppointmentsState {
     appointments: Appointment[];
+    appointmentsUserHistory: AppointmentHistory[] | null;
     state: string;
 }
 
 const initialState: AppointmentsState = {
     appointments: [] as Appointment[],
+    appointmentsUserHistory: null,
     state: "ALL",
 };
 export const appointmentSlice = createSlice({
@@ -28,12 +31,20 @@ export const appointmentSlice = createSlice({
             // aux = aux.filter((app) => app.state.toUpperCase() === action.payload.toUpperCase());
             state.appointments = action.payload;
         },
+        setAppointmentsUserHistory: (state, action) => {
+            state.appointmentsUserHistory = action.payload;
+        },
         setState: (state, action) => {
             state.state = action.payload;
         },
     },
 });
 
-export const { getAllAppointments, getAppointmentsByBarber, getAppointmentsByState, setState } =
-    appointmentSlice.actions;
+export const {
+    getAllAppointments,
+    getAppointmentsByBarber,
+    getAppointmentsByState,
+    setState,
+    setAppointmentsUserHistory,
+} = appointmentSlice.actions;
 export default appointmentSlice.reducer;

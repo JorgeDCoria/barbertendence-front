@@ -1,6 +1,7 @@
 import { Appointment } from "src/types/Appointment";
 import appointmentAdapter from "../adapters/appointmentAdapter";
 import data from "../data/appointments.json";
+import { AppointmentHistory } from "../types/AppointmentHistory";
 
 const getAppointments = (state: string = "ALL"): Appointment[] => {
     try {
@@ -15,8 +16,21 @@ const getAppointments = (state: string = "ALL"): Appointment[] => {
     }
 };
 
+const getAppointmentsByUser = (id: string): AppointmentHistory[] => {
+    try {
+        const histories: AppointmentHistory[] =
+            appointmentAdapter.mapAppointmentsApiToAppointmentHistories(
+                data.filter((app) => app.user.id === id)
+            );
+        return histories;
+    } catch (e: any) {
+        throw e;
+    }
+};
+
 const appointmentService = {
     getAppointments,
+    getAppointmentsByUser,
 };
 
 export default appointmentService;
