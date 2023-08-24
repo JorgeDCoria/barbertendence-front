@@ -13,7 +13,7 @@ const mapUserApiToUser = (data: any): User => {
 };
 
 const mapUsersApiToUsers = (data: any): User[] => {
-    return data.map((serv: any) => mapUserApiToUser(serv));
+    return data.map((user: any) => mapUserApiToUser(user));
 };
 
 const userAdapter = {
