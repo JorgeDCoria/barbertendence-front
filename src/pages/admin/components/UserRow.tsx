@@ -1,25 +1,17 @@
 import React from "react";
 import { User } from "../../../types/User";
-import {
-    TableCell,
-    TableRow,
-    IconButton,
-    Collapse,
-    Typography,
-    Box,
-    Table,
-    TableHead,
-    TableBody,
-} from "@mui/material";
+import { TableCell, TableRow, IconButton, Collapse, Theme, useTheme } from "@mui/material";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import dayjs from "dayjs";
+import UserHistoriesTable from "./UserHistoriesTable";
 
 interface UserRowProps {
     user: User;
 }
 const UserRow: React.FC<UserRowProps> = ({ user }) => {
     const [open, setOpen] = React.useState(false);
+    const theme: Theme = useTheme();
     return (
         <>
             <TableRow sx={{ "& > *": { borderBottom: "unset" } }}>
@@ -40,55 +32,15 @@ const UserRow: React.FC<UserRowProps> = ({ user }) => {
             </TableRow>
             <TableRow>
                 <TableCell
-                    style={{ paddingBottom: 0, paddingTop: 0, border: "2px solid red" }}
+                    style={{
+                        paddingBottom: 0,
+                        paddingTop: 0,
+                        border: `1px solid ${theme.palette.primary.main}`,
+                    }}
                     colSpan={6}
                 >
                     <Collapse in={open} timeout="auto" unmountOnExit>
-                        <Box sx={{ margin: 1 }}>
-                            <Typography variant="h6" gutterBottom component="div">
-                                Historia
-                            </Typography>
-                            <Box
-                                sx={{
-                                    display: "flex",
-                                    justifyContent: "center",
-                                }}
-                            >
-                                <Table
-                                    size="small"
-                                    aria-label="purchases"
-                                    sx={{
-                                        width: { sx: "100%", md: "70%" },
-                                    }}
-                                >
-                                    <TableHead>
-                                        <TableRow>
-                                            <TableCell>Fecha</TableCell>
-                                            <TableCell>Servicio</TableCell>
-                                            <TableCell>Profesional</TableCell>
-                                            <TableCell align="right">Estado</TableCell>
-                                        </TableRow>
-                                    </TableHead>
-                                    <TableBody>
-                                        {" "}
-                                        Cuerpo
-                                        {/* {row.history.map((historyRow) => (
-                                        <TableRow key={historyRow.date}>
-                                            <TableCell component="th" scope="row">
-                                                {historyRow.date}
-                                            </TableCell>
-                                            <TableCell>{historyRow.customerId}</TableCell>
-                                            <TableCell align="right">{historyRow.amount}</TableCell>
-                                            <TableCell align="right">
-                                                {Math.round(historyRow.amount * row.price * 100) /
-                                                    100}
-                                            </TableCell>
-                                        </TableRow>
-                                    ))} */}
-                                    </TableBody>
-                                </Table>
-                            </Box>
-                        </Box>
+                        {user.id && <UserHistoriesTable id={user.id} />}
                     </Collapse>
                 </TableCell>
             </TableRow>
