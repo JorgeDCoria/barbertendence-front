@@ -1,22 +1,35 @@
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "../../../hook/useStore";
 import { actionGetAllUser } from "../../../redux/actions/userAction";
-
-import { Container } from "@mui/material";
-
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
-import TableContainer from "@mui/material/TableContainer";
-import TableHead from "@mui/material/TableHead";
-import TableRow from "@mui/material/TableRow";
-import Paper from "@mui/material/Paper";
+import {
+    Table,
+    TablePagination,
+    Container,
+    TableBody,
+    TableCell,
+    TableContainer,
+    TableHead,
+    TableRow,
+    Paper,
+} from "@mui/material";
 
 import UserRow from "./UserRow";
 
 const ClientTable: React.FC = () => {
     const dispatch = useAppDispatch();
     const { users } = useAppSelector((state) => state.userSate);
+    const [page, setPage] = useState(0);
+    const [rowsPerPage, setRowsPerPage] = useState(5);
+
+    const handleChangePage = (event: unknown, newPage: number) => {
+        setPage(newPage);
+    };
+
+    const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setRowsPerPage(+event.target.value);
+        setPage(0);
+    };
+
     useEffect(() => {
         dispatch(actionGetAllUser());
     }, []);
@@ -30,7 +43,7 @@ const ClientTable: React.FC = () => {
         >
             ClientTable
             <TableContainer component={Paper}>
-                <Table aria-label="collapsible table">
+                <Table aria-label="collapsible table" stickyHeader>
                     <TableHead>
                         <TableRow>
                             <TableCell />
@@ -42,8 +55,21 @@ const ClientTable: React.FC = () => {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {users && users.map((user) => <UserRow key={user.id} user={user} />)}
+                        {users &&
+                            users
+                                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                                .map((user) => <UserRow key={user.id} user={user} />)}
                     </TableBody>
+
+                    <TablePagination
+                        rowsPerPageOptions={[5, 10, 15]}
+                        component={"div"}
+                        count={users ? users?.length : 0}
+                        rowsPerPage={rowsPerPage}
+                        page={page}
+                        onPageChange={handleChangePage}
+                        onRowsPerPageChange={handleChangeRowsPerPage}
+                    />
                 </Table>
             </TableContainer>
         </Container>
