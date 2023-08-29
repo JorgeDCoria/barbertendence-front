@@ -60,18 +60,18 @@ const ClientTable: React.FC = () => {
                                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                                 .map((user) => <UserRow key={user.id} user={user} />)}
                     </TableBody>
-
-                    <TablePagination
-                        rowsPerPageOptions={[5, 10, 15]}
-                        component={"div"}
-                        count={users ? users?.length : 0}
-                        rowsPerPage={rowsPerPage}
-                        page={page}
-                        onPageChange={handleChangePage}
-                        onRowsPerPageChange={handleChangeRowsPerPage}
-                    />
                 </Table>
             </TableContainer>
+            <TablePagination
+                rowsPerPageOptions={[5, 10, 15]}
+                component={"div"}
+                count={users ? users?.length : 0}
+                rowsPerPage={rowsPerPage}
+                page={page}
+                onPageChange={handleChangePage}
+                onRowsPerPageChange={handleChangeRowsPerPage}
+                sx={{ mt: "2rem" }}
+            />
         </Container>
     );
 };

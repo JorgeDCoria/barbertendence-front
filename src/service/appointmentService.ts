@@ -16,12 +16,15 @@ const getAppointments = (state: string = "ALL"): Appointment[] => {
     }
 };
 
-const getAppointmentsByUser = (id: string): AppointmentHistory[] => {
+const getAppointmentsByUser = async (id: string): Promise<AppointmentHistory[]> => {
+    console.log("llege al service");
+
     try {
         const histories: AppointmentHistory[] =
             appointmentAdapter.mapAppointmentsApiToAppointmentHistories(
                 data.filter((app) => app.user.id === id)
             );
+
         return histories;
     } catch (e: any) {
         throw e;

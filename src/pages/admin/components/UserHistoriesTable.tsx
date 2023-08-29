@@ -12,30 +12,45 @@ import {
     Theme,
     useTheme,
 } from "@mui/material";
-import { useAppDispatch, useAppSelector } from "../../../hook/useStore";
-import {
-    actionClearAppointmentsUserHistories,
-    actionGetAppointmentsUserHistories,
-} from "../../../redux/actions/appointmentActions";
 import dayjs from "dayjs";
+import { useUserHistories } from "../../../hook/useUserHistories";
 
 interface UserHistoriesTableProps {
     id: string;
 }
 const UserHistoriesTable: React.FC<UserHistoriesTableProps> = ({ id }) => {
-    const dispatch = useAppDispatch();
-    const { appointmentsUserHistory } = useAppSelector((state) => state.appointments);
     const theme: Theme = useTheme();
+    const { histories, error, loading } = useUserHistories(id);
 
-    useEffect(() => {
-        dispatch(actionGetAppointmentsUserHistories(id));
+    useEffect(() => {}, [histories]);
 
-        return () => {
-            dispatch(actionClearAppointmentsUserHistories());
-        };
-    }, []);
+    if (loading)
+        return (
+            <Box display={"flex"} justifyContent={"center"}>
+                <Stack spacing={1} width={{ sx: "100%", md: "70%" }}>
+                    <Skeleton variant="text" sx={{ fontSize: "1.5rem", width: "15ch" }} />
 
-    if (appointmentsUserHistory)
+                    <Skeleton variant="rectangular" height={"80px"} width={"100%"} />
+                </Stack>
+            </Box>
+        );
+    else if (error) {
+        return (
+            <Box
+                display={"grid"}
+                sx={{
+                    background: theme.palette.primary.light,
+                    placeContent: "center",
+                    p: 2,
+                }}
+            >
+                <Typography variant="h4" color={"red"}>
+                    Error
+                </Typography>
+                <Typography> {error.message}</Typography>
+            </Box>
+        );
+    } else
         return (
             <Box sx={{ margin: 1, background: theme.palette.primary.light, padding: 1 }}>
                 <Typography variant="h6" gutterBottom component="div">
@@ -63,7 +78,7 @@ const UserHistoriesTable: React.FC<UserHistoriesTableProps> = ({ id }) => {
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                            {appointmentsUserHistory.map((h) => (
+                            {histories?.map((h) => (
                                 <TableRow key={h.id}>
                                     <TableCell component="th" scope="row">
                                         {dayjs(h.date).format("DD/MM/YYYY-HH:mm")}
@@ -76,16 +91,6 @@ const UserHistoriesTable: React.FC<UserHistoriesTableProps> = ({ id }) => {
                         </TableBody>
                     </Table>
                 </Box>
-            </Box>
-        );
-    else
-        return (
-            <Box display={"flex"} justifyContent={"center"}>
-                <Stack spacing={1} width={{ sx: "100%", md: "70%" }}>
-                    <Skeleton variant="text" sx={{ fontSize: "1.5rem", width: "15ch" }} />
-
-                    <Skeleton variant="rectangular" height={"80px"} width={"100%"} />
-                </Stack>
             </Box>
         );
 };
