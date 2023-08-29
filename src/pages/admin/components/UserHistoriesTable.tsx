@@ -100,16 +100,23 @@ const UserHistoriesTable: React.FC<UserHistoriesTableProps> = ({ id }) => {
                                     </TableRow>
                                 </TableHead>
                                 <TableBody>
-                                    {histories?.map((h) => (
-                                        <TableRow key={h.id}>
-                                            <TableCell component="th" scope="row">
-                                                {dayjs(h.date).format("DD/MM/YYYY-HH:mm")}
-                                            </TableCell>
-                                            <TableCell align="right">{h.service.name}</TableCell>
-                                            <TableCell align="right">{h.barber.name}</TableCell>
-                                            <TableCell align="right">{h.state}</TableCell>
-                                        </TableRow>
-                                    ))}
+                                    {histories
+                                        ?.slice(
+                                            page * rowsPerPage,
+                                            page * rowsPerPage + rowsPerPage
+                                        )
+                                        .map((h) => (
+                                            <TableRow key={h.id}>
+                                                <TableCell component="th" scope="row">
+                                                    {dayjs(h.date).format("DD/MM/YYYY-HH:mm")}
+                                                </TableCell>
+                                                <TableCell align="right">
+                                                    {h.service.name}
+                                                </TableCell>
+                                                <TableCell align="right">{h.barber.name}</TableCell>
+                                                <TableCell align="right">{h.state}</TableCell>
+                                            </TableRow>
+                                        ))}
                                 </TableBody>
                             </Table>
                         </TableContainer>

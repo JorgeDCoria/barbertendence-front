@@ -15,8 +15,10 @@ import {
     useTheme,
     Typography,
 } from "@mui/material";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 
 import UserRow from "./UserRow";
+import { useNavigate } from "react-router-dom";
 
 const ClientTable: React.FC = () => {
     const theme: Theme = useTheme();
@@ -24,6 +26,7 @@ const ClientTable: React.FC = () => {
     const { users } = useAppSelector((state) => state.userSate);
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(5);
+    const navigate = useNavigate();
 
     const handleChangePage = (event: unknown, newPage: number) => {
         setPage(newPage);
@@ -42,14 +45,34 @@ const ClientTable: React.FC = () => {
         <Container
             maxWidth={"xl"}
             sx={{
-                border: "2px solid red",
                 minHeight: "100vh",
                 display: "flex",
                 flexDirection: "column",
                 justifyContent: "space-around",
             }}
         >
-            <Typography textAlign={"center"} color={theme.palette.primary.main} variant="h3">
+            <Typography
+                textAlign={"center"}
+                color={theme.palette.primary.main}
+                variant="h4"
+                sx={{ position: "relative" }}
+            >
+                <ArrowBackIcon
+                    fontSize="large"
+                    onClick={() => navigate("/admin/")}
+                    sx={{
+                        position: "absolute",
+                        left: "10px",
+                        top: "5px",
+                        cursor: "pointer",
+                        "&:hover": {
+                            color: theme.palette.primary.dark,
+                            scale: "1.2",
+                            background: theme.palette.primary.light,
+                            borderRadius: 50,
+                        },
+                    }}
+                />
                 usuarios
             </Typography>
             <TableContainer component={Paper}>

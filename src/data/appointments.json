@@ -1,8 +1,8 @@
 [
   {
     "title": "Website Re-Design Plan",
-    "startDate": "2023-08-23T10:30:00.000Z",
-    "endDate": "2023-08-23T11:30:00.000Z",
+    "startDate": "2023-08-29T10:30:00.000Z",
+    "endDate": "2023-08-29T11:30:00.000Z",
     "id": "0",
     "service": {
       "id": "6",
@@ -13,13 +13,13 @@
       "description": "Arrego de cejas con disminucion, utilizamos tecnicas especializadas para que tus cejas queden implecables."
     },
     "user": {
-      "id": "9",
-      "email": "email@gmail",
-      "birthDate": "2000-07-28T11:00:00.000Z",
-      "fullName": "Sebastian",
-      "numberPhone": "39923993238",
-      "rol":"",
-      "token":""
+      "id": "1",
+      "fullName": "coria josue",
+      "birthDate": "1995-08-24T00:00:00.000Z",
+      "numberPhone": "3884611502",
+      "email": "coria@gmail.com",
+      "rol": "user",
+      "token": " "
     },
     "barber": {
       "id": "3",
@@ -32,8 +32,8 @@
   {
     "id": "1",
     "title": "Book Flights to San Fran for Sales Trip",
-    "startDate": "2023-08-23T11:30:00.000Z",
-    "endDate": "2023-08-23T12:00:00.000Z",
+    "startDate": "2023-08-30T11:30:00.000Z",
+    "endDate": "2023-08-30T12:00:00.000Z",
     "service": {
       "id": "5",
       "name": "corte niño",
@@ -43,13 +43,13 @@
       "description": "Corte de pelo clasico o degradado para niños hasta 12 años "
     },
     "user": {
-      "id": "10",
-      "email": "email@gmail",
-      "birthDate": "2000-07-28T11:00:00.000Z",
-      "fullName": "lauturo",
-      "numberPhone": "39923993238",
-      "rol":"",
-      "token":""
+      "id": "1",
+      "fullName": "coria josue",
+      "birthDate": "1995-08-24T00:00:00.000Z",
+      "numberPhone": "3884611502",
+      "email": "coria@gmail.com",
+      "rol": "user",
+      "token": " "
     },
     "barber": {
       "id": "1",
@@ -62,8 +62,8 @@
   {
     "id": "2",
     "title": "Install New Router in Dev Room",
-    "startDate": "2023-08-23T08:30:00.000Z",
-    "endDate": "2023-08-23T09:30:00.000Z",
+    "startDate": "2023-08-30T08:30:00.000Z",
+    "endDate": "2023-08-30T09:30:00.000Z",
     "service": {
       "id": "4",
       "name": "afeitado tradicional",
@@ -73,13 +73,13 @@
       "description": "ageitado o arreglo de barba con el metodo tradicional, toallas calientes/frias y vapor de ozono."
     },
     "user": {
-      "id": "5",
-      "email": "email@gmail",
-      "birthDate": "2000-07-28T11:00:00.000Z",
-      "fullName": "David",
-      "numberPhone": "39923993238",
-      "rol":"",
-      "token":""
+      "id": "1",
+    "fullName": "coria josue",
+    "birthDate": "1995-08-24T00:00:00.000Z",
+    "numberPhone": "3884611502",
+    "email": "coria@gmail.com",
+    "rol": "user",
+    "token": " "
     },
     "barber": {
       "id": "1",
@@ -92,8 +92,8 @@
   {
     "id": "5",
     "title": "New Brochures",
-    "startDate": "2023-08-24T10:45:00.000Z",
-    "endDate": "2023-08-24T11:15:00.000Z",
+    "startDate": "2023-08-29T08:00:00.000Z",
+    "endDate": "2023-08-29T09:00:00.000Z",
     "service": {
       "id": "2",
       "name": "corte Premium",
@@ -103,13 +103,13 @@
       "description": "Corte de pelo ya sea clasico o degradado con un margen de trabajo mas amplio asesoramiento de visagismo y productos premium para un acabado aun mas profesional."
     },
     "user": {
-      "id": "7",
-      "email": "email@gmail",
-      "birthDate": "2000-07-28T11:00:00.000Z",
-      "fullName": "Sebastian",
-      "numberPhone": "39923993238",
-      "rol":"",
-      "token":""
+      "id": "2",
+  "fullName": "tolaba juan",
+  "birthDate": "1997-05-24T00:00:00.000Z",
+  "numberPhone": "3884611502",
+  "email": "gomez@gmail.com",
+  "rol": "user",
+  "token": " "
     },
     "barber": {
       "id": "3",
@@ -122,8 +122,8 @@
   {
     "id": "6",
     "title": "Install New Database",
-    "startDate": "2023-08-24T11:30:00.000Z",
-    "endDate": "2023-08-24T12:00:00.000Z",
+    "startDate": "2023-08-30T11:30:00.000Z",
+    "endDate": "2023-08-30T12:00:00.000Z",
     "service": {
       "id": "1",
       "name": "corte de pelo",
@@ -133,13 +133,13 @@
       "description": "corte de pelo ya sea clasico o con degradado. No incluye diseño/lavado"
     },
     "user": {
-      "id": "5",
-      "email": "email@gmail",
-      "birthDate": "2000-07-28T11:00:00.000Z",
-      "fullName": "David",
-      "numberPhone": "39923993238",
-      "rol":"",
-      "token":""
+      "id": "2",
+  "fullName": "tolaba juan",
+  "birthDate": "1997-05-24T00:00:00.000Z",
+  "numberPhone": "3884611502",
+  "email": "gomez@gmail.com",
+  "rol": "user",
+  "token": " "
     },
     "barber": {
       "id": "4",
@@ -152,8 +152,8 @@
   {
     "id": "7",
     "title": "Approve New Online Marketing Strategy",
-    "startDate": "2023-08-24T09:30:00.000Z",
-    "endDate": "2023-08-24T10:30:00.000Z",
+    "startDate": "2023-08-29T09:30:00.000Z",
+    "endDate": "2023-08-29T10:30:00.000Z",
     "service": {
       "id": "5",
       "name": "corte niño",
@@ -163,13 +163,13 @@
       "description": "Corte de pelo clasico o degradado para niños hasta 12 años "
     },
     "user": {
-      "id": "9",
-      "email": "email@gmail",
-      "birthDate": "2000-07-28T11:00:00.000Z",
-      "fullName": "Sebastian",
-      "numberPhone": "39923993238",
-      "rol":"",
-      "token":""
+      "id": "2",
+      "fullName": "tolaba juan",
+      "birthDate": "1997-05-24T00:00:00.000Z",
+      "numberPhone": "3884611502",
+      "email": "gomez@gmail.com",
+      "rol": "user",
+      "token": " "
     },
     "barber": {
       "id": "4",
@@ -182,8 +182,8 @@
   {
     "id": "8",
     "title": "Upgrade Personal Computers",
-    "startDate": "2023-08-23T10:30:00.000Z",
-    "endDate": "2023-08-23T11:30:00.000Z",
+    "startDate": "2023-08-30T10:30:00.000Z",
+    "endDate": "2023-08-30T11:30:00.000Z",
     "service": {
       "id": "4",
       "name": "afeitado tradicional",
@@ -193,13 +193,13 @@
       "description": "ageitado o arreglo de barba con el metodo tradicional, toallas calientes/frias y vapor de ozono."
     },
     "user": {
-      "id": "6",
-      "email": "email@gmail",
-      "birthDate": "2000-07-28T11:00:00.000Z",
-      "fullName": "Mauricio",
-      "numberPhone": "39923993238",
-      "rol":"",
-      "token":""
+      "id": "3",
+      "fullName": "Vaca Rolando",
+      "birthDate": "1991-08-20T00:00:00.000Z",
+      "numberPhone": "3884611502",
+      "email": "rolando@gmail.com",
+      "rol": "user",
+      "token": " "
     },
     "barber": {
       "id": "4",

@@ -14,7 +14,12 @@ const UserRow: React.FC<UserRowProps> = ({ user }) => {
     const theme: Theme = useTheme();
     return (
         <>
-            <TableRow hover sx={{ "& > *": { borderBottom: "unset" } }}>
+            <TableRow
+                hover
+                sx={{
+                    "& > *": { borderBottom: "unset" },
+                }}
+            >
                 <TableCell>
                     <IconButton aria-label="expand row" size="small" onClick={() => setOpen(!open)}>
                         {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
@@ -35,7 +40,6 @@ const UserRow: React.FC<UserRowProps> = ({ user }) => {
                     style={{
                         paddingBottom: 0,
                         paddingTop: 0,
-                        border: `1px solid ${theme.palette.primary.main}`,
                     }}
                     colSpan={6}
                 >

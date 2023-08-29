@@ -30,6 +30,7 @@ import s from "../admin.module.css";
 import { useAppDispatch, useAppSelector } from "../../../hook/useStore";
 import { actionGetAppointmentsByState } from "../../../redux/actions/appointmentActions";
 import ListBarbersCheck from "./ListBarbersCheck";
+import { Link } from "react-router-dom";
 const listMenuTurnos = [
     { title: "Todos", value: "ALL" },
     { title: "Pendientes", value: "Pendiente" },
@@ -232,7 +233,9 @@ const SideBar: React.FC<Props> = ({
                         />
                     </Box>
 
-                    <Button variant="contained">Clientes</Button>
+                    <Link to={"/admin/clients"}>
+                        <Button variant="contained">Clientes</Button>
+                    </Link>
                 </Box>
             </Box>
         </Drawer>
