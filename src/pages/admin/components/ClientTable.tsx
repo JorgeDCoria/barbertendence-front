@@ -11,11 +11,15 @@ import {
     TableHead,
     TableRow,
     Paper,
+    Theme,
+    useTheme,
+    Typography,
 } from "@mui/material";
 
 import UserRow from "./UserRow";
 
 const ClientTable: React.FC = () => {
+    const theme: Theme = useTheme();
     const dispatch = useAppDispatch();
     const { users } = useAppSelector((state) => state.userSate);
     const [page, setPage] = useState(0);
@@ -39,9 +43,15 @@ const ClientTable: React.FC = () => {
             maxWidth={"xl"}
             sx={{
                 border: "2px solid red",
+                minHeight: "100vh",
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "space-around",
             }}
         >
-            ClientTable
+            <Typography textAlign={"center"} color={theme.palette.primary.main} variant="h3">
+                usuarios
+            </Typography>
             <TableContainer component={Paper}>
                 <Table aria-label="collapsible table" stickyHeader>
                     <TableHead>

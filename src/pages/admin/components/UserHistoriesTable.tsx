@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import {
     Table,
     TableHead,
@@ -10,7 +10,9 @@ import {
     Box,
     Typography,
     Theme,
+    TablePagination,
     useTheme,
+    TableContainer,
 } from "@mui/material";
 import dayjs from "dayjs";
 import { useUserHistories } from "../../../hook/useUserHistories";
@@ -21,6 +23,17 @@ interface UserHistoriesTableProps {
 const UserHistoriesTable: React.FC<UserHistoriesTableProps> = ({ id }) => {
     const theme: Theme = useTheme();
     const { histories, error, loading } = useUserHistories(id);
+    const [page, setPage] = useState(0);
+    const [rowsPerPage, setRowsPerPage] = useState(5);
+
+    const handleChangePage = (event: unknown, newPage: number) => {
+        setPage(newPage);
+    };
+
+    const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setRowsPerPage(+event.target.value);
+        setPage(0);
+    };
 
     useEffect(() => {}, [histories]);
 
@@ -56,41 +69,64 @@ const UserHistoriesTable: React.FC<UserHistoriesTableProps> = ({ id }) => {
                 <Typography variant="h6" gutterBottom component="div">
                     Historia
                 </Typography>
-                <Box
-                    sx={{
-                        display: "flex",
-                        justifyContent: "center",
-                    }}
-                >
-                    <Table
-                        size="small"
-                        aria-label="purchases"
+                {histories?.length !== 0 ? (
+                    <Box
                         sx={{
-                            width: { sx: "100%", md: "70%" },
+                            display: "flex",
+                            flexDirection: "column",
+                            alignItems: "center",
+                            justifyContent: "center",
                         }}
                     >
-                        <TableHead>
-                            <TableRow>
-                                <TableCell>Fecha</TableCell>
-                                <TableCell>Servicio</TableCell>
-                                <TableCell>Profesional</TableCell>
-                                <TableCell align="right">Estado</TableCell>
-                            </TableRow>
-                        </TableHead>
-                        <TableBody>
-                            {histories?.map((h) => (
-                                <TableRow key={h.id}>
-                                    <TableCell component="th" scope="row">
-                                        {dayjs(h.date).format("DD/MM/YYYY-HH:mm")}
-                                    </TableCell>
-                                    <TableCell>{h.service.name}</TableCell>
-                                    <TableCell align="right">{h.barber.name}</TableCell>
-                                    <TableCell align="right">{h.state}</TableCell>
-                                </TableRow>
-                            ))}
-                        </TableBody>
-                    </Table>
-                </Box>
+                        <TableContainer
+                            sx={{
+                                display: "flex",
+                                justifyContent: "center",
+                            }}
+                        >
+                            <Table
+                                size="small"
+                                aria-label="purchases"
+                                sx={{
+                                    width: { sx: "100%", md: "70%" },
+                                }}
+                            >
+                                <TableHead>
+                                    <TableRow>
+                                        <TableCell>Fecha</TableCell>
+                                        <TableCell align="right">Servicio</TableCell>
+                                        <TableCell align="right">Profesional</TableCell>
+                                        <TableCell align="right">Estado</TableCell>
+                                    </TableRow>
+                                </TableHead>
+                                <TableBody>
+                                    {histories?.map((h) => (
+                                        <TableRow key={h.id}>
+                                            <TableCell component="th" scope="row">
+                                                {dayjs(h.date).format("DD/MM/YYYY-HH:mm")}
+                                            </TableCell>
+                                            <TableCell align="right">{h.service.name}</TableCell>
+                                            <TableCell align="right">{h.barber.name}</TableCell>
+                                            <TableCell align="right">{h.state}</TableCell>
+                                        </TableRow>
+                                    ))}
+                                </TableBody>
+                            </Table>
+                        </TableContainer>
+                        <TablePagination
+                            rowsPerPageOptions={[5, 10, 15]}
+                            component={"div"}
+                            count={histories ? histories?.length : 0}
+                            rowsPerPage={rowsPerPage}
+                            page={page}
+                            onPageChange={handleChangePage}
+                            onRowsPerPageChange={handleChangeRowsPerPage}
+                            sx={{ mt: "2rem" }}
+                        />
+                    </Box>
+                ) : (
+                    <Typography textAlign={"center"}>No se encontraron recursos</Typography>
+                )}
             </Box>
         );
 };
