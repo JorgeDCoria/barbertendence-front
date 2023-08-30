@@ -379,7 +379,7 @@ const AdminSchedule: React.FC<AdminScheduleProps> = ({ currentDate, handleChange
     return (
         <Paper sx={{ position: "relative", height: "80vh", p: 4 }}>
             {barbers && resources && appointments && (
-                <Scheduler data={appointments}>
+                <Scheduler data={appointments} locale="es">
                     {console.log(appointments)}
                     <ViewState currentDate={currentDate} onCurrentDateChange={handleChangeDate} />
                     <EditingState
