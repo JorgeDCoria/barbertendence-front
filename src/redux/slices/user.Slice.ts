@@ -6,7 +6,7 @@ function descendingComparator(a: User, b: User, orderBy: keyof User) {
     let x: any = null;
     let y: any = null;
     if (
-        ["fullName", "mail"].includes(orderBy) &&
+        ["fullName", "email", "birthDate"].includes(orderBy) &&
         typeof a[orderBy] === "string" &&
         typeof b[orderBy] === "string"
     ) {

@@ -120,9 +120,45 @@ const ClientTable: React.FC = () => {
                                     ) : null}
                                 </TableSortLabel>
                             </TableCell>
-                            <TableCell align="right">Fecha Nacimiento</TableCell>
+                            <TableCell
+                                align="right"
+                                sortDirection={orderBy === "birthDate" ? order : false}
+                            >
+                                <TableSortLabel
+                                    active={orderBy === "birthDate"}
+                                    direction={orderBy === "birthDate" ? order : "asc"}
+                                    onClick={(e) => createSortHandler(e, "birthDate")}
+                                >
+                                    Fecha Nacimiento
+                                    {orderBy === "birthDate" ? (
+                                        <Box component="span" sx={visuallyHidden}>
+                                            {order === "desc"
+                                                ? "sorted descending"
+                                                : "sorted ascending"}
+                                        </Box>
+                                    ) : null}
+                                </TableSortLabel>
+                            </TableCell>
                             <TableCell align="right">telefono</TableCell>
-                            <TableCell align="right">Email</TableCell>
+                            <TableCell
+                                align="right"
+                                sortDirection={orderBy === "email" ? order : false}
+                            >
+                                <TableSortLabel
+                                    active={orderBy === "email"}
+                                    direction={orderBy === "email" ? order : "asc"}
+                                    onClick={(e) => createSortHandler(e, "email")}
+                                >
+                                    Email
+                                    {orderBy === "email" ? (
+                                        <Box component="span" sx={visuallyHidden}>
+                                            {order === "desc"
+                                                ? "sorted descending"
+                                                : "sorted ascending"}
+                                        </Box>
+                                    ) : null}
+                                </TableSortLabel>
+                            </TableCell>
                             <TableCell align="right">Accion</TableCell>
                         </TableRow>
                     </TableHead>
