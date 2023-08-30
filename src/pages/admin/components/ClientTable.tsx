@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "../../../hook/useStore";
-import { actionGetAllUser } from "../../../redux/actions/userAction";
+import { actionGetAllUser, actionOrderUserByProperty } from "../../../redux/actions/userAction";
 import {
     Table,
     TablePagination,
@@ -13,12 +13,18 @@ import {
     Paper,
     Theme,
     useTheme,
+    TableSortLabel,
     Typography,
+    Box,
 } from "@mui/material";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import { visuallyHidden } from "@mui/utils";
 
 import UserRow from "./UserRow";
 import { useNavigate } from "react-router-dom";
+import { User } from "../../../types/User";
+
+type Order = "asc" | "desc";
 
 const ClientTable: React.FC = () => {
     const theme: Theme = useTheme();
@@ -26,6 +32,8 @@ const ClientTable: React.FC = () => {
     const { users } = useAppSelector((state) => state.userSate);
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(5);
+    const [order, setOrder] = useState<Order>("asc");
+    const [orderBy, setOrderBy] = useState<keyof User>("fullName");
     const navigate = useNavigate();
 
     const handleChangePage = (event: unknown, newPage: number) => {
@@ -36,6 +44,22 @@ const ClientTable: React.FC = () => {
         setRowsPerPage(+event.target.value);
         setPage(0);
     };
+
+    const createSortHandler = (e: React.MouseEvent<unknown>, property: keyof User) => {
+        const isAsc = orderBy === property && order === "asc";
+        setOrder(isAsc ? "desc" : "asc");
+        setOrderBy(property);
+        dispatch(actionOrderUserByProperty(isAsc ? "desc" : "asc", property));
+    };
+
+    // const visibleRows = React.useMemo(
+    //     () =>
+    //       stableSort(rows, getComparator(order, orderBy)).slice(
+    //         page * rowsPerPage,
+    //         page * rowsPerPage + rowsPerPage,
+    //       ),
+    //     [order, orderBy, page, rowsPerPage],
+    //   );
 
     useEffect(() => {
         dispatch(actionGetAllUser());
@@ -80,7 +104,22 @@ const ClientTable: React.FC = () => {
                     <TableHead>
                         <TableRow>
                             <TableCell />
-                            <TableCell>Usuario</TableCell>
+                            <TableCell sortDirection={orderBy === "fullName" ? order : false}>
+                                <TableSortLabel
+                                    active={orderBy === "fullName"}
+                                    direction={orderBy === "fullName" ? order : "asc"}
+                                    onClick={(e) => createSortHandler(e, "fullName")}
+                                >
+                                    Usuario
+                                    {orderBy === "fullName" ? (
+                                        <Box component="span" sx={visuallyHidden}>
+                                            {order === "desc"
+                                                ? "sorted descending"
+                                                : "sorted ascending"}
+                                        </Box>
+                                    ) : null}
+                                </TableSortLabel>
+                            </TableCell>
                             <TableCell align="right">Fecha Nacimiento</TableCell>
                             <TableCell align="right">telefono</TableCell>
                             <TableCell align="right">Email</TableCell>
