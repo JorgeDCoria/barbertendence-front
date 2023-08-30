@@ -37,7 +37,7 @@ export const barberSlice = createSlice({
     name: "userState",
     initialState: initialState,
     reducers: {
-        getAllUser: (state, action) => {
+        setUsers: (state, action) => {
             state.users = action.payload;
         },
         orderByProperty: (state, action) => {
@@ -52,6 +52,6 @@ export const barberSlice = createSlice({
     },
 });
 
-export const { getAllUser, orderByProperty } = barberSlice.actions;
+export const { setUsers, orderByProperty } = barberSlice.actions;
 
 export default barberSlice.reducer;

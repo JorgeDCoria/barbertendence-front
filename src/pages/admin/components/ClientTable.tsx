@@ -23,6 +23,7 @@ import { visuallyHidden } from "@mui/utils";
 import UserRow from "./UserRow";
 import { useNavigate } from "react-router-dom";
 import { User } from "../../../types/User";
+import SearchBar from "../../../components/search-bar/SearchBar";
 
 type Order = "asc" | "desc";
 
@@ -99,7 +100,8 @@ const ClientTable: React.FC = () => {
                 />
                 usuarios
             </Typography>
-            <TableContainer component={Paper}>
+            <SearchBar></SearchBar>
+            <TableContainer component={Paper} sx={{ mt: 2, minHeight: "60vh" }}>
                 <Table aria-label="collapsible table" stickyHeader>
                     <TableHead>
                         <TableRow>
@@ -164,9 +166,19 @@ const ClientTable: React.FC = () => {
                     </TableHead>
                     <TableBody>
                         {users &&
-                            users
-                                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                                .map((user) => <UserRow key={user.id} user={user} />)}
+                            (users.length == 0 ? (
+                                <TableRow>
+                                    <TableCell colSpan={6}>
+                                        <Typography textAlign={"center"}>
+                                            No se Encontraron resultados
+                                        </Typography>
+                                    </TableCell>
+                                </TableRow>
+                            ) : (
+                                users
+                                    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                                    .map((user) => <UserRow key={user.id} user={user} />)
+                            ))}
                     </TableBody>
                 </Table>
             </TableContainer>
