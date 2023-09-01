@@ -12,6 +12,11 @@ import AdminHome from "./pages/admin/AdminHome";
 import ClientTable from "./pages/admin/components/ClientTable";
 import AdminLayout from "./pages/admin/AdminLayout";
 import Management from "./pages/admin/components/management/Management";
+import EmployesTable from "./pages/admin/components/management/employes/EmployesTable";
+import ServiceTable from "./pages/admin/components/management/services/ServiceTable";
+import Schedule from "./pages/admin/components/management/schedules/Schedule";
+import License from "./pages/admin/components/management/licenses/License";
+import Report from "./pages/admin/components/management/reports/Report";
 
 const App = () => {
     return (
@@ -30,7 +35,13 @@ const App = () => {
                 <Route path="/admin/" element={<AdminLayout />}>
                     <Route index element={<AdminHome />} />
                     <Route path="clients" element={<ClientTable />} />
-                    <Route path="management" element={<Management />} />
+                    <Route path="management/" element={<Management />}>
+                        <Route index element={<EmployesTable />} />
+                        <Route path="services" element={<ServiceTable />} />
+                        <Route path="schedules" element={<Schedule />} />
+                        <Route path="licenses" element={<License />} />
+                        <Route path="reports" element={<Report />} />
+                    </Route>
                 </Route>
             </Routes>
         </>
