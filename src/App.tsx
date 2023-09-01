@@ -11,6 +11,7 @@ import UserPerfil from "./pages/user/UserPerfil";
 import AdminHome from "./pages/admin/AdminHome";
 import ClientTable from "./pages/admin/components/ClientTable";
 import AdminLayout from "./pages/admin/AdminLayout";
+import Management from "./pages/admin/components/management/Management";
 
 const App = () => {
     return (
@@ -29,6 +30,7 @@ const App = () => {
                 <Route path="/admin/" element={<AdminLayout />}>
                     <Route index element={<AdminHome />} />
                     <Route path="clients" element={<ClientTable />} />
+                    <Route path="management" element={<Management />} />
                 </Route>
             </Routes>
         </>
