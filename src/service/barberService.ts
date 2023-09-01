@@ -1,7 +1,7 @@
-import { barbersBd } from "../data/data";
+import barbers from "../data/employes.json";
 const getAllBarbers = () => {
     //llamada al bakcend
-    return barbersBd;
+    return barbers;
 };
 
 const barberService = {

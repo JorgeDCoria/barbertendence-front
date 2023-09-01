@@ -1,9 +1,10 @@
 import { Dispatch } from "@reduxjs/toolkit";
-import { getAllBarbers, setBarbersSelect } from "../slices/barberSlice";
+import { getAllBarbers, setBarbersSelect, orderBarberByProperty } from "../slices/barberSlice";
 import { Barber } from "src/types/Barber";
 import { clearError, setError } from "../slices/errorSlice";
 import { StateError } from "src/types/StateError";
 import barberService from "../../service/barberService";
+import { Order } from "../../types/Order";
 
 export const actionGetAllBarber = () => {
     return async (dispatch: Dispatch) => {
@@ -22,5 +23,11 @@ export const actionGetAllBarber = () => {
 export const actionSetSelectBarber = (barbers: Barber[]) => {
     return (dispatch: Dispatch) => {
         dispatch(setBarbersSelect(barbers));
+    };
+};
+
+export const actionOrderBarberByProperty = (order: Order, property: keyof Barber) => {
+    return (dispatch: Dispatch) => {
+        dispatch(orderBarberByProperty({ orderBy: property, order }));
     };
 };

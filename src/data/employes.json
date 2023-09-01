@@ -1,0 +1,98 @@
+[
+  {
+      "id": "1",
+      "name": "Alan",
+      "email": "alan@gmail.com",
+      "phone": "3884652215",
+      "description": "cuento con 5 años de experiencia, animate te espero",
+      "avatar": ""
+  },
+  {
+      "id": "2",
+      "name": "Juan",
+      "email": "juan@gmail.com",
+      "phone": "3884652215",
+      "description": "cuento con 5 años de experiencia, animate te espero",
+      "avatar": ""
+  },
+  {
+      "id": "3",
+      "name": "Jorge",
+      "email": "george@gmail.com",
+      "phone": "3884652215",
+      "description": "cuento con 5 años de experiencia, animate te espero",
+      "avatar": ""
+  },
+  {
+      "id": "4",
+      "name": "Emiliano",
+      "email": "emiliano@gmail.com",
+      "phone": "3884652215",
+      "description": "cuento con 5 años de experiencia, animate te espero",
+      "avatar": ""
+  },
+  {
+      "id": "5",
+      "name": "Ernesto",
+      "email": "ernesto@gmail.com",
+      "phone": "3884652215",
+      "description": "cuento con 5 años de experiencia, animate te espero",
+      "avatar": ""
+  },
+  {
+      "id": "6",
+      "name": "Lorenzo",
+      "email": "lorenzo@gmail.com",
+      "phone": "3884652215",
+      "description": "cuento con 5 años de experiencia, animate te espero",
+      "avatar": ""
+  },
+  {
+    "id": "7",
+    "name": "Maximiliano Juarez",
+    "email": "maxwel@gmail.com",
+    "phone": "3884652215",
+    "description": "cuento con 5 años de experiencia, animate te espero",
+    "avatar": ""
+  }, 
+  {
+    "id": "8",
+    "name": "Ignacio Tolaba",
+    "email": "ignacio@gmail.com",
+    "phone": "3884652215",
+    "description": "cuento con 5 años de experiencia, animate te espero",
+    "avatar": ""
+  }, 
+  {
+    "id": "9",
+    "name": "Leonardo Perez",
+    "email": "perez@gmail.com",
+    "phone": "3884652215",
+    "description": "cuento con 5 años de experiencia, animate te espero",
+    "avatar": ""
+  },
+  {
+    "id": "10",
+    "name": "Javier Villalobos",
+    "email": "javiVilla@gmail.com",
+    "phone": "3884652215",
+    "description": "cuento con 5 años de experiencia, animate te espero",
+    "avatar": ""
+  },
+  {
+    "id": "11",
+    "name": "Brian Joaquin",
+    "email": "Joaco@gmail.com",
+    "phone": "3884652215",
+    "description": "cuento con 5 años de experiencia, animate te espero",
+    "avatar": ""
+  },
+  {
+    "id": "12",
+    "name": "Santiago Martin",
+    "email": "martin@gmail.com",
+    "phone": "3884652215",
+    "description": "cuento con 5 años de experiencia, animate te espero",
+    "avatar": ""
+  }
+]

@@ -17,7 +17,10 @@ import {
 import { useAppDispatch, useAppSelector } from "../../../../../hook/useStore";
 import { Barber } from "src/types/Barber";
 import { visuallyHidden } from "@mui/utils";
-import { actionGetAllBarber } from "../../../../../redux/actions/barberActions";
+import {
+    actionGetAllBarber,
+    actionOrderBarberByProperty,
+} from "../../../../../redux/actions/barberActions";
 import EmployeRow from "./EmployeRow";
 
 // id: string;
@@ -50,8 +53,8 @@ const EmployesTable = () => {
     const createSortHandler = (e: React.MouseEvent<unknown>, property: keyof Barber) => {
         const isAsc = orderBy === property && order === "asc";
         setOrder(isAsc ? "desc" : "asc");
-        // setOrderBy(property);
-        // dispatch(actionOrderUserByProperty(isAsc ? "desc" : "asc", property));
+        setOrderBy(property);
+        dispatch(actionOrderBarberByProperty(isAsc ? "desc" : "asc", property));
     };
 
     useEffect(() => {
