@@ -4,6 +4,6 @@ export type Barber = {
     description: string;
     avatar: string;
     birthDay?: string;
-    mail?: string;
+    email?: string;
     phone?: string;
 };
