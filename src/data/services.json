@@ -1,0 +1,53 @@
+[
+  {
+      "id": "1",
+      "name": "corte de pelo",
+      "duration": 30,
+      "image": "",
+      "price": 800,
+      "description": "corte de pelo ya sea clasico o con degradado. No incluye diseño/lavado"
+  },
+  {
+      "id": "2",
+      "name": "corte Premium",
+      "duration": 45,
+      "image": "",
+      "price": 800,
+      "description":
+          "Corte de pelo ya sea clasico o degradado con un margen de trabajo mas amplio asesoramiento de visagismo y productos premium para un acabado aun mas profesional."
+  },
+  {
+      "id": "3",
+      "name": "arreglo de barba",
+      "duration": 60,
+      "image": "",
+      "price": 800,
+      "description": "Arreglo de barba con disminucion, afeitado completo y/o perfilado."
+  },
+  {
+      "id": "4",
+      "name": "afeitado tradicional",
+      "duration": 30,
+      "image": "",
+      "price": 800,
+      "description":
+          "ageitado o arreglo de barba con el metodo tradicional, toallas calientes/frias y vapor de ozono."
+  },
+  {
+      "id": "5",
+      "name": "corte niño",
+      "duration": 60,
+      "image": "",
+      "price": 800,
+      "description": "Corte de pelo clasico o degradado para niños hasta 12 años "
+  },
+  {
+      "id": "6",
+      "name": "perfilado de cejas",
+      "duration": 45,
+      "image": "",
+      "price": 800,
+      "description":
+          "Arrego de cejas con disminucion, utilizamos tecnicas especializadas para que tus cejas queden implecables."
+  }
+]

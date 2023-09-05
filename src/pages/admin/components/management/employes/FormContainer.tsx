@@ -3,12 +3,31 @@ import { useState } from "react";
 import EmployeeDataForm from "./EmployeeDataForm";
 import EmployeeServicesForm from "./EmployeeServicesForm";
 import EmployeeScheduleForm from "./EmployeeScheduleForm";
+import { Barber } from "src/types/Barber";
 
 const steps: string[] = ["Datos Personales", "Servicios", "Horarios", "Alta"];
 
 const FormContainer = () => {
     const [activeStep, setActiveStep] = useState(0);
     const theme: Theme = useTheme();
+    const [newEmployee, setNewEmployee] = useState<Partial<Barber>>({
+        name: "",
+        address: "",
+        avatar: "",
+        birthDay: "",
+        description: "",
+        email: "",
+        password: "",
+        phone: "",
+        schedules: [],
+        services: [],
+    });
+
+    const handleSetNewEmployee = (e: any) => {
+        // let oldData = {...newEmployee};
+        // oldData[e.target.name] = e.target.value;
+        // setNewEmployee((oldData) => {...oldData, oldData.e.target.name: e.target.value})
+    };
 
     const handleNext = () => {
         if (activeStep === steps.length - 1) {
@@ -34,20 +53,14 @@ const FormContainer = () => {
             bgcolor={"white"}
             display={"flex"}
             width={{ xs: "90%", sm: "80%", md: "60%" }}
-            height={{ xs: "85%", sm: "70%", md: "80%" }}
+            height={{ xs: "85%", sm: "70%", md: "90%" }}
             onClick={handleClick}
             flexDirection={"column"}
             border={"1px solid green"}
             py={2}
             px={1}
         >
-            <Box
-                border={"2px solid red"}
-                display={"flex"}
-                width={"100%"}
-                height={"100%"}
-                flexDirection={"column"}
-            >
+            <Box display={"flex"} width={"100%"} height={"100%"} flexDirection={"column"}>
                 <Typography textAlign={"center"} variant="h5" color={theme.palette.primary.main}>
                     Alta de Empleado
                 </Typography>
@@ -66,39 +79,45 @@ const FormContainer = () => {
                     })}
                 </Stepper>
 
-                <>
-                    <Box
-                        component={"form"}
-                        flex={"1 1 auto"}
-                        border={"2px solid red"}
-                        sx={{
-                            overflowY: "auto",
-                            display: "flex",
-                            justifyContent: "center",
-                            alignItems: "center",
-                        }}
+                <Box
+                    component={"form"}
+                    sx={{
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        flexGrow: 1,
+                        overflow: "auto",
+                        boxSizing: "border-box",
+                    }}
+                >
+                    {activeStep === 0 && (
+                        <EmployeeDataForm employee={newEmployee} handleChange={() => {}} />
+                    )}
+                    {activeStep === 1 && <EmployeeServicesForm />}
+                    {activeStep === 2 && <EmployeeScheduleForm />}
+                    {activeStep === 3 && <Box> alta </Box>}
+                </Box>
+                <Box
+                    sx={{
+                        display: "flex",
+                        flexDirection: "row",
+                        pt: 2,
+                    }}
+                >
+                    <Button
+                        color="inherit"
+                        disabled={activeStep === 0}
+                        onClick={handleBack}
+                        sx={{ mr: 1 }}
                     >
-                        {activeStep === 0 && <EmployeeDataForm />}
-                        {activeStep === 1 && <EmployeeServicesForm />}
-                        {activeStep === 2 && <EmployeeScheduleForm />}
-                        {activeStep === 3 && <Box> alta </Box>}
-                    </Box>
-                    <Box sx={{ display: "flex", flexDirection: "row", pt: 2 }}>
-                        <Button
-                            color="inherit"
-                            disabled={activeStep === 0}
-                            onClick={handleBack}
-                            sx={{ mr: 1 }}
-                        >
-                            Back
-                        </Button>
-                        <Box sx={{ flex: "1 1 auto" }} />
+                        Back
+                    </Button>
+                    <Box sx={{ flex: "1 1 auto" }} />
 
-                        <Button onClick={handleNext}>
-                            {activeStep === steps.length - 1 ? "Finish" : "Next"}
-                        </Button>
-                    </Box>
-                </>
+                    <Button onClick={handleNext}>
+                        {activeStep === steps.length - 1 ? "Finish" : "Next"}
+                    </Button>
+                </Box>
             </Box>
         </Box>
     );

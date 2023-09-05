@@ -3,10 +3,12 @@ import appointmentsReducer from "../slices/appointmentSlice";
 import errorReducer from "../slices/errorSlice";
 import barbersReducer from "../slices/barberSlice";
 import userReducer from "../slices/user.Slice";
+import servicesReducer from "../slices/servicesSlice";
 
 export const store = configureStore({
     reducer: {
         appointments: appointmentsReducer,
+        servicesState: servicesReducer,
         barbers: barbersReducer,
         userSate: userReducer,
         error: errorReducer,
