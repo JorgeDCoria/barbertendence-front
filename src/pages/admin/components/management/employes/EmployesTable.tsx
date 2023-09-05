@@ -13,6 +13,8 @@ import {
     Theme,
     Typography,
     useTheme,
+    Button,
+    Modal,
 } from "@mui/material";
 import { useAppDispatch, useAppSelector } from "../../../../../hook/useStore";
 import { Barber } from "src/types/Barber";
@@ -22,6 +24,9 @@ import {
     actionOrderBarberByProperty,
 } from "../../../../../redux/actions/barberActions";
 import EmployeRow from "./EmployeRow";
+
+import AddIcon from "@mui/icons-material/Add";
+import FormContainer from "./FormContainer";
 
 // id: string;
 // name: string;
@@ -40,7 +45,10 @@ const EmployesTable = () => {
     const [rowsPerPage, setRowsPerPage] = useState(5);
     const [order, setOrder] = useState<Order>("asc");
     const [orderBy, setOrderBy] = useState<keyof Barber>("name");
+    const [open, setOpen] = useState(false);
 
+    const handleOpen = () => setOpen(true);
+    const handleClose = () => setOpen(false);
     const handleChangePage = (event: unknown, newPage: number) => {
         setPage(newPage);
     };
@@ -62,6 +70,11 @@ const EmployesTable = () => {
     }, []);
     return (
         <Box mt={10} p={4}>
+            <Box display={"flex"} alignItems={"center"} justifyContent={"end"}>
+                <Button variant="outlined" onClick={handleOpen} endIcon={<AddIcon />}>
+                    Agregar Barber
+                </Button>
+            </Box>
             <TableContainer component={Paper} sx={{ mt: 2, minHeight: "60vh", padding: 1 }}>
                 <Table aria-label="collapsible table" stickyHeader>
                     <TableHead>
@@ -134,6 +147,21 @@ const EmployesTable = () => {
                 onRowsPerPageChange={handleChangeRowsPerPage}
                 sx={{ mt: "2rem" }}
             />
+            <Modal open={open} onClose={handleClose}>
+                <Box
+                    display={"flex"}
+                    onClick={handleClose}
+                    sx={{
+                        position: "absolute",
+                        width: "100%",
+                        height: "100%",
+                        justifyContent: "center",
+                        alignItems: "center",
+                    }}
+                >
+                    <FormContainer />
+                </Box>
+            </Modal>
         </Box>
     );
 };
