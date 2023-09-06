@@ -1,24 +1,41 @@
 import { useEffect, useState } from "react";
-import { Box, Card, CardContent, CardMedia, Theme, Typography, useTheme } from "@mui/material";
+import {
+    Box,
+    Card,
+    CardContent,
+    CardMedia,
+    Theme,
+    Typography,
+    useTheme,
+    List,
+    ListItem,
+    IconButton,
+    ListItemIcon,
+    Checkbox,
+    ListItemText,
+    ListItemButton,
+} from "@mui/material";
 import { useAppDispatch, useAppSelector } from "../../../../../hook/useStore";
 import { actionGetAllServices } from "../../../../../redux/actions/servicesActions";
 import Loading from "../../../../../components/Loading/Loading";
 import image from "../../../../../assets/service.jpg";
 import { Service } from "../../../../../types/Service";
+import MiscellaneousServicesIcon from "@mui/icons-material/MiscellaneousServices";
 
 const EmployeeServicesForm = () => {
     const dispatch = useAppDispatch();
     const { services } = useAppSelector((state) => state.servicesState);
-    const [servicesSelected, setServicesSelected] = useState<Service[]>([]);
+    const [servicesChecked, setServicesChecked] = useState<Service[]>([]);
     const theme: Theme = useTheme();
 
-    const handleSelect = (e: React.MouseEvent<HTMLDivElement, MouseEvent>, service: Service) => {
-        let auxServices = [...servicesSelected];
+    const handleChecked = (e: React.MouseEvent<HTMLDivElement, MouseEvent>, service: Service) => {
+        let auxServices = [...servicesChecked];
         const foundService = auxServices.find((s) => s.id == service.id);
         if (foundService) auxServices = auxServices.filter((s) => s.id != foundService.id);
         else auxServices.push(service);
-        setServicesSelected(auxServices);
+        setServicesChecked(auxServices);
     };
+
     useEffect(() => {
         dispatch(actionGetAllServices());
     }, []);
@@ -26,100 +43,50 @@ const EmployeeServicesForm = () => {
         <Box
             sx={{
                 display: "flex",
-                flexWrap: "wrap",
+                pt: 2,
                 width: "100%",
                 justifyContent: "center",
-                gap: 2,
             }}
         >
             {services ? (
-                services.map((service) => (
-                    <Card
-                        key={service.id}
-                        onClick={(e) => handleSelect(e, service)}
-                        sx={{
-                            width: { xs: "90%", sm: "45%", md: "30%" },
-                            height: { xs: "100px", sm: "200px" },
-                            color: "white",
-                            boxShadow: `${
-                                servicesSelected.find((s) => s.id == service.id)
-                                    ? `2px 6px 10px 1px ${theme.palette.secondary.main}`
-                                    : `2px 6px 10px 1px ${theme.palette.primary.dark}`
-                            }`,
-                            cursor: "pointer",
-                        }}
-                    >
-                        <Box
-                            sx={{
-                                position: "relative",
-                                width: "100%",
-                                height: "100%",
-                            }}
-                        >
-                            {" "}
-                            <CardMedia
-                                component={"img"}
-                                sx={{
-                                    width: "100%",
-                                    height: "100%",
-                                }}
-                                src={image}
-                            />
-                            <Box
-                                position={"absolute"}
-                                top={0}
-                                left={0}
-                                p={1}
-                                width={"100%"}
-                                height={"100%"}
-                                display={"flex"}
-                                alignItems={"center"}
-                                justifyContent={"center"}
-                                sx={{
-                                    background: `${
-                                        servicesSelected.find((s) => s.id == service.id)
-                                            ? "rgba(61,16,61,0.9)"
-                                            : "rgba(0,0,6,0.7)"
-                                    }`,
-                                    "&:hover": { background: "rgba(61,16,61,0.8)" },
-                                }}
-                            >
-                                <CardContent
-                                    sx={{
-                                        display: "flex",
-                                        flexDirection: "column",
-                                        justifyContent: "space-between",
-                                        // border: "2px solid blue",
-                                        height: "100%",
-                                    }}
-                                >
-                                    <Typography
-                                        color={theme.palette.secondary.main}
-                                        textTransform={"capitalize"}
-                                        variant={"h6"}
-                                        fontWeight={600}
-                                        textAlign={"center"}
-                                    >
-                                        {service.name}
-                                    </Typography>
+                <List>
+                    {services.map((service) => {
+                        const labelId = `checkbox-list-label-${service.id}`;
 
-                                    <Typography
-                                        textAlign={"center"}
-                                        fontSize={"12px"}
+                        return (
+                            <ListItem key={service.id} disablePadding>
+                                <ListItemButton
+                                    role={undefined}
+                                    onClick={(e) => handleChecked(e, service)}
+                                    dense
+                                >
+                                    <ListItemIcon>
+                                        <Checkbox
+                                            edge="start"
+                                            checked={
+                                                servicesChecked.find((s) => s.id == service.id)
+                                                    ? true
+                                                    : false
+                                            }
+                                            tabIndex={-1}
+                                            disableRipple
+                                            inputProps={{ "aria-labelledby": labelId }}
+                                        />
+                                    </ListItemIcon>
+                                    <ListItemText id={labelId} primary={service.name} />
+                                    <ListItemIcon
                                         sx={{
-                                            display: { xs: "none", sm: "block" },
+                                            display: "flex",
+                                            justifyContent: "end",
                                         }}
                                     >
-                                        {service.description}
-                                    </Typography>
-                                    <Typography textAlign={"center"} variant={"h6"}>
-                                        {service.duration}min - ${service.duration}
-                                    </Typography>
-                                </CardContent>
-                            </Box>
-                        </Box>
-                    </Card>
-                ))
+                                        <MiscellaneousServicesIcon />
+                                    </ListItemIcon>
+                                </ListItemButton>
+                            </ListItem>
+                        );
+                    })}
+                </List>
             ) : (
                 <Loading />
             )}
