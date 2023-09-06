@@ -61,33 +61,39 @@ const FormContainer = () => {
             px={1}
         >
             <Box display={"flex"} width={"100%"} height={"100%"} flexDirection={"column"}>
-                <Typography textAlign={"center"} variant="h5" color={theme.palette.primary.main}>
-                    Alta de Empleado
-                </Typography>
-                <Stepper activeStep={activeStep} alternativeLabel>
-                    {steps.map((label) => {
-                        const stepProps: { completed?: boolean } = {};
-                        const labelProps: {
-                            optional?: React.ReactNode;
-                        } = {};
+                <Box display={"flex"} flexDirection={"column"} gap={2}>
+                    <Typography
+                        textAlign={"center"}
+                        variant="h5"
+                        color={theme.palette.primary.main}
+                    >
+                        Alta de Empleado
+                    </Typography>
+                    <Stepper activeStep={activeStep} alternativeLabel>
+                        {steps.map((label) => {
+                            const stepProps: { completed?: boolean } = {};
+                            const labelProps: {
+                                optional?: React.ReactNode;
+                            } = {};
 
-                        return (
-                            <Step key={label} {...stepProps}>
-                                <StepLabel {...labelProps}>{label}</StepLabel>
-                            </Step>
-                        );
-                    })}
-                </Stepper>
+                            return (
+                                <Step key={label} {...stepProps}>
+                                    <StepLabel {...labelProps}>{label}</StepLabel>
+                                </Step>
+                            );
+                        })}
+                    </Stepper>
+                </Box>
 
                 <Box
-                    component={"form"}
                     sx={{
                         display: "flex",
                         justifyContent: "center",
                         alignItems: "center",
-                        flexGrow: 1,
+                        flex: "1 1 auto",
                         overflow: "auto",
                         boxSizing: "border-box",
+                        border: "2px solid red",
                     }}
                 >
                     {activeStep === 0 && (
