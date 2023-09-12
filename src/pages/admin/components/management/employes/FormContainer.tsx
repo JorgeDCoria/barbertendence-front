@@ -4,6 +4,7 @@ import EmployeeDataForm from "./EmployeeDataForm";
 import EmployeeServicesForm from "./EmployeeServicesForm";
 import EmployeeScheduleForm from "./EmployeeScheduleForm";
 import { Barber } from "src/types/Barber";
+import EmployeeLastDataForm from "./EmployeeLastDataForm";
 
 const steps: string[] = ["Datos Personales", "Servicios", "Horarios", "Alta"];
 
@@ -93,7 +94,6 @@ const FormContainer = () => {
                         flex: "1 1 auto",
                         overflow: "auto",
                         boxSizing: "border-box",
-                        border: "2px solid red",
                     }}
                 >
                     {activeStep === 0 && (
@@ -101,7 +101,7 @@ const FormContainer = () => {
                     )}
                     {activeStep === 1 && <EmployeeServicesForm />}
                     {activeStep === 2 && <EmployeeScheduleForm />}
-                    {activeStep === 3 && <Box> alta </Box>}
+                    {activeStep === 3 && <EmployeeLastDataForm />}
                 </Box>
                 <Box
                     sx={{
