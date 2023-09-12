@@ -11,15 +11,17 @@ import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { store } from "./redux/store/index.ts";
 import { Provider } from "react-redux";
+import es from "dayjs/locale/es";
+
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
     <React.StrictMode>
         <Provider store={store}>
             <BrowserRouter>
                 <NotificationProvider>
                     <ThemeProvider theme={theme}>
-                        <LocalizationProvider dateAdapter={AdapterDayjs}>
+                        <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale={es}>
                             <CssBaseline />
-                            <App />{" "}
+                            <App />
                         </LocalizationProvider>
                     </ThemeProvider>
                 </NotificationProvider>
