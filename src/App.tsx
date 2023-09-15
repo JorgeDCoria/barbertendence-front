@@ -17,11 +17,12 @@ import ServiceTable from "./pages/admin/components/management/services/ServiceTa
 import Schedule from "./pages/admin/components/management/schedules/Schedule";
 import License from "./pages/admin/components/management/licenses/License";
 import Report from "./pages/admin/components/management/reports/Report";
+import RoutesWithNotFound from "./utilities/RoutesWithNotFound.utility";
 
 const App = () => {
     return (
         <>
-            <Routes>
+            <RoutesWithNotFound>
                 <Route path="/" element={<LoginLayout />}>
                     <Route index element={<Login />} />
                     <Route path="/register" element={<Register />} />
@@ -43,7 +44,8 @@ const App = () => {
                         <Route path="reports" element={<Report />} />
                     </Route>
                 </Route>
-            </Routes>
+                <Route path="*" element={<>Not Fund</>} />
+            </RoutesWithNotFound>
         </>
     );
 };

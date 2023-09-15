@@ -16,3 +16,5 @@ export type Barber = {
 };
 //seleccion rapida de horarios (turno mañana, tarde, jornada completa y opcion de personalizar);
 // [{dia: "", incio:"DateTIME", fin:""}]
+//{day:"", monrningShift:{start:"", end:""}, afternoonShift:{start:"", end:""}}
+//multipoartfort type binary => para enviar la image
