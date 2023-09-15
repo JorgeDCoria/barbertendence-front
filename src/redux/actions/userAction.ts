@@ -1,11 +1,21 @@
 import { Dispatch } from "@reduxjs/toolkit";
 import { setError } from "../slices/errorSlice";
 import { StateError } from "../../types/StateError";
-import { setUsers, orderByProperty } from "../slices/user.Slice";
+import { setUsers, orderByProperty, setUser } from "../slices/user.Slice";
 import userService from "../../service/userService";
-import { Order } from "../../types/Order";
-import { User } from "../../types/User";
+import { User, Order } from "../../types/";
+import authService from "../../service/authService";
 
+export const actionLoginUserWhithNumber = (number: string, password: string) => {
+    return async (dispatch: Dispatch) => {
+        try {
+            const userLogged = await authService.logIn(number, password);
+            dispatch(setUser(userLogged));
+        } catch (e: any) {
+            dispatch(setError({ code: e.status ? e.status : 0, message: e.message }));
+        }
+    };
+};
 export const actionGetAllUser = () => {
     return async (dispatch: Dispatch) => {
         try {

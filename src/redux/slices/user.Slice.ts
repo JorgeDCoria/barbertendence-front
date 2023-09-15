@@ -1,6 +1,6 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { User } from "../../types/User";
-import { Order } from "../../types/Order";
+import { persistLocalStorage } from "../../utilities";
 
 function descendingComparator(a: User, b: User, orderBy: keyof User) {
     let x: any = null;
@@ -26,17 +26,23 @@ function descendingComparator(a: User, b: User, orderBy: keyof User) {
 }
 
 interface UserState {
+    user: User | null;
     users: User[] | null;
 }
 
 const initialState: UserState = {
+    user: null,
     users: null,
 };
-
+export const UserKey = "user";
 export const barberSlice = createSlice({
     name: "userState",
     initialState: initialState,
     reducers: {
+        setUser: (state, action: PayloadAction<User>) => {
+            persistLocalStorage(UserKey, { token: action.payload.token });
+            state.user = action.payload;
+        },
         setUsers: (state, action) => {
             state.users = action.payload;
         },
@@ -52,6 +58,6 @@ export const barberSlice = createSlice({
     },
 });
 
-export const { setUsers, orderByProperty } = barberSlice.actions;
+export const { setUsers, orderByProperty, setUser } = barberSlice.actions;
 
 export default barberSlice.reducer;

@@ -1,4 +1,4 @@
 export type StateError = {
-    code: number;
+    code?: number;
     message: string;
 };
