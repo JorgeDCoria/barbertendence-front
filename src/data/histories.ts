@@ -1,4 +1,4 @@
-import { History } from "src/types/History";
+import { History } from "src/types/AppointmentHistory";
 
 export const historiesBd: History[] = [
     {

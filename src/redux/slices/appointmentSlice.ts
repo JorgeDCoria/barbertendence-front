@@ -1,4 +1,4 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { Appointment } from "../../types/Appointment";
 import { AppointmentHistory } from "../../types/AppointmentHistory";
 
@@ -31,7 +31,7 @@ export const appointmentSlice = createSlice({
             // aux = aux.filter((app) => app.state.toUpperCase() === action.payload.toUpperCase());
             state.appointments = action.payload;
         },
-        setAppointmentsUserHistory: (state, action) => {
+        setAppointmentsUserHistory: (state, action:PayloadAction<AppointmentHistory[] | null>) => {
             state.appointmentsUserHistory = action.payload;
         },
         setState: (state, action) => {

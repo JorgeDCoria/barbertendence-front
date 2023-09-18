@@ -9,10 +9,3 @@ export const SIZE_SML = {
     LARGE: "large",
 } as const;
 
-export const STATEAPPOINTMENT = {
-    PENDING: "pendiente",
-    CANCELLLED: "cancelado",
-    INPROGRESS: "en progreso",
-    ATTENDED: "atendido",
-    ABSENT: "ausente",
-};

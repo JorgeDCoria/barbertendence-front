@@ -43,7 +43,7 @@ const UserFormProfile: React.FC<Props> = ({ handleClickCancel }) => {
                 justifyContent={"space-around"}
                 width={{ xs: "100%", md: "70%" }}
             >
-                <DatePicker sx={{ flexGrow: 1 }} label="Fecha de Nacimiento" />
+                <DatePicker sx={{ flexGrow: 1 }}  label="Fecha de Nacimiento" />
             </Box>
             <Box
                 display={"flex"}

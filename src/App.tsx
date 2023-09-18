@@ -17,7 +17,8 @@ import ServiceTable from "./pages/admin/components/management/services/ServiceTa
 import Schedule from "./pages/admin/components/management/schedules/Schedule";
 import License from "./pages/admin/components/management/licenses/License";
 import Report from "./pages/admin/components/management/reports/Report";
-import RoutesWithNotFound from "./utilities/RoutesWithNotFound.utility";
+import { RoutesWithNotFound } from "./utilities";
+
 
 const App = () => {
     return (

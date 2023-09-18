@@ -57,7 +57,6 @@ const appointmentAdapter = {
     mapAppointmentApiToAppointment,
     mapAppointmentsApiToAppointments,
     mapDateToDateSchedule,
-
     mapAppointmentsApiToAppointmentHistories,
 };
 

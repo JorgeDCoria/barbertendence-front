@@ -2,12 +2,12 @@ import { User } from "src/types/User";
 const mapUserApiToUserLogged = (data: any): User => {
     return {
         id: data.id,
-        email: data.email,
-        fullName: data.fullName,
-        numberPhone: data.numberPhone,
-        birthDate: data.birthDate,
-        rol: data.rol,
-        token: data.token,
+        email: "",
+        fullName: "",
+        numberPhone: "",
+        birthDate: "",
+        rol: data.roles[0],
+        token: data.accessToken,
     };
 };
 

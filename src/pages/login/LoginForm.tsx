@@ -29,7 +29,7 @@ const validarPassword = (password: string): string => {
     let ExpRegPass =
         /(?=(.*[0-9]))(?=.*[\!@#$%^&*()\\[\]{}\-_+=|:;"'<>,./?])(?=.*[a-z])(?=(.*[A-Z]))(?=(.*)).{8,}/;
     if (!password.trim().length) message = "Ingrese su contraseña";
-    else if (password.match(ExpRegPass) == null) message = "El password no es seguro";
+    //else if (password.match(ExpRegPass) == null) message = "El password no es seguro";
     return message;
 };
 const validarNumberPhone = (phone: string): string => {

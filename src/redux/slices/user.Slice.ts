@@ -35,6 +35,8 @@ const initialState: UserState = {
     users: null,
 };
 export const UserKey = "user";
+export const BarberKey = "barber";
+export const AdminKey= "admin";
 export const barberSlice = createSlice({
     name: "userState",
     initialState: initialState,
