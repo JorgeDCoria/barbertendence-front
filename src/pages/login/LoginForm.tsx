@@ -12,6 +12,7 @@ import { useAppDispatch, useAppSelector } from "../../hook/useStore";
 import { actionLoginUserWhithNumber } from "../../redux/actions/userAction";
 import { UserKey } from "../../redux/slices/user.Slice";
 import { actionsClearError } from "../../redux/actions/errorActions";
+import { LoginButton } from "../../components/login-button";
 
 interface Props {}
 interface Input {
@@ -179,9 +180,7 @@ const LoginForm: React.FC<Props> = ({}) => {
                     </Button>
                 </Grid>
                 <Grid item xs={10} sx={{ height: "40px" }}>
-                    <Button type="submit" variant="outlined" fullWidth color="primary" size="large">
-                        Ingresar con gmail
-                    </Button>
+                    <LoginButton />
                 </Grid>
                 <Grid item xs={10}>
                     <Typography component={"p"} align="center" color={"primary.main"}>
