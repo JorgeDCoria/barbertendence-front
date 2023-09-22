@@ -8,6 +8,7 @@ export * from "./Schedule";
 export * from "./Service";
 export * from "./StateError";
 export * from "./User";
+export * from "./index";
 export * from "./inputError";
 export * from "./phoneType";
 export * from "./tabNav";

@@ -1,18 +1,24 @@
-// import { useState } from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Box, Grid, Button, Typography } from "@mui/material";
 
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import InputPassword from "./components/InputPassword";
 import InputPhoneNumber from "./components/InputPhoneNumber";
 import { type Phone } from "../../types/phoneType";
 import { type InputError } from "../../types/inputError";
 import { useNotification } from "../../context/notification.context";
 import { useAppDispatch, useAppSelector } from "../../hook/useStore";
-import { actionLoginUserWhithNumber } from "../../redux/actions/userAction";
+import {
+    actionLoginUserWhithEmail,
+    actionLoginUserWhithNumber,
+} from "../../redux/actions/userAction";
 import { UserKey } from "../../redux/slices/user.Slice";
 import { actionsClearError } from "../../redux/actions/errorActions";
 import { LoginButton } from "../../components/login-button";
+import { PrivateUserRoutes } from "../../const";
+import { useAuth0 } from "@auth0/auth0-react";
+import { LogoutButton } from "../../components/logout-button";
+import authService from "../../service/authService";
 
 interface Props {}
 interface Input {
@@ -56,6 +62,13 @@ const LoginForm: React.FC<Props> = ({}) => {
     const dispatch = useAppDispatch();
     const { error } = useAppSelector((state) => state.error);
     const { user } = useAppSelector((state) => state.userSate);
+    const {
+        isAuthenticated,
+        user: userAuth,
+        getAccessTokenSilently,
+        getIdTokenClaims,
+    } = useAuth0();
+    const location = useLocation();
 
     const login = () => {
         if (!formError.phoneError.error && !formError.passwordError.error) {
@@ -68,9 +81,13 @@ const LoginForm: React.FC<Props> = ({}) => {
             if (error) {
                 showNotification(`Error al iniciar sesion: ${error.message}`, "error");
                 dispatch(actionsClearError());
-            } else {
-                user && (user.rol === UserKey ? navigate("/user/") : navigate("/admin/"));
             }
+            // else {
+            //     user &&
+            //         (user.rol === UserKey
+            //             ? navigate(`/${PrivateUserRoutes.USER}/`)
+            //             : navigate("/admin/"));
+            // }
         } else {
             showNotification("Error: Telefono y/o Contraseña invalidos", "warning");
         }
@@ -112,6 +129,39 @@ const LoginForm: React.FC<Props> = ({}) => {
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>): void => {
         e.preventDefault();
     };
+
+    useEffect(() => {
+        console.log(
+            `estoy en use efect valor de is authenticated ${isAuthenticated} ${JSON.stringify(
+                userAuth
+            )}`
+        );
+
+        if (isAuthenticated && !user) {
+            getAccessTokenSilently().then((r) => {
+                console.log("Token de Acceso:", r);
+                authService.getToken(r);
+            });
+
+            // const searchParams = new URLSearchParams(location.search);
+            // const authorizationCode = searchParams.get("code");
+            // console.log(location);
+            // if (authorizationCode) {
+            //     // Luego de obtener el código de autorización, realiza una solicitud para obtener el token de acceso
+            //     console.log(authorizationCode);
+            //     authService.getToken(authorizationCode).then((r) => {
+            //         console.log(r);
+            //     });
+            // }
+            // userAuth?.email?.length &&
+            //     dispatch(actionLoginUserWhithNumber("+543884611503", "12345678"));
+        }
+        // if (user) {
+        //     user.rol === UserKey ? navigate(`/${PrivateUserRoutes.USER}/`) : navigate("/admin/");
+        // }
+        console.log(userAuth);
+    }, [user, isAuthenticated, location]);
+
     return (
         <Box
             sx={{ height: "100%" }}
@@ -196,6 +246,7 @@ const LoginForm: React.FC<Props> = ({}) => {
                     </Typography>
                 </Grid>
             </Grid>
+            {isAuthenticated && <LogoutButton />}
         </Box>
     );
 };

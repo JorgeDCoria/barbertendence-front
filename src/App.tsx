@@ -18,7 +18,8 @@ import Schedule from "./pages/admin/components/management/schedules/Schedule";
 import License from "./pages/admin/components/management/licenses/License";
 import Report from "./pages/admin/components/management/reports/Report";
 import { RoutesWithNotFound } from "./utilities";
-
+import AuthGuard from "./guards/authGuards";
+import { PrivateUserRoutes } from "./const";
 
 const App = () => {
     return (
@@ -29,23 +30,25 @@ const App = () => {
                     <Route path="/register" element={<Register />} />
                     <Route path="/confirmForm" element={<ConfirmForm />} />
                 </Route>
-                <Route path="/user/" element={<UserLayout />}>
-                    <Route index element={<UserHome />} />
-                    <Route path="newOrder" element={<NewOrder />} />
-                    <Route path="perfil" element={<UserPerfil />} />
-                </Route>
-                <Route path="/admin/" element={<AdminLayout />}>
-                    <Route index element={<AdminHome />} />
-                    <Route path="clients" element={<ClientTable />} />
-                    <Route path="management/" element={<Management />}>
-                        <Route index element={<EmployesTable />} />
-                        <Route path="services" element={<ServiceTable />} />
-                        <Route path="schedules" element={<Schedule />} />
-                        <Route path="licenses" element={<License />} />
-                        <Route path="reports" element={<Report />} />
+                <Route element={<AuthGuard />}>
+                    <Route path={`${PrivateUserRoutes.USER}/`} element={<UserLayout />}>
+                        <Route index element={<UserHome />} />
+                        <Route path={`${PrivateUserRoutes.NEWORDER}`} element={<NewOrder />} />
+                        <Route path={`${PrivateUserRoutes.PROFILE}`} element={<UserPerfil />} />
+                    </Route>
+
+                    <Route path="/admin/" element={<AdminLayout />}>
+                        <Route index element={<AdminHome />} />
+                        <Route path="clients" element={<ClientTable />} />
+                        <Route path="management/" element={<Management />}>
+                            <Route index element={<EmployesTable />} />
+                            <Route path="services" element={<ServiceTable />} />
+                            <Route path="schedules" element={<Schedule />} />
+                            <Route path="licenses" element={<License />} />
+                            <Route path="reports" element={<Report />} />
+                        </Route>
                     </Route>
                 </Route>
-                <Route path="*" element={<>Not Fund</>} />
             </RoutesWithNotFound>
         </>
     );

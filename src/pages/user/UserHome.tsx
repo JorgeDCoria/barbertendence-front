@@ -19,6 +19,7 @@ import PaginationCard from "./components/PaginationCard";
 import CardOrder from "./components/CardOrder";
 import ButtonLg from "./components/ButtonLg";
 import { Link } from "react-router-dom";
+import { useAuth0 } from "@auth0/auth0-react";
 
 const orders: Order[] = [
     {
@@ -179,6 +180,11 @@ const UserHome: React.FC<{}> = ({}) => {
     const theme: Theme = useTheme();
 
     const isXs = useMediaQuery(theme.breakpoints.only("xs"));
+    const { isAuthenticated, user } = useAuth0();
+
+    if (isAuthenticated) {
+        console.log(user);
+    }
 
     return (
         <Box width={"100%"}>

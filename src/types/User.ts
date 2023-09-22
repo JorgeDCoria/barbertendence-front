@@ -6,4 +6,5 @@ export type User = {
     email: string;
     rol?: string;
     token?: string;
+    isLoggedWhitEmail?: boolean;
 }; //admin, user, barber

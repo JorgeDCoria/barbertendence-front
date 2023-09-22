@@ -16,13 +16,17 @@ import { Auth0Provider } from "@auth0/auth0-react";
 
 const DOMAIN = import.meta.env.VITE_APP_AUTH_DOMAIN;
 const CLIENT_ID = import.meta.env.VITE_APP_AUTH_CLIENT_ID;
+const AUDIENCE = import.meta.env.VITE_APP_AUTH_AUDIENCE;
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
     <React.StrictMode>
         <Auth0Provider
             domain={DOMAIN}
             clientId={CLIENT_ID}
-            authorizationParams={{ redirect_uri: "http://localhost:5173/user/" }}
+            authorizationParams={{
+                redirect_uri: window.location.origin,
+                audience: AUDIENCE,
+            }}
         >
             <Provider store={store}>
                 <BrowserRouter>

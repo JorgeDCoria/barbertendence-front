@@ -6,6 +6,16 @@ import userService from "../../service/userService";
 import { User, Order } from "../../types/";
 import authService from "../../service/authService";
 
+export const actionLoginUserWhithEmail = (email: string) => {
+    return async (dispatch: Dispatch) => {
+        try {
+            const userLogged = await authService.logInWithEmail(email);
+            dispatch(setUser(userLogged));
+        } catch (e: any) {
+            dispatch(setError({ code: e.status ? e.status : 0, message: e.message }));
+        }
+    };
+};
 export const actionLoginUserWhithNumber = (number: string, password: string) => {
     return async (dispatch: Dispatch) => {
         try {
