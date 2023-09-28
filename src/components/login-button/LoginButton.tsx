@@ -1,25 +1,13 @@
-import { useAuth0 } from "@auth0/auth0-react";
 import { Button } from "@mui/material";
+import { Link } from "react-router-dom";
 
 const LoginButton = () => {
-    const { loginWithRedirect } = useAuth0();
-
-    // const handleClick = () => {
-    //     console.log("estoy en handle click");
-
-    //     loginWithRedirect();
-    // };
-
     return (
-        <Button
-            variant="outlined"
-            fullWidth
-            color="primary"
-            size="large"
-            onClick={() => loginWithRedirect()}
-        >
-            Ingresar con Gmail
-        </Button>
+        <Link to={"https://fair-red-drill-belt.cyclic.cloud/api/auth/google/signin"}>
+            <Button variant="outlined" fullWidth color="primary" size="large">
+                Ingresar con Gmail
+            </Button>{" "}
+        </Link>
     );
 };
 export default LoginButton;

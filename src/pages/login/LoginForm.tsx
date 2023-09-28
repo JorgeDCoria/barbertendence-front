@@ -16,7 +16,6 @@ import { UserKey } from "../../redux/slices/user.Slice";
 import { actionsClearError } from "../../redux/actions/errorActions";
 import { LoginButton } from "../../components/login-button";
 import { PrivateUserRoutes } from "../../const";
-import { useAuth0 } from "@auth0/auth0-react";
 import { LogoutButton } from "../../components/logout-button";
 import authService from "../../service/authService";
 
@@ -62,13 +61,6 @@ const LoginForm: React.FC<Props> = ({}) => {
     const dispatch = useAppDispatch();
     const { error } = useAppSelector((state) => state.error);
     const { user } = useAppSelector((state) => state.userSate);
-    const {
-        isAuthenticated,
-        user: userAuth,
-        getAccessTokenSilently,
-        getIdTokenClaims,
-    } = useAuth0();
-    const location = useLocation();
 
     const login = () => {
         if (!formError.phoneError.error && !formError.passwordError.error) {
@@ -129,38 +121,41 @@ const LoginForm: React.FC<Props> = ({}) => {
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>): void => {
         e.preventDefault();
     };
+    const location = useLocation();
 
     useEffect(() => {
-        console.log(
-            `estoy en use efect valor de is authenticated ${isAuthenticated} ${JSON.stringify(
-                userAuth
-            )}`
-        );
+        // console.log(
+        //     `estoy en use efect valor de is authenticated ${isAuthenticated} ${JSON.stringify(
+        //         userAuth
+        //     )}`
+        // );
 
-        if (isAuthenticated && !user) {
-            getAccessTokenSilently().then((r) => {
-                console.log("Token de Acceso:", r);
-                authService.getToken(r);
-            });
+        // if (isAuthenticated && !user) {
+        //     getAccessTokenSilently().then((r) => {
+        //         console.log("Token de Acceso:", r);
+        //         authService.getToken(r);
+        //     });
+        console.log(location);
+        const searchParams = new URLSearchParams(location.search);
+        const token = searchParams.get("token");
+        const user = searchParams.get("user");
+        console.log(`user: ${user}, token: ${token}`);
 
-            // const searchParams = new URLSearchParams(location.search);
-            // const authorizationCode = searchParams.get("code");
-            // console.log(location);
-            // if (authorizationCode) {
-            //     // Luego de obtener el código de autorización, realiza una solicitud para obtener el token de acceso
-            //     console.log(authorizationCode);
-            //     authService.getToken(authorizationCode).then((r) => {
-            //         console.log(r);
-            //     });
-            // }
-            // userAuth?.email?.length &&
-            //     dispatch(actionLoginUserWhithNumber("+543884611503", "12345678"));
-        }
+        // console.log(location);
+        // if (authorizationCode) {
+        //     // Luego de obtener el código de autorización, realiza una solicitud para obtener el token de acceso
+        //     console.log(authorizationCode);
+        //     authService.getToken(authorizationCode).then((r) => {
+        //         console.log(r);
+        //     });
+        // }
+        // userAuth?.email?.length &&
+        //     dispatch(actionLoginUserWhithNumber("+543884611503", "12345678"));
+        //}
         // if (user) {
         //     user.rol === UserKey ? navigate(`/${PrivateUserRoutes.USER}/`) : navigate("/admin/");
         // }
-        console.log(userAuth);
-    }, [user, isAuthenticated, location]);
+    }, [user, location]);
 
     return (
         <Box
