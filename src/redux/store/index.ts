@@ -4,6 +4,7 @@ import errorReducer from "../slices/errorSlice";
 import barbersReducer from "../slices/barberSlice";
 import userReducer from "../slices/user.Slice";
 import servicesReducer from "../slices/servicesSlice";
+import barberShopReducer from "../slices/barberShopReducer";
 
 export const store = configureStore({
     reducer: {
@@ -11,6 +12,7 @@ export const store = configureStore({
         servicesState: servicesReducer,
         barbers: barbersReducer,
         userSate: userReducer,
+        barberShop: barberShopReducer,
         error: errorReducer,
     },
 });

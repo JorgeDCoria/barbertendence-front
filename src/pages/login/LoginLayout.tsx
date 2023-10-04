@@ -1,15 +1,29 @@
+import { useEffect } from "react";
 import { Box, Grid } from "@mui/material";
-import { Outlet } from "react-router-dom";
+import { Outlet, useNavigate, useParams } from "react-router-dom";
 
 import logo from "../../assets/logo.png";
+import { useAppDispatch, useAppSelector } from "../../hook/useStore";
+import { actionSetBarberShopId } from "../../redux/actions/barberShopAction";
+import { PRIVATEROUTES } from "../../const";
 
 const LoginLayout: React.FC<{}> = () => {
+    const dispatch = useAppDispatch();
+    const { idBarberShop } = useParams();
+    const navigate = useNavigate();
+    const { user } = useAppSelector((state) => state.userSate);
+    useEffect(() => {
+        if (idBarberShop) dispatch(actionSetBarberShopId(idBarberShop));
+    }, []);
+    useEffect(() => {
+        if (user) navigate(`/${PRIVATEROUTES}`, { replace: true });
+    }, []);
+
     return (
         <Grid
             container
             sx={{
-                backgroundImage:
-                    "linear-gradient(to bottom, #1F6BB5 7.57%, #7F217D 70%)",
+                backgroundImage: "linear-gradient(to bottom, #1F6BB5 7.57%, #7F217D 70%)",
                 height: "100vh",
                 width: "100%",
                 display: "flex",
@@ -35,11 +49,7 @@ const LoginLayout: React.FC<{}> = () => {
             >
                 {/* contenedor de logo */}
                 <Box sx={{ height: "100%" }} display="flex">
-                    <Grid
-                        container
-                        sx={{ height: "100%" }}
-                        justifyContent={"center"}
-                    >
+                    <Grid container sx={{ height: "100%" }} justifyContent={"center"}>
                         <Grid
                             item
                             xs={12}

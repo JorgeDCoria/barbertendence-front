@@ -34,15 +34,13 @@ const initialState: UserState = {
     user: null,
     users: null,
 };
-export const UserKey = "user";
-export const BarberKey = "barber";
-export const AdminKey= "admin";
+
 export const barberSlice = createSlice({
     name: "userState",
     initialState: initialState,
     reducers: {
         setUser: (state, action: PayloadAction<User>) => {
-            persistLocalStorage(UserKey, { token: action.payload.token });
+            persistLocalStorage("user", { token: action.payload.token });
             state.user = action.payload;
         },
         setUsers: (state, action) => {

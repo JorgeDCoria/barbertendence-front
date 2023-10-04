@@ -2,14 +2,14 @@ import axios from "axios";
 import userAdapter from "../adapters/userAdapter";
 
 const URL_BASE = import.meta.env.VITE_APP_BASE_URL;
-const logIn = async (number: string, password: string) => {
+const logInWhitNumber = async (number: string, password: string, barbershopId: string) => {
     try {
         let user = await axios
             .post(`${URL_BASE}/auth/signin`, {
                 phone: number,
                 password,
                 isEmailLogin: false,
-                barbershopId: "64fd0b77b93867557d02ac35",
+                barbershopId,
             })
             .then((res) => res.data);
         user = userAdapter.mapUserApiToUserLogged(user);
@@ -20,10 +20,10 @@ const logIn = async (number: string, password: string) => {
     }
 };
 
-const logInWithEmail = async (email: string) => {
+const logInWithEmail = async (token: string) => {
     try {
         let user = await axios
-            .post(`${URL_BASE}/auth/signin`, {
+            .post(`${URL_BASE}/getUser`, {
                 //phone_phone_verified
                 //birthdate
                 //name
@@ -32,7 +32,7 @@ const logInWithEmail = async (email: string) => {
                 barbershopId: "64fd0b77b93867557d02ac35",
             })
             .then((res) => res.data);
-        user = userAdapter.mapUserApiToUserLogged(user);
+        token = userAdapter.mapUserApiToUserLogged(user);
         user.isEmailLogin = true;
         return user;
     } catch (e: any) {
@@ -73,7 +73,7 @@ const getToken = async (token: string) => {
 };
 
 const authService = {
-    logIn,
+    logInWhitNumber,
     logInWithEmail,
     getToken,
 };

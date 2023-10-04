@@ -7,3 +7,14 @@ export const PrivateUserRoutes = {
     PROFILE: "profile",
     NEWORDER: "newOrder",
 };
+
+export const PrivateAdminRoutes = {
+    ADMIN: "admin",
+};
+
+export const PrivateRoutes = {
+    PRIVATE: "private",
+};
+
+export const IDBARBERSHOP = "idBarberShop";
+export const PRIVATEROUTES = "private";

@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Box, Grid, Button, Typography } from "@mui/material";
 
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import InputPassword from "./components/InputPassword";
 import InputPhoneNumber from "./components/InputPhoneNumber";
 import { type Phone } from "../../types/phoneType";
@@ -15,9 +15,10 @@ import {
 import { UserKey } from "../../redux/slices/user.Slice";
 import { actionsClearError } from "../../redux/actions/errorActions";
 import { LoginButton } from "../../components/login-button";
-import { PrivateUserRoutes } from "../../const";
+import { PRIVATEROUTES, PrivateUserRoutes } from "../../const";
 import { LogoutButton } from "../../components/logout-button";
 import authService from "../../service/authService";
+import { decodedJWT } from "../../utilities/jwtUtility";
 
 interface Props {}
 interface Input {
@@ -61,19 +62,33 @@ const LoginForm: React.FC<Props> = ({}) => {
     const dispatch = useAppDispatch();
     const { error } = useAppSelector((state) => state.error);
     const { user } = useAppSelector((state) => state.userSate);
+    const { idBarberShop } = useAppSelector((state) => state.barberShop);
+    console.log(idBarberShop);
 
-    const login = () => {
-        if (!formError.phoneError.error && !formError.passwordError.error) {
+    const loginWhitNumber = () => {
+        if (!formError.phoneError.error && !formError.passwordError.error && idBarberShop) {
+            console.log("estoy por despachar");
+
             dispatch(
                 actionLoginUserWhithNumber(
                     `${input.numberPhone.code}${input.numberPhone.phone}`,
-                    input.password
+                    input.password,
+                    idBarberShop
                 )
-            );
-            if (error) {
-                showNotification(`Error al iniciar sesion: ${error.message}`, "error");
-                dispatch(actionsClearError());
-            }
+            )
+                .then(() => {
+                    console.log("deberia de estar nabigando");
+
+                    navigate(`/${PRIVATEROUTES}`, { replace: true });
+                })
+                .catch((e) => {
+                    if (error) {
+                        showNotification(`Error al iniciar sesion: ${error.message}`, "error");
+                        dispatch(actionsClearError());
+                        console.log(e.message);
+                    }
+                });
+
             // else {
             //     user &&
             //         (user.rol === UserKey
@@ -124,37 +139,10 @@ const LoginForm: React.FC<Props> = ({}) => {
     const location = useLocation();
 
     useEffect(() => {
-        // console.log(
-        //     `estoy en use efect valor de is authenticated ${isAuthenticated} ${JSON.stringify(
-        //         userAuth
-        //     )}`
-        // );
-
-        // if (isAuthenticated && !user) {
-        //     getAccessTokenSilently().then((r) => {
-        //         console.log("Token de Acceso:", r);
-        //         authService.getToken(r);
-        //     });
         console.log(location);
         const searchParams = new URLSearchParams(location.search);
         const token = searchParams.get("token");
-        const user = searchParams.get("user");
-        console.log(`user: ${user}, token: ${token}`);
-
-        // console.log(location);
-        // if (authorizationCode) {
-        //     // Luego de obtener el código de autorización, realiza una solicitud para obtener el token de acceso
-        //     console.log(authorizationCode);
-        //     authService.getToken(authorizationCode).then((r) => {
-        //         console.log(r);
-        //     });
-        // }
-        // userAuth?.email?.length &&
-        //     dispatch(actionLoginUserWhithNumber("+543884611503", "12345678"));
-        //}
-        // if (user) {
-        //     user.rol === UserKey ? navigate(`/${PrivateUserRoutes.USER}/`) : navigate("/admin/");
-        // }
+        if (token) dispatch(actionLoginUserWhithEmail(token));
     }, [user, location]);
 
     return (
@@ -219,7 +207,7 @@ const LoginForm: React.FC<Props> = ({}) => {
                         fullWidth
                         color="primary"
                         size="large"
-                        onClick={login}
+                        onClick={loginWhitNumber}
                     >
                         Ingresar
                     </Button>
@@ -241,7 +229,6 @@ const LoginForm: React.FC<Props> = ({}) => {
                     </Typography>
                 </Grid>
             </Grid>
-            {isAuthenticated && <LogoutButton />}
         </Box>
     );
 };
