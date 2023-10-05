@@ -6,6 +6,7 @@ import logo from "../../assets/logo.png";
 import { useAppDispatch, useAppSelector } from "../../hook/useStore";
 import { actionSetBarberShopId } from "../../redux/actions/barberShopAction";
 import { PRIVATEROUTES } from "../../const";
+import { persistLocalStorage } from "../../utilities";
 
 const LoginLayout: React.FC<{}> = () => {
     const dispatch = useAppDispatch();
@@ -13,7 +14,12 @@ const LoginLayout: React.FC<{}> = () => {
     const navigate = useNavigate();
     const { user } = useAppSelector((state) => state.userSate);
     useEffect(() => {
-        if (idBarberShop) dispatch(actionSetBarberShopId(idBarberShop));
+        if (
+            !localStorage.getItem("idBarberShop") ||
+            localStorage.getItem("idBarberShop") !== idBarberShop
+        ) {
+            persistLocalStorage("idBarberShop", idBarberShop);
+        }
     }, []);
     useEffect(() => {
         if (user) navigate(`/${PRIVATEROUTES}`, { replace: true });
@@ -48,7 +54,7 @@ const LoginLayout: React.FC<{}> = () => {
                 }}
             >
                 {/* contenedor de logo */}
-                <Box sx={{ height: "100%" }} display="flex">
+                <Box sx={{ height: "100%", width: "100%" }} display="flex">
                     <Grid container sx={{ height: "100%" }} justifyContent={"center"}>
                         <Grid
                             item

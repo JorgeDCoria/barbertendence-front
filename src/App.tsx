@@ -21,21 +21,27 @@ import { RoutesWithNotFound } from "./utilities";
 import AuthGuard from "./guards/AuthGuards";
 import { IDBARBERSHOP, PRIVATEROUTES, PrivateAdminRoutes, PrivateUserRoutes } from "./const";
 import NavigateToPrivateRoute from "./guards/NavigateToPrivateRoute";
+import { useAppSelector } from "./hook/useStore";
 
 const App = () => {
-    const params = useParams();
-    const location = useLocation();
-    console.log(params);
-    console.log(location);
+    const { idBarberShop } = useAppSelector((state) => state.barberShop);
+    console.log(localStorage.getItem("idBarberShop"));
 
     return (
         <>
             <RoutesWithNotFound>
                 <Route path={`/:${IDBARBERSHOP}/*`} element={<LoginLayout />}>
-                    <Route path="login" element={<Login />} />
+                    <Route index element={<Login />} />
                     <Route path="register" element={<Register />} />
                     <Route path="confirmForm" element={<ConfirmForm />} />
+                    <Route
+                        path="*"
+                        element={
+                            <Navigate to={`/${localStorage.getItem("idBarberShop")}`} replace />
+                        }
+                    />
                 </Route>
+
                 <Route element={<AuthGuard />}>
                     <Route path={`/${PRIVATEROUTES}/*`} element={<Outlet />}>
                         <Route path={`${PrivateUserRoutes.USER}/*`} element={<UserLayout />}>
@@ -54,7 +60,7 @@ const App = () => {
                                 <Route path="licenses" element={<License />} />
                                 <Route path="reports" element={<Report />} />
                             </Route>
-                        </Route>{" "}
+                        </Route>
                     </Route>
                 </Route>
             </RoutesWithNotFound>
