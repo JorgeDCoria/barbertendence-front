@@ -120,6 +120,7 @@ const Register = () => {
                 {/* Number phone */}
                 <Grid item xs={12} lg={10}>
                     <InputNumber
+                        ifNumberExistError
                         sizeInput="small"
                         sizeIcon="small"
                         handleChange={handleChangeNumber}

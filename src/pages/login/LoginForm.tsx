@@ -15,17 +15,9 @@ import {
 
 import { LoginButton } from "../../components/login-button";
 import { PRIVATEROUTES } from "../../const";
+import { UserRol } from "../../typesConfig";
 
 interface Props {}
-interface Input {
-    numberPhone: Phone;
-    password: string;
-}
-
-type FormError = {
-    phoneError: InputError;
-    passwordError: InputError;
-};
 
 const validarPassword = (password: string): string => {
     let message = "";
@@ -46,27 +38,21 @@ const validarNumberPhone = (phone: string): string => {
 
 const LoginForm: React.FC<Props> = ({}) => {
     const { showNotification } = useNotification();
-    const [input, setInput] = useState<Input>({
-        numberPhone: { code: "", phone: 0 },
+    const [input, setInput] = useState<{ numberPhone: string; password: string }>({
+        numberPhone: "",
         password: "",
     });
-    const [formError, setFormError] = useState<FormError>({
-        phoneError: { error: false, message: "" },
+    const [formError, setFormError] = useState({
         passwordError: { error: false, message: "" },
     });
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
 
     const loginWhitNumber = () => {
-        if (!formError.phoneError.error && !formError.passwordError.error) {
+        if (!formError.passwordError.error && input.numberPhone.length) {
             console.log("estoy por despachar");
 
-            dispatch(
-                actionLoginUserWhithNumber(
-                    `${input.numberPhone.code}${input.numberPhone.phone}`,
-                    input.password
-                )
-            )
+            dispatch(actionLoginUserWhithNumber(`${input.numberPhone}`, input.password))
                 .then(() => {
                     navigate(`/${PRIVATEROUTES}`, { replace: true });
                 })
@@ -82,7 +68,7 @@ const LoginForm: React.FC<Props> = ({}) => {
         }
     };
 
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>): void => {
         if (e.target.name === "password") {
             setInput({ ...input, [e.target.name]: e.target.value });
             let aux = validarPassword(e.target.value);
@@ -95,24 +81,28 @@ const LoginForm: React.FC<Props> = ({}) => {
                     message: aux,
                 },
             });
-        } else {
-            setInput({
-                ...input,
-                numberPhone: {
-                    ...input.numberPhone,
-                    [e.target.name]: e.target.value,
-                },
-            });
-            let aux = validarNumberPhone(e.target.value);
-            setFormError({
-                ...formError,
-                phoneError: {
-                    ...formError.phoneError,
-                    error: aux !== "",
-                    message: aux,
-                },
-            });
         }
+        // else {
+        //     setInput({
+        //         ...input,
+        //         numberPhone: {
+        //             ...input.numberPhone,
+        //             [e.target.name]: e.target.value,
+        //         },
+        //     });
+        //     let aux = validarNumberPhone(e.target.value);
+        //     setFormError({
+        //         ...formError,
+        //         phoneError: {
+        //             ...formError.phoneError,
+        //             error: aux !== "",
+        //             message: aux,
+        //         },
+        //     });
+        // }
+    };
+    const handleChangeNumber = (value: string) => {
+        setInput((prev) => ({ ...prev, numberPhone: value }));
     };
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>): void => {
@@ -126,7 +116,7 @@ const LoginForm: React.FC<Props> = ({}) => {
         const user = searchParams.get("user");
         const rol = searchParams.get("roles");
         if (token && user && rol)
-            dispatch(actionLoginUserWhithEmail(user, rol, token))
+            dispatch(actionLoginUserWhithEmail(user, rol.toLowerCase() as UserRol, token))
                 .then(() => {
                     navigate(`/${PRIVATEROUTES}`);
                 })
@@ -164,13 +154,7 @@ const LoginForm: React.FC<Props> = ({}) => {
                     <InputPhoneNumber
                         sizeIcon="large"
                         sizeInput="medium"
-                        codeName="code"
-                        phoneName="phone"
-                        codeValue={input.numberPhone.code}
-                        phoneValue={input.numberPhone.phone}
-                        handleChange={handleChange}
-                        error={formError.phoneError.error}
-                        errorMessage={formError.phoneError.message}
+                        handleChange={handleChangeNumber}
                     />
                 </Grid>
                 {/* Numero password */}

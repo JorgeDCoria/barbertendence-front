@@ -18,8 +18,14 @@ interface Props {
     sizeInput: SizeSMValue;
     sizeIcon: SizeSMLValue;
     handleChange: (number: string) => void;
+    ifNumberExistError?: boolean;
 }
-const InputPhoneNumber: React.FC<Props> = ({ sizeInput, sizeIcon, handleChange }) => {
+const InputPhoneNumber: React.FC<Props> = ({
+    sizeInput,
+    sizeIcon,
+    handleChange,
+    ifNumberExistError = false,
+}) => {
     const [code, setCode] = useState<string>("");
     const [phone, setPhone] = useState<string>("");
     const [error, setError] = useState({
@@ -38,13 +44,19 @@ const InputPhoneNumber: React.FC<Props> = ({ sizeInput, sizeIcon, handleChange }
         console.log(`${code}${phone}`.trim());
         if (code !== "") {
             setError({ error: false, message: "" });
+
             authService
                 .validateAvailableNumberPhone(`${code}${phone}`)
                 .then((valid) => {
-                    if (!valid) {
+                    //if ((ifNumberExistError && !valid) || (!ifNumberExistError && valid)) {
+                    if (true) {
                         handleChange(`${code}${phone}`);
                     } else {
-                        throw { message: "El numero ya existe en nuestra base de datos" };
+                        throw {
+                            message: `El numero ${
+                                ifNumberExistError ? "ya" : "no"
+                            } existe en nuestra base de datos`,
+                        };
                     }
                     console.log(valid);
                 })
