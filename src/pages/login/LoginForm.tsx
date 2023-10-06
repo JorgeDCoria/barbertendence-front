@@ -131,8 +131,21 @@ const LoginForm: React.FC<Props> = ({}) => {
     useEffect(() => {
         const searchParams = new URLSearchParams(location.search);
         const token = searchParams.get("token");
-        if (token) dispatch(actionLoginUserWhithEmail(token));
-    }, [user, location]);
+        const user = searchParams.get("user");
+        const rol = searchParams.get("roles");
+        if (token && user && rol)
+            dispatch(actionLoginUserWhithEmail(user, rol, token))
+                .then(() => {
+                    navigate(`/${PRIVATEROUTES}`);
+                })
+                .catch((e: any) => {
+                    console.log(e.message);
+                    showNotification(
+                        `Erro al iniciar con cuenta gmail, intentelo mas tarde ${e.message}`,
+                        "error"
+                    );
+                });
+    }, [location]);
 
     return (
         <Box
