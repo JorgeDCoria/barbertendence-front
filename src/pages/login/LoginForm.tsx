@@ -19,6 +19,8 @@ import { PRIVATEROUTES, PrivateUserRoutes } from "../../const";
 import { LogoutButton } from "../../components/logout-button";
 import authService from "../../service/authService";
 import { decodedJWT } from "../../utilities/jwtUtility";
+import { usePersistData } from "src/hook/usePersistData";
+import { clearError } from "../../redux/slices/errorSlice";
 
 interface Props {}
 interface Input {
@@ -62,39 +64,27 @@ const LoginForm: React.FC<Props> = ({}) => {
     const dispatch = useAppDispatch();
     const { error } = useAppSelector((state) => state.error);
     const { user } = useAppSelector((state) => state.userSate);
-    const { idBarberShop } = useAppSelector((state) => state.barberShop);
-    console.log(idBarberShop);
 
     const loginWhitNumber = () => {
-        if (!formError.phoneError.error && !formError.passwordError.error && idBarberShop) {
+        if (!formError.phoneError.error && !formError.passwordError.error) {
             console.log("estoy por despachar");
 
             dispatch(
                 actionLoginUserWhithNumber(
                     `${input.numberPhone.code}${input.numberPhone.phone}`,
-                    input.password,
-                    idBarberShop
+                    input.password
                 )
             )
                 .then(() => {
-                    console.log("deberia de estar nabigando");
-
                     navigate(`/${PRIVATEROUTES}`, { replace: true });
                 })
-                .catch((e) => {
-                    if (error) {
-                        showNotification(`Error al iniciar sesion: ${error.message}`, "error");
-                        dispatch(actionsClearError());
-                        console.log(e.message);
-                    }
+                .catch((e: any) => {
+                    console.log(`ah ocurrido un error ${e.message}`);
+                    showNotification(
+                        `ah ocurrido un error al inicia sesion: ${e.message}`,
+                        "error"
+                    );
                 });
-
-            // else {
-            //     user &&
-            //         (user.rol === UserKey
-            //             ? navigate(`/${PrivateUserRoutes.USER}/`)
-            //             : navigate("/admin/"));
-            // }
         } else {
             showNotification("Error: Telefono y/o Contraseña invalidos", "warning");
         }
@@ -139,7 +129,6 @@ const LoginForm: React.FC<Props> = ({}) => {
     const location = useLocation();
 
     useEffect(() => {
-        console.log(location);
         const searchParams = new URLSearchParams(location.search);
         const token = searchParams.get("token");
         if (token) dispatch(actionLoginUserWhithEmail(token));

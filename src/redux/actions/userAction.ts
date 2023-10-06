@@ -16,17 +16,14 @@ export const actionLoginUserWhithEmail = (token: string) => {
         }
     };
 };
-export const actionLoginUserWhithNumber = (
-    number: string,
-    password: string,
-    idBarbershop: string
-) => {
+export const actionLoginUserWhithNumber = (number: string, password: string) => {
     return async (dispatch: Dispatch) => {
         try {
-            const userLogged = await authService.logInWhitNumber(number, password, idBarbershop);
+            const userLogged = await authService.logInWhitNumber(number, password);
             dispatch(setUser(userLogged));
         } catch (e: any) {
-            dispatch(setError({ code: e.status ? e.status : 0, message: e.message }));
+            //dispatch(setError({ code: e.status ? e.status : 0, message: e.message }));
+            throw e;
         }
     };
 };

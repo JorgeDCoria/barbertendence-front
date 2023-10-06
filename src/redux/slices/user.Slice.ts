@@ -26,7 +26,7 @@ function descendingComparator(a: User, b: User, orderBy: keyof User) {
 }
 
 interface UserState {
-    user: User | null;
+    user: Partial<User> | null;
     users: User[] | null;
 }
 
@@ -39,8 +39,8 @@ export const barberSlice = createSlice({
     name: "userState",
     initialState: initialState,
     reducers: {
-        setUser: (state, action: PayloadAction<User>) => {
-            persistLocalStorage("user", { token: action.payload.token });
+        setUser: (state, action: PayloadAction<Partial<User>>) => {
+            persistLocalStorage("user", action.payload);
             state.user = action.payload;
         },
         setUsers: (state, action) => {

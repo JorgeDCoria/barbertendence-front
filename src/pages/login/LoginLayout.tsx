@@ -1,28 +1,27 @@
 import { useEffect } from "react";
 import { Box, Grid } from "@mui/material";
 import { Outlet, useNavigate, useParams } from "react-router-dom";
-
 import logo from "../../assets/logo.png";
-import { useAppDispatch, useAppSelector } from "../../hook/useStore";
-import { actionSetBarberShopId } from "../../redux/actions/barberShopAction";
+
 import { PRIVATEROUTES } from "../../const";
-import { persistLocalStorage } from "../../utilities";
+import { usePersistData } from "../../hook/usePersistData";
 
 const LoginLayout: React.FC<{}> = () => {
-    const dispatch = useAppDispatch();
     const { idBarberShop } = useParams();
     const navigate = useNavigate();
-    const { user } = useAppSelector((state) => state.userSate);
+    const { setPersistData, getUser, getIdBarberShop } = usePersistData();
+
     useEffect(() => {
         if (
             !localStorage.getItem("idBarberShop") ||
             localStorage.getItem("idBarberShop") !== idBarberShop
         ) {
-            persistLocalStorage("idBarberShop", idBarberShop);
+            setPersistData("idBarberShop", idBarberShop);
+            console.log(getIdBarberShop());
         }
-    }, []);
-    useEffect(() => {
-        if (user) navigate(`/${PRIVATEROUTES}`, { replace: true });
+        // if (getUser()) {
+        //     navigate(`/${PRIVATEROUTES}`, { replace: true });
+        // }
     }, []);
 
     return (

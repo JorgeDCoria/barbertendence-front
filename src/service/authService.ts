@@ -1,18 +1,17 @@
 import axios from "axios";
 import userAdapter from "../adapters/userAdapter";
+import { User } from "../types";
 
 const URL_BASE = import.meta.env.VITE_APP_BASE_URL;
-const logInWhitNumber = async (number: string, password: string, barbershopId: string) => {
+const logInWhitNumber = async (number: string, password: string) => {
     try {
         let user = await axios
             .post(`${URL_BASE}/auth/signin`, {
                 phone: number,
                 password,
-                isEmailLogin: false,
-                barbershopId,
             })
             .then((res) => res.data);
-        user = userAdapter.mapUserApiToUserLogged(user);
+        user = userAdapter.mapUserApiLoggedToUser(user);
         user.isEmailLogin = false;
         return user;
     } catch (e: any) {
@@ -39,8 +38,15 @@ const logInWithEmail = async (token: string) => {
         throw e;
     }
 };
-// VITE_APP_AUTH_DOMAIN=dev-wrsb3uo2nf1r5sy4.us.auth0.com
-// VITE_APP_AUTH_CLIENT_ID=3eCQtCZIEldRzH0Oua0sbc5OfWVCYKlB
+
+const registerUser = async (user: User) => {
+    try {
+        const data = await axios.post(`${URL_BASE}/auth/singnup`, user).then((r) => r.data);
+    } catch (e: any) {
+        throw `Error en registro: ${e.message}`;
+    }
+};
+
 const getToken = async (token: string) => {
     try {
         await axios

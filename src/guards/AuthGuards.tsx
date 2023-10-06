@@ -13,11 +13,11 @@ export const AuthGuard: React.FC<AuthGuardProps> = () => {
     console.log(idBarberShop);
 
     useEffect(() => {
-        if (user) {
-            if (user.rol == ROL.ADMINKEY)
-                navigate(`/${PRIVATEROUTES}/${PrivateAdminRoutes.ADMIN}`, { replace: true });
-            else navigate(`/${PRIVATEROUTES}/${PrivateUserRoutes.USER}`, { replace: true });
-        } else navigate(`/${idBarberShop}/${PublicRoutes.LOGIN}`, { replace: true });
+        // if (user) {
+        //     if (user.rol == ROL.ADMINKEY)
+        //         navigate(`/${PRIVATEROUTES}/${PrivateAdminRoutes.ADMIN}`, { replace: true });
+        //     else navigate(`/${PRIVATEROUTES}/${PrivateUserRoutes.USER}`, { replace: true });
+        // } else navigate(`/${idBarberShop}/${PublicRoutes.LOGIN}`, { replace: true });
     }, [idBarberShop]);
 
     return null;

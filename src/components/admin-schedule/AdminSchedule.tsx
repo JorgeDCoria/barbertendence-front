@@ -7,6 +7,7 @@ import {
     AppointmentModel,
     IntegratedGrouping,
     GroupingState,
+    //@ts-ignore
 } from "@devexpress/dx-react-scheduler";
 import {
     AppointmentForm,
@@ -21,6 +22,7 @@ import {
     WeekView,
     Resources,
     GroupingPanel,
+    //@ts-ignore
 } from "@devexpress/dx-react-scheduler-material-ui";
 import {
     Box,
