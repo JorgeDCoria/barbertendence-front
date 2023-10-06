@@ -1,26 +1,20 @@
 import { useState, useEffect } from "react";
 import { Box, Grid, Button, Typography } from "@mui/material";
 
-import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import InputPassword from "./components/InputPassword";
 import InputPhoneNumber from "./components/InputPhoneNumber";
 import { type Phone } from "../../types/phoneType";
 import { type InputError } from "../../types/inputError";
 import { useNotification } from "../../context/notification.context";
-import { useAppDispatch, useAppSelector } from "../../hook/useStore";
+import { useAppDispatch } from "../../hook/useStore";
 import {
     actionLoginUserWhithEmail,
     actionLoginUserWhithNumber,
 } from "../../redux/actions/userAction";
-import { UserKey } from "../../redux/slices/user.Slice";
-import { actionsClearError } from "../../redux/actions/errorActions";
+
 import { LoginButton } from "../../components/login-button";
-import { PRIVATEROUTES, PrivateUserRoutes } from "../../const";
-import { LogoutButton } from "../../components/logout-button";
-import authService from "../../service/authService";
-import { decodedJWT } from "../../utilities/jwtUtility";
-import { usePersistData } from "src/hook/usePersistData";
-import { clearError } from "../../redux/slices/errorSlice";
+import { PRIVATEROUTES } from "../../const";
 
 interface Props {}
 interface Input {
@@ -62,8 +56,6 @@ const LoginForm: React.FC<Props> = ({}) => {
     });
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
-    const { error } = useAppSelector((state) => state.error);
-    const { user } = useAppSelector((state) => state.userSate);
 
     const loginWhitNumber = () => {
         if (!formError.phoneError.error && !formError.passwordError.error) {

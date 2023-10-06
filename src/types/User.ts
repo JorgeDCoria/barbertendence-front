@@ -1,4 +1,4 @@
-import { UserRol } from "../types";
+import { UserRol } from "../typesConfig";
 
 export type User = {
     id?: string;
@@ -9,4 +9,5 @@ export type User = {
     rol?: UserRol;
     token?: string;
     isLoggedWhitEmail?: boolean;
+    password?: string;
 }; //admin, user, barber

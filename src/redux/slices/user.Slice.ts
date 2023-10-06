@@ -39,6 +39,9 @@ export const barberSlice = createSlice({
     name: "userState",
     initialState: initialState,
     reducers: {
+        setUserToRegister: (state, action: PayloadAction<Partial<User> | null>) => {
+            state.user = action.payload;
+        },
         setUser: (state, action: PayloadAction<Partial<User>>) => {
             persistLocalStorage("user", action.payload);
             state.user = action.payload;
@@ -58,6 +61,6 @@ export const barberSlice = createSlice({
     },
 });
 
-export const { setUsers, orderByProperty, setUser } = barberSlice.actions;
+export const { setUsers, orderByProperty, setUser, setUserToRegister } = barberSlice.actions;
 
 export default barberSlice.reducer;

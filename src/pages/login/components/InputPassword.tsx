@@ -1,6 +1,6 @@
 import { Box, InputAdornment, TextField } from "@mui/material";
 import React, { useState } from "react";
-import { type SizeSMValue, type SizeSMLValue } from "src/types";
+import { type SizeSMValue, type SizeSMLValue } from "../../../typesConfig";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
 interface Props {
@@ -9,7 +9,7 @@ interface Props {
     sizeTextField?: SizeSMValue;
     sizeIcon?: SizeSMLValue;
     value: string;
-    handleChange: Function;
+    handleChange: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
     error: boolean;
     errorMessage: string;
 }
@@ -29,6 +29,9 @@ const InputPassword: React.FC<Props> = ({
     const handleShowPassword = (): void => {
         setShowPassword((prevShowPassword) => !prevShowPassword);
     };
+    // const handleChangePassword = (e:React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    //     handleChange(e.target.value)
+    // }
     return (
         <Box
             sx={{

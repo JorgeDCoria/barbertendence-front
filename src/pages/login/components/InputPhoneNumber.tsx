@@ -1,3 +1,4 @@
+import { useState } from "react";
 import {
     Box,
     Select,
@@ -6,32 +7,54 @@ import {
     FormControl,
     Grid,
     TextField,
+    SelectChangeEvent,
 } from "@mui/material";
 import PhoneAndroidOutlinedIcon from "@mui/icons-material/PhoneAndroidOutlined";
-import { SizeSMLValue, type SizeSMValue } from "src/types";
+import { SizeSMLValue, type SizeSMValue } from "../../../typesConfig";
+import { useAppDispatch } from "../../../hook/useStore";
+import authService from "../../../service/authService";
 
 interface Props {
     sizeInput: SizeSMValue;
     sizeIcon: SizeSMLValue;
-    codeName: string;
-    codeValue: string;
-    phoneValue: number;
-    phoneName: string;
-    handleChange: Function;
-    error: boolean;
-    errorMessage: string;
+    handleChange: (number: string) => void;
 }
-const InputPhoneNumber: React.FC<Props> = ({
-    sizeInput,
-    sizeIcon,
-    codeName,
-    codeValue,
-    phoneName,
-    phoneValue,
-    handleChange,
-    error,
-    errorMessage,
-}) => {
+const InputPhoneNumber: React.FC<Props> = ({ sizeInput, sizeIcon, handleChange }) => {
+    const [code, setCode] = useState<string>("");
+    const [phone, setPhone] = useState<string>("");
+    const [error, setError] = useState({
+        error: false,
+        message: "",
+    });
+
+    const handleChangePhone = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+        setPhone(e.target.value);
+    };
+    const handleSelectCode = (e: SelectChangeEvent<string>) => {
+        setCode(e.target.value);
+    };
+    const handleBlur = () => {
+        console.log("perdi el foco");
+        console.log(`${code}${phone}`.trim());
+        if (code !== "") {
+            setError({ error: false, message: "" });
+            authService
+                .validateAvailableNumberPhone(`${code}${phone}`)
+                .then((valid) => {
+                    if (!valid) {
+                        handleChange(`${code}${phone}`);
+                    } else {
+                        throw { message: "El numero ya existe en nuestra base de datos" };
+                    }
+                    console.log(valid);
+                })
+                .catch((e: any) => {
+                    setError((prev) => ({ ...prev, message: e.message, error: true }));
+                });
+        } else {
+            setError({ error: true, message: "Seleccione codigo area" });
+        }
+    };
     return (
         <Grid
             container
@@ -64,9 +87,8 @@ const InputPhoneNumber: React.FC<Props> = ({
                             labelId="code"
                             id="code-select"
                             label={"Code"}
-                            name={codeName}
-                            value={codeValue}
-                            onChange={(e) => handleChange(e)}
+                            value={code}
+                            onChange={handleSelectCode}
                         >
                             <MenuItem value={"+54"}>+54</MenuItem>
                             <MenuItem value={"+11"}>+11</MenuItem>
@@ -82,13 +104,13 @@ const InputPhoneNumber: React.FC<Props> = ({
                     {" "}
                     <TextField
                         size={sizeInput}
-                        name={phoneName}
-                        value={phoneValue}
+                        value={phone}
                         label="Numero sin codigo de area"
                         type="number"
-                        onChange={(e) => handleChange(e)}
-                        error={error}
-                        helperText={error ? errorMessage : ""}
+                        onChange={handleChangePhone}
+                        onBlur={handleBlur}
+                        error={error.error}
+                        helperText={error.message !== "" && error.message}
                     ></TextField>
                 </FormControl>
             </Grid>

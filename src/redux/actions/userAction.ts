@@ -1,12 +1,13 @@
 import { Dispatch } from "@reduxjs/toolkit";
 import { setError } from "../slices/errorSlice";
 import { StateError } from "../../types/StateError";
-import { setUsers, orderByProperty, setUser } from "../slices/user.Slice";
+import { setUsers, orderByProperty, setUser, setUserToRegister } from "../slices/user.Slice";
 import userService from "../../service/userService";
 import { User, Order } from "../../types/";
 import authService from "../../service/authService";
+import { UserRol } from "../../typesConfig";
 
-export const actionLoginUserWhithEmail = (user: string, rol: string, token: string) => {
+export const actionLoginUserWhithEmail = (user: string, rol: UserRol, token: string) => {
     return async (dispatch: Dispatch) => {
         try {
             //const userLogged = await authService.logInWithEmail(token);
@@ -55,5 +56,10 @@ export const actionFindUserByNameOrEmail = (search: string) => {
 export const actionOrderUserByProperty = (order: Order, orderBy: keyof User) => {
     return (dispatch: Dispatch) => {
         dispatch(orderByProperty({ order, orderBy }));
+    };
+};
+export const actionSetUserToRegister = (user: Partial<User> | null) => {
+    return (dispatch: Dispatch) => {
+        dispatch(setUserToRegister(user));
     };
 };
