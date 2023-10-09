@@ -8,10 +8,11 @@ import {
     Grid,
     TextField,
     SelectChangeEvent,
+    FormHelperText,
 } from "@mui/material";
 import PhoneAndroidOutlinedIcon from "@mui/icons-material/PhoneAndroidOutlined";
 import { SizeSMLValue, type SizeSMValue } from "../../../typesConfig";
-import { useAppDispatch } from "../../../hook/useStore";
+
 import authService from "../../../service/authService";
 
 interface Props {
@@ -35,6 +36,8 @@ const InputPhoneNumber: React.FC<Props> = ({
 
     const handleChangePhone = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         setPhone(e.target.value);
+        if (e.target.value !== "") setError({ error: false, message: "" });
+        else setError({ error: true, message: "complete numero telefono" });
     };
     const handleSelectCode = (e: SelectChangeEvent<string>) => {
         setCode(e.target.value);
@@ -42,29 +45,29 @@ const InputPhoneNumber: React.FC<Props> = ({
     const handleBlur = () => {
         console.log("perdi el foco");
         console.log(`${code}${phone}`.trim());
-        if (code !== "") {
+        if (code !== "" && phone !== "") {
             setError({ error: false, message: "" });
 
             authService
                 .validateAvailableNumberPhone(`${code}${phone}`)
                 .then((valid) => {
-                    //if ((ifNumberExistError && !valid) || (!ifNumberExistError && valid)) {
-                    if (true) {
-                        handleChange(`${code}${phone}`);
-                    } else {
-                        throw {
-                            message: `El numero ${
-                                ifNumberExistError ? "ya" : "no"
-                            } existe en nuestra base de datos`,
-                        };
-                    }
-                    console.log(valid);
+                    if (ifNumberExistError && valid)
+                        throw { message: "El Numero ya existe en nuestra base datos" };
+                    if (!ifNumberExistError && !valid)
+                        throw { message: "El Numero No existe en nuestra base datos" };
+                    console.log("estoy llegando a handle change");
+
+                    handleChange(`${code}${phone}`);
+                    console.log(`El valor de valid es: ${valid}`);
                 })
                 .catch((e: any) => {
                     setError((prev) => ({ ...prev, message: e.message, error: true }));
                 });
         } else {
-            setError({ error: true, message: "Seleccione codigo area" });
+            setError({
+                error: true,
+                message: "Numero invalido, verifique los codigo de area y/o numero",
+            });
         }
     };
     return (
@@ -121,11 +124,20 @@ const InputPhoneNumber: React.FC<Props> = ({
                         type="number"
                         onChange={handleChangePhone}
                         onBlur={handleBlur}
-                        error={error.error}
-                        helperText={error.message !== "" && error.message}
                     ></TextField>
                 </FormControl>
             </Grid>
+            {error && (
+                <FormHelperText
+                    sx={{
+                        textAlign: "center",
+                        width: "100%",
+                        color: "red",
+                    }}
+                >
+                    {error.message}
+                </FormHelperText>
+            )}
         </Grid>
     );
 };

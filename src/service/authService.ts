@@ -2,6 +2,8 @@ import axios from "axios";
 import userAdapter from "../adapters/userAdapter";
 import { User } from "../types";
 
+const caracteresEspeciales = "+";
+
 const URL_BASE = import.meta.env.VITE_APP_BASE_URL;
 const logInWhitNumber = async (number: string, password: string) => {
     try {
@@ -20,11 +22,10 @@ const logInWhitNumber = async (number: string, password: string) => {
 };
 
 const validateAvailableNumberPhone = async (number: string): Promise<boolean> => {
-    let valid: boolean = await axios(`${URL_BASE}/users/checkPhone?phone=${number}`).then((r) => {
-        console.log(r);
-
-        return r.data.exist;
-    });
+    const numeroCodificado = encodeURIComponent(number);
+    let valid: boolean = await axios(`${URL_BASE}/users/checkPhone?phone=${numeroCodificado}`).then(
+        (r) => r.data.exist
+    );
     return valid;
 };
 
