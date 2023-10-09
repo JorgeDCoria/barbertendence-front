@@ -1,40 +1,18 @@
 import { useState, useEffect } from "react";
 import { Box, Grid, Button, Typography } from "@mui/material";
-
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import InputPassword from "./components/InputPassword";
 import InputPhoneNumber from "./components/InputPhoneNumber";
-import { type Phone } from "../../types/phoneType";
-import { type InputError } from "../../types/inputError";
 import { useNotification } from "../../context/notification.context";
 import { useAppDispatch } from "../../hook/useStore";
-import {
-    actionLoginUserWhithEmail,
-    actionLoginUserWhithNumber,
-} from "../../redux/actions/userAction";
+import { actionLoginUserWhithNumber, actionSetUser } from "../../redux/actions/userAction";
 
 import { LoginButton } from "../../components/login-button";
 import { PRIVATEROUTES } from "../../const";
 import { UserRol } from "../../typesConfig";
+import { usePersistData } from "../../hook/usePersistData";
 
 interface Props {}
-
-const validarPassword = (password: string): string => {
-    let message = "";
-    let ExpRegPass =
-        /(?=(.*[0-9]))(?=.*[\!@#$%^&*()\\[\]{}\-_+=|:;"'<>,./?])(?=.*[a-z])(?=(.*[A-Z]))(?=(.*)).{8,}/;
-    if (!password.trim().length) message = "Ingrese su contraseña";
-    //else if (password.match(ExpRegPass) == null) message = "El password no es seguro";
-    return message;
-};
-const validarNumberPhone = (phone: string): string => {
-    let ExpRegSoloNumeros = "^[0-9]+$";
-    let message: string = "";
-    if (phone.match(ExpRegSoloNumeros) == null) message = "Solo numeros";
-    if (phone.length < 7) message = "Ingrese un numero valido";
-
-    return message;
-};
 
 const LoginForm: React.FC<Props> = ({}) => {
     const { showNotification } = useNotification();
@@ -47,6 +25,7 @@ const LoginForm: React.FC<Props> = ({}) => {
     });
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
+    const { getIdBarberShop } = usePersistData();
 
     const loginWhitNumber = () => {
         if (!formError.passwordError.error && input.numberPhone.length) {
@@ -54,12 +33,13 @@ const LoginForm: React.FC<Props> = ({}) => {
 
             dispatch(actionLoginUserWhithNumber(`${input.numberPhone}`, input.password))
                 .then(() => {
+                    showNotification("Inicio de session exitoso, bienvenido/a", "success");
                     navigate(`/${PRIVATEROUTES}`, { replace: true });
                 })
                 .catch((e: any) => {
                     console.log(`ah ocurrido un error ${e.message}`);
                     showNotification(
-                        `ah ocurrido un error al inicia sesion: ${e.message}`,
+                        `Error: numero/ contraseña invalidos, intente nuevamente`,
                         "error"
                     );
                 });
@@ -70,36 +50,28 @@ const LoginForm: React.FC<Props> = ({}) => {
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>): void => {
         if (e.target.name === "password") {
-            setInput({ ...input, [e.target.name]: e.target.value });
-            let aux = validarPassword(e.target.value);
+            if (e.target.value !== "")
+                setFormError({
+                    ...formError,
+                    passwordError: {
+                        ...formError.passwordError,
+                        error: false,
+                        message: "",
+                    },
+                });
+            else {
+                setFormError({
+                    ...formError,
+                    passwordError: {
+                        ...formError.passwordError,
+                        error: true,
+                        message: "Complete el campo contraseña",
+                    },
+                });
+            }
 
-            setFormError({
-                ...formError,
-                passwordError: {
-                    ...formError.passwordError,
-                    error: aux.length != 0,
-                    message: aux,
-                },
-            });
+            setInput({ ...input, [e.target.name]: e.target.value });
         }
-        // else {
-        //     setInput({
-        //         ...input,
-        //         numberPhone: {
-        //             ...input.numberPhone,
-        //             [e.target.name]: e.target.value,
-        //         },
-        //     });
-        //     let aux = validarNumberPhone(e.target.value);
-        //     setFormError({
-        //         ...formError,
-        //         phoneError: {
-        //             ...formError.phoneError,
-        //             error: aux !== "",
-        //             message: aux,
-        //         },
-        //     });
-        // }
     };
     const handleChangeNumber = (value: string) => {
         setInput((prev) => ({ ...prev, numberPhone: value }));
@@ -116,14 +88,14 @@ const LoginForm: React.FC<Props> = ({}) => {
         const user = searchParams.get("user");
         const rol = searchParams.get("roles");
         if (token && user && rol)
-            dispatch(actionLoginUserWhithEmail(user, rol.toLowerCase() as UserRol, token))
+            dispatch(actionSetUser(user, rol.toLowerCase() as UserRol, token))
                 .then(() => {
                     navigate(`/${PRIVATEROUTES}`);
                 })
                 .catch((e: any) => {
                     console.log(e.message);
                     showNotification(
-                        `Erro al iniciar con cuenta gmail, intentelo mas tarde ${e.message}`,
+                        `Error al iniciar con cuenta gmail, intentelo mas tarde ${e.message}`,
                         "error"
                     );
                 });
@@ -199,7 +171,7 @@ const LoginForm: React.FC<Props> = ({}) => {
                     </Typography>
                     <Typography component={"p"} align="center">
                         No tienes una cuenta{" "}
-                        <Link to={"/register"}>
+                        <Link to={`/${getIdBarberShop()}/register`}>
                             <Typography component={"span"} fontSize={"18px"} color={"primary.main"}>
                                 Registrate
                             </Typography>{" "}

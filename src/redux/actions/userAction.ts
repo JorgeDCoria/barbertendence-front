@@ -7,7 +7,7 @@ import { User, Order } from "../../types/";
 import authService from "../../service/authService";
 import { UserRol } from "../../typesConfig";
 
-export const actionLoginUserWhithEmail = (user: string, rol: UserRol, token: string) => {
+export const actionSetUser = (user: string, rol: UserRol, token: string) => {
     return async (dispatch: Dispatch) => {
         try {
             //const userLogged = await authService.logInWithEmail(token);
