@@ -54,7 +54,12 @@ const LoginLayout: React.FC<{}> = () => {
             >
                 {/* contenedor de logo */}
                 <Box sx={{ height: "100%", width: "100%" }} display="flex">
-                    <Grid container sx={{ height: "100%" }} justifyContent={"center"}>
+                    <Grid
+                        container
+                        sx={{ height: "100%" }}
+                        justifyContent={"center"}
+                        alignItems={"center"}
+                    >
                         <Grid
                             item
                             xs={12}
@@ -62,7 +67,7 @@ const LoginLayout: React.FC<{}> = () => {
                                 display: "flex",
                                 justifyContent: "center",
                                 alignItems: "center",
-                                height: { xs: "25%", sm: "40%", md: "30%" },
+                                height: { xs: "20%", md: "25%" },
                             }}
                         >
                             <Box
@@ -83,6 +88,7 @@ const LoginLayout: React.FC<{}> = () => {
                             padding={2}
                             container
                             height={{ xs: "75%", sm: "60%", md: "70%" }}
+                            justifyContent={"center"}
                         >
                             <Outlet />
                         </Grid>

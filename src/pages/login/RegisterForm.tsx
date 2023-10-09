@@ -1,6 +1,14 @@
 import { Link, useNavigate } from "react-router-dom";
-import { Box, Button, Grid, TextField, Typography } from "@mui/material";
-
+import {
+    Box,
+    Button,
+    Grid,
+    TextField,
+    Typography,
+    Stack,
+    FormHelperText,
+    FormControl,
+} from "@mui/material";
 import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
 import InputNumber from "./components/InputPhoneNumber";
 import InputPassword from "./components/InputPassword";
@@ -11,6 +19,7 @@ import { User } from "../../types";
 import { useNotification } from "../../context/notification.context";
 import { usePersistData } from "../../hook/usePersistData";
 import authService from "../../service/authService";
+import { LoginButton } from "../../components/login-button";
 
 const Register = () => {
     const [input, setInput] = useState<Partial<User>>({
@@ -73,136 +82,91 @@ const Register = () => {
     }, []);
     return (
         <Box
-            sx={{ height: "100%" }}
+            sx={{ height: "100%", width: { xs: "100%", md: "80%" } }}
             component={"form"}
             display={"flex"}
-            alignItems={"center"}
-            justifyContent={"center"}
+            flexDirection={"column"}
+            justifyContent={"space-around"}
         >
             {/* contenedor de los inputs */}
-            <Grid
-                padding={2}
-                container
-                rowGap={{ xs: 4, md: 0 }}
+
+            <Stack
+                direction={"row"}
                 alignItems={"center"}
-                justifyContent={"center"}
                 sx={{
-                    height: { xs: "100%", sm: "90%", md: "100%" },
+                    gap: "8px",
+                    width: "100%",
                 }}
             >
-                <Grid item xs={12} lg={10}>
-                    <Box
-                        sx={{
-                            display: "flex",
-                            alignItems: "center",
-                            gap: "8px",
-                            width: "100%",
-                        }}
-                    >
-                        {" "}
-                        <AccountCircleOutlinedIcon />
-                        <TextField
-                            required
-                            id="fullName"
-                            label="Name"
-                            type="text"
-                            name="fullName"
-                            value={input.fullName}
-                            fullWidth
-                            variant="outlined"
-                            size="small"
-                            onChange={handleChangeInput}
-                            error={error.name != ""}
-                            helperText={error.name}
-                        />
-                    </Box>{" "}
-                </Grid>
-                {/* Number phone */}
-                <Grid item xs={12} lg={10}>
-                    <InputNumber
-                        ifNumberExistError
-                        sizeInput="small"
-                        sizeIcon="small"
-                        handleChange={handleChangeNumber}
-                    />
-                </Grid>
+                <AccountCircleOutlinedIcon />
+                <TextField
+                    required
+                    id="fullName"
+                    label="Name"
+                    type="text"
+                    fullWidth
+                    name="fullName"
+                    value={input.fullName}
+                    variant="outlined"
+                    size="small"
+                    onChange={handleChangeInput}
+                    error={error.name != ""}
+                    helperText={error.name}
+                />
+            </Stack>
+            {/* Number phone */}
 
-                <Grid item xs={12} lg={10}>
-                    <InputPassword
-                        label="Password"
-                        name="password"
-                        value={input.password ? input.password : ""}
-                        sizeIcon="medium"
-                        sizeTextField="small"
-                        error={error?.password !== ""}
-                        errorMessage={error.password}
-                        handleChange={handleChangeInput}
-                    />
-                </Grid>
-                <Grid item xs={12} lg={10}>
-                    <InputPassword
-                        label="Confirm Password"
-                        name="passwordCompare"
-                        sizeIcon="medium"
-                        sizeTextField="small"
-                        value={passwordCompare}
-                        error={error.password !== ""}
-                        errorMessage={error.password}
-                        handleChange={handleChangePasswordCompare}
-                    />
-                </Grid>
-                <Grid
-                    item
-                    xs={12}
-                    lg={10}
-                    direction={"column"}
-                    justifyContent={"center"}
-                    container
-                    rowGap={2}
+            <InputNumber
+                ifNumberExistError
+                sizeInput="small"
+                sizeIcon="small"
+                handleChange={handleChangeNumber}
+            />
+
+            <InputPassword
+                label="Password"
+                name="password"
+                value={input.password ? input.password : ""}
+                sizeIcon="medium"
+                sizeTextField="small"
+                error={error?.password !== ""}
+                errorMessage={error.password}
+                handleChange={handleChangeInput}
+            />
+
+            <InputPassword
+                label="Confirm Password"
+                name="passwordCompare"
+                sizeIcon="medium"
+                sizeTextField="small"
+                value={passwordCompare}
+                error={error.password !== ""}
+                errorMessage={error.password}
+                handleChange={handleChangePasswordCompare}
+            />
+
+            <Stack spacing={2} width={"100%"}>
+                <Button
+                    fullWidth
+                    type="submit"
+                    variant="contained"
+                    color="primary"
+                    size="small"
+                    onClick={handleClick}
                 >
-                    <Grid item border="2px solid red">
-                        <Button
-                            fullWidth
-                            type="submit"
-                            variant="contained"
-                            color="primary"
-                            size="small"
-                            sx={{
-                                height: "40px",
-                            }}
-                            onClick={handleClick}
-                        >
-                            Registrarse
-                        </Button>
-                    </Grid>
-                    <Grid item xs={10} md={6}>
-                        <Button
-                            type="submit"
-                            variant="outlined"
-                            fullWidth
-                            color="primary"
-                            size="small"
-                            sx={{
-                                height: "40px",
-                            }}
-                        >
-                            Ingresar con gmail
-                        </Button>
-                    </Grid>
-                </Grid>
+                    Registrarse
+                </Button>
+                <LoginButton size="small" />
+            </Stack>
 
-                <Grid item xs={10}>
-                    <Typography component={"p"} align="center">
-                        Ya tienes una cuenta{" "}
-                        <Link to={"/"}>
-                            {" "}
-                            <Typography component={"span"} fontSize={"18px"} color={"primary.main"}>
-                                Login
-                            </Typography>{" "}
-                        </Link>
-                    </Typography>
-                </Grid>
-            </Grid>
+            <FormHelperText sx={{ textAlign: "center" }}>
+                Ya tienes una cuenta{" "}
+                <Link to={`/${getIdBarberShop()}`}>
+                    <Typography component={"span"} fontSize={"14px"} color={"primary.main"}>
+                        Login
+                    </Typography>{" "}
+                </Link>
+            </FormHelperText>
         </Box>
     );
 };

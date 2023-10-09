@@ -9,6 +9,7 @@ import {
     TextField,
     SelectChangeEvent,
     FormHelperText,
+    Stack,
 } from "@mui/material";
 import PhoneAndroidOutlinedIcon from "@mui/icons-material/PhoneAndroidOutlined";
 import { SizeSMLValue, type SizeSMValue } from "../../../typesConfig";
@@ -71,52 +72,39 @@ const InputPhoneNumber: React.FC<Props> = ({
         }
     };
     return (
-        <Grid
-            container
+        <Box
             display={"flex"}
-            justifyContent={"space-between"}
+            justifyContent={"center"}
             alignItems={"center"}
+            flexDirection={"column"}
             sx={{
                 width: "100%",
-                height: "100%",
             }}
         >
-            <Grid item xs={5}>
-                <Box
-                    sx={{
-                        display: "flex",
-                        alignItems: "center",
-                    }}
-                >
-                    <PhoneAndroidOutlinedIcon fontSize={sizeIcon} />
-                    <FormControl
-                        fullWidth
-                        size={sizeInput}
-                        sx={{
-                            ml: 1,
-                            mr: 1,
-                        }}
+            <Stack
+                direction={"row"}
+                width={"100%"}
+                justifyContent={"space-between"}
+                spacing={1}
+                alignItems={"center"}
+            >
+                <PhoneAndroidOutlinedIcon fontSize={sizeIcon} />
+                <FormControl fullWidth size={sizeInput} sx={{ width: "40%" }}>
+                    <InputLabel id="code">Code</InputLabel>
+                    <Select
+                        labelId="code"
+                        id="code-select"
+                        label={"Code"}
+                        value={code}
+                        onChange={handleSelectCode}
                     >
-                        <InputLabel id="code">Code</InputLabel>
-                        <Select
-                            labelId="code"
-                            id="code-select"
-                            label={"Code"}
-                            value={code}
-                            onChange={handleSelectCode}
-                        >
-                            <MenuItem value={"+54"}>+54</MenuItem>
-                            <MenuItem value={"+11"}>+11</MenuItem>
-                            <MenuItem value={"+57"}>+57</MenuItem>
-                        </Select>
-                    </FormControl>
-                </Box>
-            </Grid>
+                        <MenuItem value={"+54"}>+54</MenuItem>
+                        <MenuItem value={"+11"}>+11</MenuItem>
+                        <MenuItem value={"+57"}>+57</MenuItem>
+                    </Select>
+                </FormControl>
 
-            <Grid item xs={7}>
-                {" "}
                 <FormControl fullWidth>
-                    {" "}
                     <TextField
                         size={sizeInput}
                         value={phone}
@@ -126,7 +114,7 @@ const InputPhoneNumber: React.FC<Props> = ({
                         onBlur={handleBlur}
                     ></TextField>
                 </FormControl>
-            </Grid>
+            </Stack>
             {error && (
                 <FormHelperText
                     sx={{
@@ -138,7 +126,7 @@ const InputPhoneNumber: React.FC<Props> = ({
                     {error.message}
                 </FormHelperText>
             )}
-        </Grid>
+        </Box>
     );
 };
 
