@@ -33,10 +33,24 @@ const sendNumberPhone = async (number: string) => {
     await axios(`${URL_BASE}?phone=${number}`);
 };
 
-const registerUser = async (user: User) => {
+const registerUser = async (user: Partial<User>) => {
     try {
-        const data = await axios.post(`${URL_BASE}/auth/singnup`, user).then((r) => r.data);
+        const data = await axios
+            .post(`${URL_BASE}/auth/signup`, {
+                phone: user.numberPhone,
+                fullName: user.fullName,
+                password: user.password,
+                birthDate: user.birthDate,
+            })
+            .then((r) => {
+                console.log(r.data);
+
+                userAdapter.mapUserApiLoggedToUser(r.data);
+            });
+        return data;
     } catch (e: any) {
+        console.log(e);
+
         throw `Error en registro: ${e.message}`;
     }
 };
@@ -45,5 +59,6 @@ const authService = {
     logInWhitNumber,
     validateAvailableNumberPhone,
     sendNumberPhone,
+    registerUser,
 };
 export default authService;

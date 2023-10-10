@@ -59,7 +59,14 @@ export const actionOrderUserByProperty = (order: Order, orderBy: keyof User) => 
     };
 };
 export const actionSetUserToRegister = (user: Partial<User> | null) => {
-    return (dispatch: Dispatch) => {
+    return async (dispatch: Dispatch) => {
         dispatch(setUserToRegister(user));
+    };
+};
+
+export const actionRegisterUser = (user: Partial<User>, code: string) => {
+    return async (dispatch: Dispatch) => {
+        const newUser: Partial<User> = await authService.registerUser(user);
+        dispatch(setUser(newUser));
     };
 };
