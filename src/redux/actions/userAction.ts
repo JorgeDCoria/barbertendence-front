@@ -64,7 +64,7 @@ export const actionSetUserToRegister = (user: Partial<User> | null) => {
     };
 };
 
-export const actionRegisterUser = (user: Partial<User>, code: string) => {
+export const actionRegisterUser = (user: Partial<User>) => {
     return async (dispatch: Dispatch) => {
         const newUser: Partial<User> = await authService.registerUser(user);
         dispatch(setUser(newUser));

@@ -1,17 +1,11 @@
-import {
-    Box,
-    Button,
-    Grid,
-    Typography,
-    useTheme,
-    Modal,
-    Stack,
-} from "@mui/material";
+import { Box, Button, Grid, Typography, useTheme, Modal, Stack } from "@mui/material";
 import { useState, useEffect } from "react";
 import BoxCode from "./components/BoxCode";
 import InputPhoneNumber from "./components/InputPhoneNumber";
-import { Phone } from "src/types/phoneType";
-import { InputError } from "src/types/inputError";
+import { Phone } from "../../types/phoneType";
+import { InputError } from "../../types/inputError";
+
+import { useAppDispatch } from "../../hook/useStore";
 
 interface Props {}
 const ConfirmForm: React.FC<Props> = ({}) => {
@@ -27,7 +21,7 @@ const ConfirmForm: React.FC<Props> = ({}) => {
         message: "",
     });
     const theme = useTheme();
-
+    const dispatch = useAppDispatch();
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
         e.preventDefault();
         const aux: string[] = [...code];
@@ -35,18 +29,21 @@ const ConfirmForm: React.FC<Props> = ({}) => {
         setCode(aux);
     };
 
-    const handleShowModal = (
-        e: React.MouseEvent<HTMLButtonElement, MouseEvent>
-    ) => {
+    const handleShowModal = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         e.preventDefault();
         setShowModal(!showModal);
     };
 
-    const handleChangeNumberPhone = (
-        e: React.ChangeEvent<HTMLInputElement>
-    ): void => {
+    const handleChangeNumberPhone = (e: React.ChangeEvent<HTMLInputElement>): void => {
         e.preventDefault();
         setNumberPhone({ ...numberPhone, [e.target.name]: e.target.value });
+    };
+    const handleClick = async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+        e.preventDefault();
+        let numberCode = code.join("");
+        console.log(numberCode);
+
+        //await dispatch(actionValidateNumberUser())
     };
     useEffect(() => {}, []);
     return (
@@ -68,8 +65,8 @@ const ConfirmForm: React.FC<Props> = ({}) => {
                         Gracias por registrarte !!
                     </Typography>
                     <Typography marginTop={2}>
-                        Te enviamos un whatsapp con un codigo para poder validar
-                        tu numero, ingresalo aqui abajo para poder continuar.
+                        Te enviamos un whatsapp con un codigo para poder validar tu numero,
+                        ingresalo aqui abajo para poder continuar.
                     </Typography>
                 </Grid>
                 <Grid
@@ -82,25 +79,15 @@ const ConfirmForm: React.FC<Props> = ({}) => {
                     alignItems={"center"}
                 >
                     {code.map((e, i) => (
-                        <BoxCode
-                            handleChange={handleChange}
-                            key={i}
-                            value={e}
-                            name={`${i}`}
-                        />
+                        <BoxCode handleChange={handleChange} key={i} value={e} name={`${i}`} />
                     ))}
                 </Grid>
-                <Grid
-                    item
-                    xs={12}
-                    justifyContent={"space-around"}
-                    alignItems={"center"}
-                    container
-                >
+                <Grid item xs={12} justifyContent={"space-around"} alignItems={"center"} container>
                     <Button
                         variant="contained"
                         sx={{ height: "40px" }}
                         type="submit"
+                        onClick={handleClick}
                     >
                         Confirmar
                     </Button>
@@ -149,8 +136,7 @@ const ConfirmForm: React.FC<Props> = ({}) => {
                             Cambiar Numero
                         </Typography>
                         <Typography textAlign={"center"}>
-                            Ingresa un nuevo numero y te enviaremos un nuevo
-                            codigo de validacion
+                            Ingresa un nuevo numero y te enviaremos un nuevo codigo de validacion
                         </Typography>
                         <Box
                             width={"100%"}

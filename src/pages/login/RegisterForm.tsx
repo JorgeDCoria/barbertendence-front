@@ -17,11 +17,8 @@ import { actionSetUserToRegister, actionRegisterUser } from "../../redux/actions
 import { User } from "../../types";
 import { useNotification } from "../../context/notification.context";
 import { usePersistData } from "../../hook/usePersistData";
-import authService from "../../service/authService";
 import { LoginButton } from "../../components/login-button";
-import { PRIVATEROUTES } from "../../const";
 import { DesktopDatePicker } from "@mui/x-date-pickers";
-import { Dayjs } from "dayjs";
 
 const Register = () => {
     const [input, setInput] = useState<Partial<User>>({
@@ -38,7 +35,6 @@ const Register = () => {
     const navigate = useNavigate();
     const { getIdBarberShop } = usePersistData();
     const dispatch = useAppDispatch();
-    const { user } = useAppSelector((state) => state.userSate);
     const { showNotification } = useNotification();
 
     const handleChangeInput = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -80,51 +76,16 @@ const Register = () => {
         }
         return valid;
     };
-    const handleClick = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    const handleClick = async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         e.preventDefault();
-
         if (validatedForm()) {
             console.log("pase validate");
-
-            //En esta seccion se envia el numero al back, se guarda datos de usuario a registrar, el
-            //retorn del back deberia retornar un codigo para validar
-            //con el codigo que ingrese el usuario, deberia de navegar al form de ingreso de codigo
-
-            // authService
-            //     .sendNumberPhone(input.numberPhone)
-            //     .then(() => {
-            //         navigate(`/${getIdBarberShop()}/confirmForm`);
-            //     })
-            //     .catch((e: any) => {
-            //         console.log(e.message);
-
-            //         showNotification(
-            //             "Error al intentar contactar con el numero ingresado",
-            //             "error"
-            //         );
-            //     });
-
-            //como no se cuenta con endpoint para verificar codigo se hace el registro
-            dispatch(actionSetUserToRegister(input))
-                .then(() => {
-                    user &&
-                        dispatch(actionRegisterUser(user, "12345"))
-                            .then(() => {
-                                console.log("USuario logeado con exito");
-                                console.log(user);
-                            })
-                            .catch((e: any) => {
-                                console.log(e.message);
-                                showNotification(
-                                    "error al registrar cuenta, intente mas tarde",
-                                    "error"
-                                );
-                            });
-                })
-                .catch((e: any) => {
-                    console.log(e.message);
-                    showNotification("error al registrar cuenta, intente mas tarde", "error");
-                });
+            try {
+                await dispatch(actionRegisterUser(input));
+                navigate(`/${getIdBarberShop()}/confirmForm`);
+            } catch (e) {
+                showNotification("Error al registrar, intente mas tarde", "error");
+            }
         }
     };
     useEffect(() => {
@@ -133,7 +94,6 @@ const Register = () => {
     return (
         <Box
             sx={{ height: "100%", width: { xs: "100%", md: "80%" } }}
-            component={"form"}
             display={"flex"}
             flexDirection={"column"}
             justifyContent={"space-around"}
@@ -205,7 +165,6 @@ const Register = () => {
             <Stack spacing={2} width={"100%"}>
                 <Button
                     fullWidth
-                    type="submit"
                     variant="contained"
                     color="primary"
                     size="small"

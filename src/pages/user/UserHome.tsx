@@ -11,7 +11,7 @@ import {
     useTheme,
 } from "@mui/material";
 import React from "react";
-import { Order } from "src/types/Order";
+
 import banner from "../../assets/banner.jpg";
 import CaruselCard from "./components/CaruselCard";
 import PaginationCard from "./components/PaginationCard";
@@ -19,7 +19,7 @@ import CardOrder from "./components/CardOrder";
 import ButtonLg from "./components/ButtonLg";
 import { Link } from "react-router-dom";
 
-const orders: Order[] = [
+const orders: any = [
     {
         id: "",
         date: new Date(),
@@ -64,101 +64,6 @@ const orders: Order[] = [
         time: "20:45",
         barber: {
             name: "Lautaro",
-            description: "",
-            avatar: "",
-            id: "",
-        },
-        service: {
-            id: "",
-            description: "",
-            duration: 0,
-            image: "",
-            name: "Corte de pelo",
-            price: 800,
-        },
-    },
-    {
-        id: "",
-        date: new Date(),
-        time: "20:45",
-        barber: {
-            name: "Matias",
-            description: "",
-            avatar: "",
-            id: "",
-        },
-        service: {
-            id: "",
-            description: "Nicolas",
-            duration: 0,
-            image: "",
-            name: "Corte de pelo",
-            price: 800,
-        },
-    },
-    {
-        id: "",
-        date: new Date(),
-        time: "20:45",
-        barber: {
-            name: "Matias",
-            description: "",
-            avatar: "",
-            id: "",
-        },
-        service: {
-            id: "",
-            description: "",
-            duration: 0,
-            image: "",
-            name: "Corte de pelo",
-            price: 800,
-        },
-    },
-    {
-        id: "",
-        date: new Date(),
-        time: "20:45",
-        barber: {
-            name: "Kevin",
-            description: "",
-            avatar: "",
-            id: "",
-        },
-        service: {
-            id: "",
-            description: "",
-            duration: 0,
-            image: "",
-            name: "Corte de pelo",
-            price: 800,
-        },
-    },
-    {
-        id: "",
-        date: new Date(),
-        time: "20:45",
-        barber: {
-            name: "Lautaro",
-            description: "",
-            avatar: "",
-            id: "",
-        },
-        service: {
-            id: "",
-            description: "",
-            duration: 0,
-            image: "",
-            name: "Corte de pelo",
-            price: 800,
-        },
-    },
-    {
-        id: "",
-        date: new Date(),
-        time: "20:45",
-        barber: {
-            name: "Jose",
             description: "",
             avatar: "",
             id: "",

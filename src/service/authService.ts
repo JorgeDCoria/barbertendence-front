@@ -44,8 +44,9 @@ const registerUser = async (user: Partial<User>) => {
             })
             .then((r) => {
                 console.log(r.data);
-
-                userAdapter.mapUserApiLoggedToUser(r.data);
+                let user = userAdapter.mapUserApiLoggedToUser(r.data);
+                user.verificationCode = r.data.verificationCode;
+                return user;
             });
         return data;
     } catch (e: any) {

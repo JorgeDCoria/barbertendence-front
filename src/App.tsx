@@ -20,13 +20,8 @@ import Report from "./pages/admin/components/management/reports/Report";
 import { RoutesWithNotFound } from "./utilities";
 import AuthGuard from "./guards/AuthGuards";
 import { IDBARBERSHOP, PRIVATEROUTES, PrivateAdminRoutes, PrivateUserRoutes } from "./const";
-import NavigateToPrivateRoute from "./guards/NavigateToPrivateRoute";
-import { useAppSelector } from "./hook/useStore";
 
 const App = () => {
-    const { idBarberShop } = useAppSelector((state) => state.barberShop);
-    console.log(localStorage.getItem("idBarberShop"));
-
     return (
         <>
             <RoutesWithNotFound>
@@ -42,25 +37,21 @@ const App = () => {
                     />
                 </Route>
 
-                <Route element={<AuthGuard />}>
-                    <Route path={`/${PRIVATEROUTES}/*`} element={<Outlet />}>
-                        <Route path={`${PrivateUserRoutes.USER}/*`} element={<UserLayout />}>
-                            <Route index element={<UserHome />} />
-                            <Route path={`${PrivateUserRoutes.NEWORDER}`} element={<NewOrder />} />
-                            <Route path={`${PrivateUserRoutes.PROFILE}`} element={<UserPerfil />} />
-                            R
-                        </Route>
-                        <Route path={`${PrivateAdminRoutes.ADMIN}/*`} element={<AdminLayout />}>
-                            <Route index element={<AdminHome />} />
-                            <Route path="clients" element={<ClientTable />} />
-                            <Route path="management/" element={<Management />}>
-                                <Route index element={<EmployesTable />} />
-                                <Route path="services" element={<ServiceTable />} />
-                                <Route path="schedules" element={<Schedule />} />
-                                <Route path="licenses" element={<License />} />
-                                <Route path="reports" element={<Report />} />
-                            </Route>
-                        </Route>
+                <Route path={`/${PRIVATEROUTES}/*`} element={<AuthGuard />} />
+                <Route path={`/${PrivateUserRoutes.USER}/*`} element={<UserLayout />}>
+                    <Route index element={<UserHome />} />
+                    <Route path={`${PrivateUserRoutes.NEWORDER}`} element={<NewOrder />} />
+                    <Route path={`${PrivateUserRoutes.PROFILE}`} element={<UserPerfil />} />
+                </Route>
+                <Route path={`/${PrivateAdminRoutes.ADMIN}/*`} element={<AdminLayout />}>
+                    <Route index element={<AdminHome />} />
+                    <Route path="clients" element={<ClientTable />} />
+                    <Route path="management/" element={<Management />}>
+                        <Route index element={<EmployesTable />} />
+                        <Route path="services" element={<ServiceTable />} />
+                        <Route path="schedules" element={<Schedule />} />
+                        <Route path="licenses" element={<License />} />
+                        <Route path="reports" element={<Report />} />
                     </Route>
                 </Route>
             </RoutesWithNotFound>

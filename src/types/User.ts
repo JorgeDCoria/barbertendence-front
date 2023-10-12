@@ -10,4 +10,5 @@ export type User = {
     token?: string;
     isLoggedWhitEmail?: boolean;
     password?: string;
+    verificationCode?: string;
 }; //admin, user, barber
