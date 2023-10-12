@@ -55,11 +55,18 @@ const registerUser = async (user: Partial<User>) => {
         throw `Error en registro: ${e.message}`;
     }
 };
-
+const validateNumberPhoneUser = async (token: string, code: number) => {
+    const headers = {
+        accesstoken: `${token}`,
+    };
+    const response = await axios.post(`${URL_BASE}/users/validate`, { code }, { headers: headers });
+    console.log(response);
+};
 const authService = {
     logInWhitNumber,
     validateAvailableNumberPhone,
     sendNumberPhone,
     registerUser,
+    validateNumberPhoneUser,
 };
 export default authService;

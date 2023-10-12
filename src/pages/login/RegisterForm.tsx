@@ -12,8 +12,8 @@ import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined
 import InputNumber from "./components/InputPhoneNumber";
 import InputPassword from "./components/InputPassword";
 import { useEffect, useState } from "react";
-import { useAppDispatch, useAppSelector } from "../../hook/useStore";
-import { actionSetUserToRegister, actionRegisterUser } from "../../redux/actions/userAction";
+import { useAppDispatch } from "../../hook/useStore";
+import { actionSetUserTemp } from "../../redux/actions/userAction";
 import { User } from "../../types";
 import { useNotification } from "../../context/notification.context";
 import { usePersistData } from "../../hook/usePersistData";
@@ -81,7 +81,7 @@ const Register = () => {
         if (validatedForm()) {
             console.log("pase validate");
             try {
-                await dispatch(actionRegisterUser(input));
+                await dispatch(actionSetUserTemp(input));
                 navigate(`/${getIdBarberShop()}/confirmForm`);
             } catch (e) {
                 showNotification("Error al registrar, intente mas tarde", "error");
@@ -89,7 +89,7 @@ const Register = () => {
         }
     };
     useEffect(() => {
-        dispatch(actionSetUserToRegister(null));
+        dispatch(actionSetUserTemp(null));
     }, []);
     return (
         <Box

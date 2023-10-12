@@ -28,10 +28,12 @@ function descendingComparator(a: User, b: User, orderBy: keyof User) {
 interface UserState {
     user: Partial<User> | null;
     users: User[] | null;
+    userTemp: Partial<User> | null;
 }
 
 const initialState: UserState = {
     user: null,
+    userTemp: null,
     users: null,
 };
 
@@ -39,8 +41,8 @@ export const barberSlice = createSlice({
     name: "userState",
     initialState: initialState,
     reducers: {
-        setUserToRegister: (state, action: PayloadAction<Partial<User> | null>) => {
-            state.user = action.payload;
+        setUserTemp: (state, action: PayloadAction<Partial<User> | null>) => {
+            state.userTemp = action.payload;
         },
         setUser: (state, action: PayloadAction<Partial<User>>) => {
             persistLocalStorage("user", action.payload);
@@ -58,9 +60,14 @@ export const barberSlice = createSlice({
             }
             state.users = data;
         },
+        setUserFromUserTemp: (state) => {
+            state.user = { ...state.userTemp };
+            state.userTemp = null;
+        },
     },
 });
 
-export const { setUsers, orderByProperty, setUser, setUserToRegister } = barberSlice.actions;
+export const { setUsers, orderByProperty, setUser, setUserTemp, setUserFromUserTemp } =
+    barberSlice.actions;
 
 export default barberSlice.reducer;

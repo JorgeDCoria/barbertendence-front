@@ -5,21 +5,23 @@ import InputPhoneNumber from "./components/InputPhoneNumber";
 import { Phone } from "../../types/phoneType";
 import { InputError } from "../../types/inputError";
 
-import { useAppDispatch } from "../../hook/useStore";
+import { useAppDispatch, useAppSelector } from "../../hook/useStore";
+import { usePersistData } from "../../hook/usePersistData";
+import { actionValidateNumberPhoneUser } from "../../redux/actions/userAction";
 
 interface Props {}
 const ConfirmForm: React.FC<Props> = ({}) => {
     // const codeAux: string[] = ["", "", "", "", "", ""];
     const [code, setCode] = useState<string[]>(["", "", "", "", "", ""]);
     const [showModal, setShowModal] = useState<boolean>(false);
-    const [numberPhone, setNumberPhone] = useState<Phone>({
-        code: "",
-        phone: 0,
-    });
+    const [numberPhone, setNumberPhone] = useState<string>("");
     const [error, setError] = useState<InputError>({
         error: false,
         message: "",
     });
+
+    const { getToken } = usePersistData();
+    const { userTemp } = useAppSelector((state) => state.userSate);
     const theme = useTheme();
     const dispatch = useAppDispatch();
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
@@ -34,16 +36,22 @@ const ConfirmForm: React.FC<Props> = ({}) => {
         setShowModal(!showModal);
     };
 
-    const handleChangeNumberPhone = (e: React.ChangeEvent<HTMLInputElement>): void => {
-        e.preventDefault();
-        setNumberPhone({ ...numberPhone, [e.target.name]: e.target.value });
+    const handleChangeNumberPhone = (number: string): void => {
+        setNumberPhone(number);
     };
     const handleClick = async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         e.preventDefault();
-        let numberCode = code.join("");
-        console.log(numberCode);
+        try {
+            let numberCode = code.join("");
+            console.log(getToken());
 
-        //await dispatch(actionValidateNumberUser())
+            await dispatch(
+                actionValidateNumberPhoneUser(userTemp?.token as string, Number(numberCode))
+            );
+            //console.log(response);
+        } catch (e: any) {
+            console.log(e.message);
+        }
     };
     useEffect(() => {}, []);
     return (
@@ -152,14 +160,9 @@ const ConfirmForm: React.FC<Props> = ({}) => {
                             >
                                 <InputPhoneNumber
                                     sizeInput="medium"
-                                    codeName={"code"}
-                                    codeValue={numberPhone.code}
-                                    errorMessage={error.message}
-                                    phoneName="phone"
-                                    phoneValue={numberPhone.phone}
                                     sizeIcon="large"
-                                    error={error.error}
                                     handleChange={handleChangeNumberPhone}
+                                    ifNumberExistError
                                 />
                             </Box>
                         </Box>

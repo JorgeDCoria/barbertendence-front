@@ -18,5 +18,6 @@ const findUsersByNameOrEmail = async (search: string) => {
         throw e;
     }
 };
+const validateNumberPhoneUser = async (token: string, code: string) => {};
 const userService = { getAllUsers, findUsersByNameOrEmail };
 export default userService;

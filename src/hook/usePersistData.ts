@@ -14,7 +14,7 @@ export const usePersistData = () => {
     const getUser = (): Partial<User> | null =>
         localStorage.getItem("user") ? JSON.parse(localStorage.getItem("user") as string) : null;
     const getIdBarberShop = () => localStorage.getItem("idBarberShop");
-    const getToken = () => localStorage.getItem("token");
+    const getToken = () => JSON.parse(localStorage.getItem("user") as string).token;
 
     return { getUser, getIdBarberShop, getToken, setPersistData, removePersistData };
 };
