@@ -2,12 +2,12 @@ import { Box, Button, Grid, Typography, useTheme, Modal, Stack } from "@mui/mate
 import { useState, useEffect } from "react";
 import BoxCode from "./components/BoxCode";
 import InputPhoneNumber from "./components/InputPhoneNumber";
-import { Phone } from "../../types/phoneType";
 import { InputError } from "../../types/inputError";
-
 import { useAppDispatch, useAppSelector } from "../../hook/useStore";
-import { usePersistData } from "../../hook/usePersistData";
 import { actionValidateNumberPhoneUser } from "../../redux/actions/userAction";
+import { useNotification } from "../../context/notification.context";
+import { useNavigate } from "react-router-dom";
+import { PRIVATEROUTES } from "../../const";
 
 interface Props {}
 const ConfirmForm: React.FC<Props> = ({}) => {
@@ -19,11 +19,12 @@ const ConfirmForm: React.FC<Props> = ({}) => {
         error: false,
         message: "",
     });
-
-    const { getToken } = usePersistData();
     const { userTemp } = useAppSelector((state) => state.userSate);
+    const { showNotification } = useNotification();
     const theme = useTheme();
     const dispatch = useAppDispatch();
+    const navigate = useNavigate();
+
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
         e.preventDefault();
         const aux: string[] = [...code];
@@ -43,14 +44,14 @@ const ConfirmForm: React.FC<Props> = ({}) => {
         e.preventDefault();
         try {
             let numberCode = code.join("");
-            console.log(getToken());
-
             await dispatch(
                 actionValidateNumberPhoneUser(userTemp?.token as string, Number(numberCode))
             );
+            navigate(`/${PRIVATEROUTES}`, { replace: true });
             //console.log(response);
         } catch (e: any) {
             console.log(e.message);
+            showNotification("Error, verifique el codigo de validacion", "error");
         }
     };
     useEffect(() => {}, []);

@@ -27,14 +27,14 @@ export const AuthGuard: React.FC<AuthGuardProps> = () => {
         // } else navigate(`/${idBarberShop}/${PublicRoutes.LOGIN}`, { replace: true });
     }, []);
 
-    return false ? (
+    return getUser() ? (
         getUser()?.rol === ROL.ADMINKEY ? (
-            <Navigate to={`/${PrivateAdminRoutes.ADMIN}`} replace />
+            <Navigate to={`/${PrivateAdminRoutes.ADMIN}`} />
         ) : (
-            <Navigate to={`/${PrivateUserRoutes.USER}`} replace />
+            <Navigate to={`/${PrivateUserRoutes.USER}`} />
         )
     ) : (
-        <Navigate to={`/${getIdBarberShop()}`} replace />
+        <Navigate to={`/${getIdBarberShop()}`} />
     );
 };
 

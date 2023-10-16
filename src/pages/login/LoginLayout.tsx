@@ -13,15 +13,15 @@ const LoginLayout: React.FC<{}> = () => {
 
     useEffect(() => {
         if (
+            //endPoint para validar idBarberShop
             !localStorage.getItem("idBarberShop") ||
             localStorage.getItem("idBarberShop") !== idBarberShop
         ) {
             setPersistData("idBarberShop", idBarberShop);
             console.log(getIdBarberShop());
+        } else if (getUser()) {
+            navigate(`/${PRIVATEROUTES}`);
         }
-        // if (getUser()) {
-        //     navigate(`/${PRIVATEROUTES}`, { replace: true });
-        // }
     }, []);
 
     return (

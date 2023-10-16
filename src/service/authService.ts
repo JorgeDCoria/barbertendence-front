@@ -2,8 +2,6 @@ import axios from "axios";
 import userAdapter from "../adapters/userAdapter";
 import { User } from "../types";
 
-const caracteresEspeciales = "+";
-
 const URL_BASE = import.meta.env.VITE_APP_BASE_URL;
 const logInWhitNumber = async (number: string, password: string) => {
     try {
@@ -60,7 +58,7 @@ const validateNumberPhoneUser = async (token: string, code: number) => {
         accesstoken: `${token}`,
     };
     const response = await axios.post(`${URL_BASE}/users/validate`, { code }, { headers: headers });
-    console.log(response);
+    if (response.status !== 201) throw { message: "Eroor en validacion de numero" };
 };
 const authService = {
     logInWhitNumber,

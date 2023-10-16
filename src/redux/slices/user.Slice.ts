@@ -61,6 +61,7 @@ export const barberSlice = createSlice({
             state.users = data;
         },
         setUserFromUserTemp: (state) => {
+            persistLocalStorage("user", { ...state.userTemp });
             state.user = { ...state.userTemp };
             state.userTemp = null;
         },

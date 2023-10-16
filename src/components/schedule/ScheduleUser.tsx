@@ -41,8 +41,8 @@ interface Props {
 const appointmentsData: Appointment[] = [
     {
         id: 0,
-        startDate: "Tue Jun 28 2023 09:45:00 GMT-0300",
-        endDate: "Tue Jun 28 2023 11:00:00 GMT-0300",
+        startDate: "Fry Oct 13 2023 09:45:00 GMT-0300",
+        endDate: "Fry Oct 13 2023 11:00:00 GMT-0300",
         title: "Reserved",
     },
     {

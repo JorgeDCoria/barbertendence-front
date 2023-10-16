@@ -98,6 +98,6 @@ export const actionValidateNumberPhoneUser = (token: string, code: number) => {
     //necesitaria un atributo del estado en este archivo de actions
     return async (dispatch: Dispatch) => {
         await authService.validateNumberPhoneUser(token, code);
-        dispatch(setUserFromUserTemp);
+        await dispatch(setUserFromUserTemp());
     };
 };
