@@ -13,6 +13,17 @@ declare module "@mui/material/styles" {
 
 const theme = createTheme(
     {
+        components: {
+            MuiButton: {
+                styleOverrides: {
+                    root: {
+                        ":disabled": {
+                            backgroundColor: "#FAEBF9",
+                        },
+                    },
+                },
+            },
+        },
         palette: {
             primary: {
                 main: "#7F217D",
@@ -30,7 +41,7 @@ const theme = createTheme(
             },
             secondary: {
                 main: "#446FB2",
-                light: "#EDF1F8",
+                light: "#C8D5EA",
                 dark: "#070C12",
                 100: "#C8D5EA",
                 200: "#A3B9DC",

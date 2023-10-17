@@ -21,12 +21,14 @@ interface Props {
     sizeIcon: SizeSMLValue;
     handleChange: (number: string) => void;
     ifNumberExistError?: boolean;
+    onErrorChange: (message: string) => void;
 }
 const InputPhoneNumber: React.FC<Props> = ({
     sizeInput,
     sizeIcon,
     handleChange,
     ifNumberExistError = false,
+    onErrorChange,
 }) => {
     const [code, setCode] = useState<string>("");
     const [phone, setPhone] = useState<string>("");
@@ -37,17 +39,20 @@ const InputPhoneNumber: React.FC<Props> = ({
 
     const handleChangePhone = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         setPhone(e.target.value);
+        if (e.target.value.length > 8) validatedNumber(code, e.target.value);
         if (e.target.value !== "") setError({ error: false, message: "" });
-        else setError({ error: true, message: "complete numero telefono" });
+        else {
+            onErrorChange("error");
+            setError({ error: true, message: "complete numero telefono" });
+        }
     };
     const handleSelectCode = (e: SelectChangeEvent<string>) => {
         setCode(e.target.value);
     };
-    const handleBlur = () => {
-        console.log("perdi el foco");
-        console.log(`${code}${phone}`.trim());
+    const validatedNumber = (code: string, phone: string) => {
         if (code !== "" && phone !== "") {
             setError({ error: false, message: "" });
+            onErrorChange("");
 
             authService
                 .validateAvailableNumberPhone(`${code}${phone}`)
@@ -62,6 +67,7 @@ const InputPhoneNumber: React.FC<Props> = ({
                     console.log(`El valor de valid es: ${valid}`);
                 })
                 .catch((e: any) => {
+                    onErrorChange(e.message);
                     setError((prev) => ({ ...prev, message: e.message, error: true }));
                 });
         } else {
@@ -69,6 +75,7 @@ const InputPhoneNumber: React.FC<Props> = ({
                 error: true,
                 message: "Numero invalido, verifique los codigo de area y/o numero",
             });
+            onErrorChange("error");
         }
     };
     return (
@@ -111,7 +118,6 @@ const InputPhoneNumber: React.FC<Props> = ({
                         label="Numero sin codigo de area"
                         type="number"
                         onChange={handleChangePhone}
-                        onBlur={handleBlur}
                     ></TextField>
                 </FormControl>
             </Stack>

@@ -6,7 +6,6 @@ import InputPhoneNumber from "./components/InputPhoneNumber";
 import { useNotification } from "../../context/notification.context";
 import { useAppDispatch } from "../../hook/useStore";
 import { actionLoginUserWhithNumber, actionSetUser } from "../../redux/actions/userAction";
-
 import { LoginButton } from "../../components/login-button";
 import { PRIVATEROUTES } from "../../const";
 import { UserRol } from "../../typesConfig";
@@ -22,6 +21,7 @@ const LoginForm: React.FC<Props> = ({}) => {
     });
     const [formError, setFormError] = useState({
         passwordError: { error: false, message: "" },
+        phoneError: { error: false, message: "" },
     });
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
@@ -77,6 +77,12 @@ const LoginForm: React.FC<Props> = ({}) => {
         setInput((prev) => ({ ...prev, numberPhone: value }));
     };
 
+    const handleChangeInputErrorNumberPhone = (message: string) => {
+        setFormError((prev) => ({
+            ...prev,
+            phoneError: { ...prev.phoneError, error: message.length == 0, message: message },
+        }));
+    };
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>): void => {
         e.preventDefault();
     };
@@ -127,6 +133,7 @@ const LoginForm: React.FC<Props> = ({}) => {
                         sizeIcon="large"
                         sizeInput="medium"
                         handleChange={handleChangeNumber}
+                        onErrorChange={handleChangeInputErrorNumberPhone}
                     />
                 </Grid>
                 {/* Numero password */}

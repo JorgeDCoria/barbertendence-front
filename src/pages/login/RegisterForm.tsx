@@ -1,13 +1,5 @@
 import { Link, useNavigate } from "react-router-dom";
-import {
-    Box,
-    Button,
-    TextField,
-    Typography,
-    Stack,
-    FormHelperText,
-    FormControl,
-} from "@mui/material";
+import { Box, Button, TextField, Typography, Stack, FormHelperText } from "@mui/material";
 import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
 import InputNumber from "./components/InputPhoneNumber";
 import InputPassword from "./components/InputPassword";
@@ -28,17 +20,39 @@ const Register = () => {
         birthDate: new Date().toISOString(),
     });
     const [passwordCompare, setPasswordCompare] = useState("");
-    const [error, setError] = useState<{ name: string; password: string }>({
-        name: "",
-        password: "",
-    });
+    const [error, setError] = useState<{ fullName: string; password: string; numberPhone: string }>(
+        {
+            fullName: "",
+            password: "",
+            numberPhone: "",
+        }
+    );
     const navigate = useNavigate();
     const { getIdBarberShop } = usePersistData();
     const dispatch = useAppDispatch();
     const { showNotification } = useNotification();
 
+    const handleInputChangeErrorNumberPhone = (message: string) => {
+        setError((prev) => ({ ...prev, numberPhone: message }));
+    };
     const handleChangeInput = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         setInput((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+        if (e.target.name == "password") {
+            if (passwordCompare !== "" && passwordCompare !== e.target.value)
+                setError((prev) => ({
+                    ...prev,
+                    password: "Los campos de contraseña no coinciden",
+                }));
+        }
+        if (e.target.name == "fullName") {
+            if (e.target.value == "") setError((prev) => ({ ...prev, fullName: "campo vacio" }));
+            else if (e.target.value.length < 3)
+                setError((prev) => ({
+                    ...prev,
+                    fullName: "Nombre debe contener mas de tres caracteres",
+                }));
+            else setError((prev) => ({ ...prev, fullName: "" }));
+        }
     };
 
     const handleChangeDate = (date: string | Date | null) => {
@@ -56,25 +70,13 @@ const Register = () => {
         e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
     ) => {
         setPasswordCompare(e.target.value);
-        setError((prev) => ({ ...prev, password: "" }));
-    };
-    const handleBlurPassword = () => {
-        if (input.password !== passwordCompare) {
-            setError((prev) => ({ ...prev, password: "No hay coincidencias, intente nuevamente" }));
-        }
+        if (e.target.value !== input.password)
+            setError((prev) => ({ ...prev, password: "Los campos de contraseña no coinciden" }));
+        else setError((prev) => ({ ...prev, password: "" }));
     };
 
     const validatedForm = (): boolean => {
-        const valid = true;
-        setError({
-            name: "",
-            password: "",
-        });
-        if (!(input.fullName?.length && input.password?.length && input.numberPhone?.length))
-            showNotification("Complete todos los campos", "warning");
-        else if (!(error.name + error.password + input.numberPhone).length) {
-        }
-        return valid;
+        return [error.fullName, error.numberPhone, error.password].join("").length !== 0;
     };
     const handleClick = async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         e.preventDefault();
@@ -120,8 +122,8 @@ const Register = () => {
                     variant="outlined"
                     size="small"
                     onChange={handleChangeInput}
-                    error={error.name != ""}
-                    helperText={error.name}
+                    error={error.fullName != ""}
+                    helperText={error.fullName}
                 />
             </Stack>
             {/* Number phone */}
@@ -131,6 +133,7 @@ const Register = () => {
                 sizeInput="small"
                 sizeIcon="small"
                 handleChange={handleChangeNumber}
+                onErrorChange={handleInputChangeErrorNumberPhone}
             />
             <DesktopDatePicker
                 label="Fecha de Nacimiento"
@@ -149,26 +152,25 @@ const Register = () => {
                 errorMessage={""}
                 handleChange={handleChangeInput}
             />
-            <FormControl onBlur={handleBlurPassword}>
-                <InputPassword
-                    label="Confirm Password"
-                    name="passwordCompare"
-                    sizeIcon="medium"
-                    sizeTextField="small"
-                    value={passwordCompare}
-                    error={error.password !== ""}
-                    errorMessage={error.password}
-                    handleChange={handleChangePasswordCompare}
-                />
-            </FormControl>
+
+            <InputPassword
+                label="Confirm Password"
+                name="passwordCompare"
+                sizeIcon="medium"
+                sizeTextField="small"
+                value={passwordCompare}
+                error={error.password !== ""}
+                errorMessage={error.password}
+                handleChange={handleChangePasswordCompare}
+            />
 
             <Stack spacing={2} width={"100%"}>
                 <Button
                     fullWidth
                     variant="contained"
-                    color="primary"
                     size="small"
                     onClick={handleClick}
+                    disabled={validatedForm()}
                 >
                     Registrarse
                 </Button>
