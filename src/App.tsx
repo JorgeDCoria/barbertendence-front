@@ -25,15 +25,21 @@ const App = () => {
     return (
         <>
             <RoutesWithNotFound>
-                <Route path={`/:${IDBARBERSHOP}/*`} element={<LoginLayout />}>
+                <Route path={`/:${IDBARBERSHOP}/`} element={<LoginLayout />}>
                     <Route index element={<Login />} />
                     <Route path="register" element={<Register />} />
                     <Route path="confirmForm" element={<ConfirmForm />} />
                     <Route
-                        path="*"
+                        path="reset-password"
                         element={
-                            <Navigate to={`/${localStorage.getItem("idBarberShop")}`} replace />
+                            <h1 style={{ textAlign: "center" }}>
+                                Estamo trabajando en esta interfaz
+                            </h1>
                         }
+                    />
+                    <Route
+                        path="*"
+                        element={<Navigate to={`/${localStorage.getItem("idBarberShop")}`} />}
                     />
                 </Route>
 

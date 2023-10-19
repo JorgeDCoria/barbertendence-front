@@ -1,28 +1,59 @@
 import { useEffect } from "react";
 import { Box, Grid } from "@mui/material";
-import { Outlet, useNavigate, useParams } from "react-router-dom";
+import { Outlet, useLocation, useNavigate, useParams } from "react-router-dom";
 import logo from "../../assets/logo.png";
 
-import { PRIVATEROUTES } from "../../const";
+import { IDBARBERSHOP, PRIVATEROUTES } from "../../const";
 import { usePersistData } from "../../hook/usePersistData";
+import { useAppDispatch } from "../../hook/useStore";
+import { actionSetUser } from "../../redux/actions/userAction";
+import { useNotification } from "../../context/notification.context";
+import { UserRol } from "../../typesConfig";
 
 const LoginLayout: React.FC<{}> = () => {
     const { idBarberShop } = useParams();
     const navigate = useNavigate();
     const { setPersistData, getUser, getIdBarberShop } = usePersistData();
-
+    const dispatch = useAppDispatch();
+    const { showNotification } = useNotification();
+    const location = useLocation();
     useEffect(() => {
         if (
             //endPoint para validar idBarberShop
-            !localStorage.getItem("idBarberShop") ||
-            localStorage.getItem("idBarberShop") !== idBarberShop
+            !localStorage.getItem("user")
         ) {
-            setPersistData("idBarberShop", idBarberShop);
-            console.log(getIdBarberShop());
+            console.log("entre al primer if");
+
+            if (!idBarberShop || (idBarberShop !== getIdBarberShop() && idBarberShop.length > 8)) {
+                console.log(getIdBarberShop());
+
+                setPersistData("idBarberShop", idBarberShop);
+            } else {
+                navigate(`/${getIdBarberShop()}`);
+            }
         } else if (getUser()) {
             navigate(`/${PRIVATEROUTES}`);
         }
     }, []);
+
+    useEffect(() => {
+        const searchParams = new URLSearchParams(location.search);
+        const token = searchParams.get("token");
+        const user = searchParams.get("user");
+        const rol = searchParams.get("roles");
+        if (token && user && rol)
+            dispatch(actionSetUser(user, rol.toLowerCase() as UserRol, token))
+                .then(() => {
+                    navigate(`/${PRIVATEROUTES}`);
+                })
+                .catch((e: any) => {
+                    console.log(e.message);
+                    showNotification(
+                        `Error al iniciar con cuenta gmail, intentelo mas tarde ${e.message}`,
+                        "error"
+                    );
+                });
+    }, [location]);
 
     return (
         <Grid

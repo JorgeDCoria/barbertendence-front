@@ -76,7 +76,7 @@ const Register = () => {
     };
 
     const validatedForm = (): boolean => {
-        return [error.fullName, error.numberPhone, error.password].join("").length !== 0;
+        return [error.fullName, error.numberPhone, error.password].join("").length === 0;
     };
     const handleClick = async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         e.preventDefault();
@@ -170,17 +170,17 @@ const Register = () => {
                     variant="contained"
                     size="small"
                     onClick={handleClick}
-                    disabled={validatedForm()}
+                    disabled={!validatedForm()}
                 >
                     Registrarse
                 </Button>
                 <LoginButton size="small" />
             </Stack>
 
-            <FormHelperText sx={{ textAlign: "center" }}>
+            <FormHelperText sx={{ textAlign: "center", fontSize: "1rem" }}>
                 Ya tienes una cuenta{" "}
                 <Link to={`/${getIdBarberShop()}`}>
-                    <Typography component={"span"} fontSize={"14px"} color={"primary.main"}>
+                    <Typography component={"span"} color={"primary.main"}>
                         Login
                     </Typography>{" "}
                 </Link>

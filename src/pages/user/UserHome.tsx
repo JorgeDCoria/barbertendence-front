@@ -10,7 +10,7 @@ import {
     useMediaQuery,
     useTheme,
 } from "@mui/material";
-import React from "react";
+import { useEffect } from "react";
 
 import banner from "../../assets/banner.jpg";
 import CaruselCard from "./components/CaruselCard";
@@ -18,6 +18,8 @@ import PaginationCard from "./components/PaginationCard";
 import CardOrder from "./components/CardOrder";
 import ButtonLg from "./components/ButtonLg";
 import { Link } from "react-router-dom";
+import { useAppDispatch } from "../../hook/useStore";
+import { actionGetServicesAndBarbers } from "../../redux/actions/barberShopAction";
 
 const orders: any = [
     {
@@ -81,9 +83,15 @@ const orders: any = [
 
 const UserHome: React.FC<{}> = ({}) => {
     const theme: Theme = useTheme();
-
     const isXs = useMediaQuery(theme.breakpoints.only("xs"));
-
+    const dispatch = useAppDispatch();
+    useEffect(() => {
+        try {
+            dispatch(actionGetServicesAndBarbers());
+        } catch (e: any) {
+            console.log(e.message);
+        }
+    });
     return (
         <Box width={"100%"}>
             <Stack spacing={3} width={"100%"}>

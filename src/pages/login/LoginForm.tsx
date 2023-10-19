@@ -1,14 +1,14 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Box, Grid, Button, Typography } from "@mui/material";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import InputPassword from "./components/InputPassword";
 import InputPhoneNumber from "./components/InputPhoneNumber";
 import { useNotification } from "../../context/notification.context";
 import { useAppDispatch } from "../../hook/useStore";
-import { actionLoginUserWhithNumber, actionSetUser } from "../../redux/actions/userAction";
+import { actionLoginUserWhithNumber } from "../../redux/actions/userAction";
 import { LoginButton } from "../../components/login-button";
 import { PRIVATEROUTES } from "../../const";
-import { UserRol } from "../../typesConfig";
+
 import { usePersistData } from "../../hook/usePersistData";
 
 interface Props {}
@@ -86,26 +86,6 @@ const LoginForm: React.FC<Props> = ({}) => {
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>): void => {
         e.preventDefault();
     };
-    const location = useLocation();
-
-    useEffect(() => {
-        const searchParams = new URLSearchParams(location.search);
-        const token = searchParams.get("token");
-        const user = searchParams.get("user");
-        const rol = searchParams.get("roles");
-        if (token && user && rol)
-            dispatch(actionSetUser(user, rol.toLowerCase() as UserRol, token))
-                .then(() => {
-                    navigate(`/${PRIVATEROUTES}`);
-                })
-                .catch((e: any) => {
-                    console.log(e.message);
-                    showNotification(
-                        `Error al iniciar con cuenta gmail, intentelo mas tarde ${e.message}`,
-                        "error"
-                    );
-                });
-    }, [location]);
 
     return (
         <Box
@@ -173,12 +153,20 @@ const LoginForm: React.FC<Props> = ({}) => {
                     <LoginButton />
                 </Grid>
                 <Grid item xs={10}>
-                    <Typography component={"p"} align="center" color={"primary.main"}>
-                        ¿olvidate tu password?
-                    </Typography>
+                    <Link
+                        to={`/${getIdBarberShop()}/reset-password`}
+                        style={{ textDecoration: "none" }}
+                    >
+                        <Typography component={"p"} align="center" color={"primary.main"}>
+                            ¿olvidate tu contraseña?
+                        </Typography>
+                    </Link>
                     <Typography component={"p"} align="center">
                         No tienes una cuenta{" "}
-                        <Link to={`/${getIdBarberShop()}/register`}>
+                        <Link
+                            to={`/${getIdBarberShop()}/register`}
+                            style={{ textDecoration: "none" }}
+                        >
                             <Typography component={"span"} fontSize={"18px"} color={"primary.main"}>
                                 Registrate
                             </Typography>{" "}

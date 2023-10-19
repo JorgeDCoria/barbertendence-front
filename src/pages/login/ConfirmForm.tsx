@@ -2,7 +2,6 @@ import { Box, Button, Grid, Typography, useTheme, Modal, Stack } from "@mui/mate
 import { useState, useEffect } from "react";
 import BoxCode from "./components/BoxCode";
 import InputPhoneNumber from "./components/InputPhoneNumber";
-import { InputError } from "../../types/inputError";
 import { useAppDispatch, useAppSelector } from "../../hook/useStore";
 import { actionValidateNumberPhoneUser } from "../../redux/actions/userAction";
 import { useNotification } from "../../context/notification.context";
@@ -15,10 +14,7 @@ const ConfirmForm: React.FC<Props> = ({}) => {
     const [code, setCode] = useState<string[]>(["", "", "", "", "", ""]);
     const [showModal, setShowModal] = useState<boolean>(false);
     const [numberPhone, setNumberPhone] = useState<string>("");
-    const [error, setError] = useState<InputError>({
-        error: false,
-        message: "",
-    });
+
     const { userTemp } = useAppSelector((state) => state.userSate);
     const { showNotification } = useNotification();
     const theme = useTheme();
@@ -71,7 +67,7 @@ const ConfirmForm: React.FC<Props> = ({}) => {
                         fontWeight={"900"}
                         color={theme.palette.primary.main}
                     >
-                        Gracias por registrarte !!
+                        Valida tu numero!!
                     </Typography>
                     <Typography marginTop={2}>
                         Te enviamos un whatsapp con un codigo para poder validar tu numero,
