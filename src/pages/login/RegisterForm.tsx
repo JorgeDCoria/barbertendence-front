@@ -3,7 +3,7 @@ import { Box, Button, TextField, Typography, Stack, FormHelperText } from "@mui/
 import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
 import InputNumber from "./components/InputPhoneNumber";
 import InputPassword from "./components/InputPassword";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useAppDispatch } from "../../hook/useStore";
 import { actionSetUserTemp } from "../../redux/actions/userAction";
 import { User } from "../../types";
@@ -22,11 +22,12 @@ const Register = () => {
     const [passwordCompare, setPasswordCompare] = useState("");
     const [error, setError] = useState<{ fullName: string; password: string; numberPhone: string }>(
         {
-            fullName: "",
-            password: "",
-            numberPhone: "",
+            fullName: "vacio",
+            password: "vacio",
+            numberPhone: "vacio",
         }
     );
+
     const navigate = useNavigate();
     const { getIdBarberShop } = usePersistData();
     const dispatch = useAppDispatch();
@@ -75,24 +76,19 @@ const Register = () => {
         else setError((prev) => ({ ...prev, password: "" }));
     };
 
-    const validatedForm = (): boolean => {
+    const validatedForm = () => {
         return [error.fullName, error.numberPhone, error.password].join("").length === 0;
     };
     const handleClick = async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         e.preventDefault();
-        if (validatedForm()) {
-            console.log("pase validate");
-            try {
-                await dispatch(actionSetUserTemp(input));
-                navigate(`/${getIdBarberShop()}/confirmForm`);
-            } catch (e) {
-                showNotification("Error al registrar, intente mas tarde", "error");
-            }
+        try {
+            await dispatch(actionSetUserTemp(input));
+            navigate(`/${getIdBarberShop()}/confirmForm`);
+        } catch (e) {
+            showNotification("Error al registrar, intente mas tarde", "error");
         }
     };
-    useEffect(() => {
-        dispatch(actionSetUserTemp(null));
-    }, []);
+
     return (
         <Box
             sx={{ height: "100%", width: { xs: "100%", md: "80%" } }}
@@ -122,8 +118,8 @@ const Register = () => {
                     variant="outlined"
                     size="small"
                     onChange={handleChangeInput}
-                    error={error.fullName != ""}
-                    helperText={error.fullName}
+                    error={error.fullName != "" && error.fullName !== "vacio"}
+                    helperText={error.fullName !== "vacio" ? error.fullName : ""}
                 />
             </Stack>
             {/* Number phone */}
@@ -159,7 +155,7 @@ const Register = () => {
                 sizeIcon="medium"
                 sizeTextField="small"
                 value={passwordCompare}
-                error={error.password !== ""}
+                error={error.password !== "" && error.password !== "vacio"}
                 errorMessage={error.password}
                 handleChange={handleChangePasswordCompare}
             />
