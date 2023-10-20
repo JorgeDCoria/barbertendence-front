@@ -127,7 +127,7 @@ const LoginForm: React.FC<Props> = ({}) => {
                     justifyContent={"center"}
                 >
                     <InputPassword
-                        label="Password"
+                        label="Contraseña"
                         name="password"
                         sizeTextField="medium"
                         sizeIcon="large"

@@ -15,5 +15,6 @@ export const actionGetServicesAndBarbers = () => {
         const { services, barbers } = await barberShopService.getServicesAndBarbers();
         dispatch(setServices(services));
         dispatch(setBarbers(barbers));
+        // dispatch(setUserAppointments(appointments));
     };
 };

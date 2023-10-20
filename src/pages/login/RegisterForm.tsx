@@ -114,7 +114,7 @@ const Register = () => {
                 <TextField
                     required
                     id="fullName"
-                    label="Name"
+                    label="Nombre Completo"
                     type="text"
                     fullWidth
                     name="fullName"
@@ -143,7 +143,7 @@ const Register = () => {
                 renderInput={(params) => <TextField size="small" {...params} />}
             />
             <InputPassword
-                label="Password"
+                label="Contraseña"
                 name="password"
                 value={input.password ? input.password : ""}
                 sizeIcon="medium"
@@ -154,7 +154,7 @@ const Register = () => {
             />
 
             <InputPassword
-                label="Confirm Password"
+                label="Confirmar Contraseña"
                 name="passwordCompare"
                 sizeIcon="medium"
                 sizeTextField="small"

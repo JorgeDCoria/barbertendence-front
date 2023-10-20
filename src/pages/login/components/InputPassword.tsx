@@ -41,7 +41,6 @@ const InputPassword: React.FC<Props> = ({
                 width: "100%",
             }}
         >
-            {" "}
             <LockOutlinedIcon fontSize={sizeIcon} />
             <TextField
                 required
