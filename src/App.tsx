@@ -1,4 +1,4 @@
-import { Navigate, Outlet, Route, useLocation, useParams } from "react-router-dom";
+import { Navigate, Route } from "react-router-dom";
 import "./App.css";
 import Login from "./pages/login/LoginForm";
 import Register from "./pages/login/RegisterForm";

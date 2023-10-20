@@ -41,7 +41,7 @@ const CardBarber: React.FC<Props> = ({
                 >
                     <CardMedia
                         component={"img"}
-                        src={perfil}
+                        src={barber.avatar}
                         sx={{
                             height: `${isHovered || selected ? "100%" : "200px"}`,
                             width: "100%",

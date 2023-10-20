@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
     Box,
     Stack,
@@ -12,14 +12,16 @@ import {
     Theme,
     useTheme,
 } from "@mui/material";
-import { Service } from "src/types/Service";
+import { Service, Barber } from "src/types";
 import CardService from "./components/CardService";
 import CaruselCard from "./components/CaruselCard";
-import { Barber } from "src/types/Barber";
 import CardBarber from "./components/CardBarber";
 
 import ScheduleUser from "../../components/schedule/ScheduleUser";
-import { useAppSelector } from "../../hook/useStore";
+import { useAppDispatch, useAppSelector } from "../../hook/useStore";
+import { useNavigate, useLocation } from "react-router-dom";
+import { actionGetServicesAndBarbers } from "../../redux/actions/barberShopAction";
+import Loading from "../../components/Loading/Loading";
 
 const NewOrder = () => {
     //const theme: Theme = useTheme();
@@ -29,6 +31,8 @@ const NewOrder = () => {
     const theme: Theme = useTheme();
     const isXs = useMediaQuery(theme.breakpoints.only("xs"));
     const { services } = useAppSelector((state) => state.servicesState);
+    const { barbers } = useAppSelector((state) => state.barbers);
+    const dispatch = useAppDispatch();
     type Step = {
         title: string;
         subTitle: string;
@@ -64,98 +68,6 @@ const NewOrder = () => {
         setActiveStep(0);
     };
 
-    // const services: Service[] = [
-    //     {
-    //         id: "1",
-    //         name: "corte de pelo",
-    //         duration: 30,
-    //         image: "",
-    //         price: 800,
-    //         description: "corte de pelo ya sea clasico o con degradado. No incluye diseño/lavado",
-    //     },
-
-    //     {
-    //         id: "2",
-    //         name: "corte Premium",
-    //         duration: 45,
-    //         image: "",
-    //         price: 800,
-    //         description:
-    //             "Corte de pelo ya sea clasico o degradado con un margen de trabajo mas amplio asesoramiento de visagismo y productos premium para un acabado aun mas profesional.",
-    //     },
-    //     {
-    //         id: "3",
-    //         name: "arreglo de barba",
-    //         duration: 60,
-    //         image: "",
-    //         price: 800,
-    //         description: "Arreglo de barba con disminucion, afeitado completo y/o perfilado.",
-    //     },
-    //     {
-    //         id: "4",
-    //         name: "afeitado tradicional",
-    //         duration: 30,
-    //         image: "",
-    //         price: 800,
-    //         description:
-    //             "ageitado o arreglo de barba con el metodo tradicional, toallas calientes/frias y vapor de ozono.",
-    //     },
-    //     {
-    //         id: "5",
-    //         name: "corte niño",
-    //         duration: 60,
-    //         image: "",
-    //         price: 800,
-    //         description: "Corte de pelo clasico o degradado para niños hasta 12 años ",
-    //     },
-    //     {
-    //         id: "6",
-    //         name: "perfilado de cejas",
-    //         duration: 45,
-    //         image: "",
-    //         price: 800,
-    //         description:
-    //             "Arrego de cejas con disminucion, utilizamos tecnicas especializadas para que tus cejas queden implecables.",
-    //     },
-    // ];
-    const barbers: Barber[] = [
-        {
-            id: "1",
-            name: "Juan",
-            description: "cuento con 5 años de experiencia, animate te espero",
-            avatar: "",
-        },
-        {
-            id: "2",
-            name: "Joquin",
-            description: "cuento con 5 años de experiencia, animate te espero",
-            avatar: "",
-        },
-        {
-            id: "3",
-            name: "Marcos",
-            description: "cuento con 5 años de experiencia, animate te espero",
-            avatar: "",
-        },
-        {
-            id: "4",
-            name: "Emiliano",
-            description: "cuento con 5 años de experiencia, animate te espero",
-            avatar: "",
-        },
-        {
-            id: "5",
-            name: "Ernesto",
-            description: "cuento con 5 años de experiencia, animate te espero",
-            avatar: "",
-        },
-        {
-            id: "6",
-            name: "Lorenzo",
-            description: "cuento con 5 años de experiencia, animate te espero",
-            avatar: "",
-        },
-    ];
     const handleSelectedService = (service: Service): void => {
         // service.selected = true;
         if (!serviceSelected) setServiceSelected(service);
@@ -177,8 +89,12 @@ const NewOrder = () => {
         if (activeStep === 1 && barberSelected) return false;
         return true;
     };
-
-    return (
+    useEffect(() => {
+        if (!barbers || !services) {
+            dispatch(actionGetServicesAndBarbers());
+        }
+    }, []);
+    return barbers && services ? (
         <Stack
             component={"form"}
             justifyContent={{
@@ -310,6 +226,8 @@ const NewOrder = () => {
                 </>
             )}
         </Stack>
+    ) : (
+        <Loading />
     );
 };
 
