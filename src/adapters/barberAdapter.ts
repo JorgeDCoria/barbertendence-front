@@ -12,11 +12,9 @@ const mapBarberApiToBarber = (data: any): Barber => {
     return {
         avatar: data.avatar,
         description: data.description,
-        id: data.id,
+        id: data._id,
         name: data.name,
-        birthDay: data.birthDate,
-        mail: data.mail,
-        phone: data.phone,
+        services: data.services,
     };
 };
 

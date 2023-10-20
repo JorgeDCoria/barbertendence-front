@@ -11,7 +11,7 @@ export type Barber = {
     email?: string;
     phone?: string;
     address?: string;
-    services?: Service[];
+    services?: Service[] | string[];
     schedules?: Schedule[];
 };
 //seleccion rapida de horarios (turno mañana, tarde, jornada completa y opcion de personalizar);

@@ -19,6 +19,7 @@ import { Barber } from "src/types/Barber";
 import CardBarber from "./components/CardBarber";
 
 import ScheduleUser from "../../components/schedule/ScheduleUser";
+import { useAppSelector } from "../../hook/useStore";
 
 const NewOrder = () => {
     //const theme: Theme = useTheme();
@@ -27,6 +28,7 @@ const NewOrder = () => {
     const [barberSelected, setBarberSelected] = useState<Barber | null>(null);
     const theme: Theme = useTheme();
     const isXs = useMediaQuery(theme.breakpoints.only("xs"));
+    const { services } = useAppSelector((state) => state.servicesState);
     type Step = {
         title: string;
         subTitle: string;
@@ -62,60 +64,60 @@ const NewOrder = () => {
         setActiveStep(0);
     };
 
-    const services: Service[] = [
-        {
-            id: "1",
-            name: "corte de pelo",
-            duration: 30,
-            image: "",
-            price: 800,
-            description: "corte de pelo ya sea clasico o con degradado. No incluye diseño/lavado",
-        },
+    // const services: Service[] = [
+    //     {
+    //         id: "1",
+    //         name: "corte de pelo",
+    //         duration: 30,
+    //         image: "",
+    //         price: 800,
+    //         description: "corte de pelo ya sea clasico o con degradado. No incluye diseño/lavado",
+    //     },
 
-        {
-            id: "2",
-            name: "corte Premium",
-            duration: 45,
-            image: "",
-            price: 800,
-            description:
-                "Corte de pelo ya sea clasico o degradado con un margen de trabajo mas amplio asesoramiento de visagismo y productos premium para un acabado aun mas profesional.",
-        },
-        {
-            id: "3",
-            name: "arreglo de barba",
-            duration: 60,
-            image: "",
-            price: 800,
-            description: "Arreglo de barba con disminucion, afeitado completo y/o perfilado.",
-        },
-        {
-            id: "4",
-            name: "afeitado tradicional",
-            duration: 30,
-            image: "",
-            price: 800,
-            description:
-                "ageitado o arreglo de barba con el metodo tradicional, toallas calientes/frias y vapor de ozono.",
-        },
-        {
-            id: "5",
-            name: "corte niño",
-            duration: 60,
-            image: "",
-            price: 800,
-            description: "Corte de pelo clasico o degradado para niños hasta 12 años ",
-        },
-        {
-            id: "6",
-            name: "perfilado de cejas",
-            duration: 45,
-            image: "",
-            price: 800,
-            description:
-                "Arrego de cejas con disminucion, utilizamos tecnicas especializadas para que tus cejas queden implecables.",
-        },
-    ];
+    //     {
+    //         id: "2",
+    //         name: "corte Premium",
+    //         duration: 45,
+    //         image: "",
+    //         price: 800,
+    //         description:
+    //             "Corte de pelo ya sea clasico o degradado con un margen de trabajo mas amplio asesoramiento de visagismo y productos premium para un acabado aun mas profesional.",
+    //     },
+    //     {
+    //         id: "3",
+    //         name: "arreglo de barba",
+    //         duration: 60,
+    //         image: "",
+    //         price: 800,
+    //         description: "Arreglo de barba con disminucion, afeitado completo y/o perfilado.",
+    //     },
+    //     {
+    //         id: "4",
+    //         name: "afeitado tradicional",
+    //         duration: 30,
+    //         image: "",
+    //         price: 800,
+    //         description:
+    //             "ageitado o arreglo de barba con el metodo tradicional, toallas calientes/frias y vapor de ozono.",
+    //     },
+    //     {
+    //         id: "5",
+    //         name: "corte niño",
+    //         duration: 60,
+    //         image: "",
+    //         price: 800,
+    //         description: "Corte de pelo clasico o degradado para niños hasta 12 años ",
+    //     },
+    //     {
+    //         id: "6",
+    //         name: "perfilado de cejas",
+    //         duration: 45,
+    //         image: "",
+    //         price: 800,
+    //         description:
+    //             "Arrego de cejas con disminucion, utilizamos tecnicas especializadas para que tus cejas queden implecables.",
+    //     },
+    // ];
     const barbers: Barber[] = [
         {
             id: "1",

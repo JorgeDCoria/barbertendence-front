@@ -2,7 +2,7 @@ import { Service } from "src/types/Service";
 
 const mapServiceApiToService = (data: any): Service => {
     return {
-        id: data.id,
+        id: data._id,
         name: data.name,
         price: data.price,
         description: data.description,

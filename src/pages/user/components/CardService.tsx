@@ -9,7 +9,6 @@ import {
     Typography,
     useMediaQuery,
 } from "@mui/material";
-import image from "../../../assets/service.jpg";
 
 interface Props {
     service: Service;
@@ -62,7 +61,7 @@ const CardService: React.FC<Props> = ({
                                 width: "100%",
                                 height: "100%",
                             }}
-                            src={image}
+                            src={service.image}
                         />
                         <Box
                             position={"absolute"}
@@ -142,7 +141,7 @@ const CardService: React.FC<Props> = ({
                                 width: "100%",
                                 height: "100%",
                             }}
-                            src={image}
+                            src={service.image}
                         />
                         <Box
                             position={"absolute"}

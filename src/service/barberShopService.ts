@@ -1,20 +1,26 @@
 import axios from "axios";
 import { usePersistData } from "../hook/usePersistData";
-const URL_BASE = import.meta.env.VITE_APP_URL_BASE;
+import barberAdapter from "../adapters/barberAdapter";
+import serviceAdapter from "../adapters/serviceAdapter";
+import appointmentAdapter from "../adapters/appointmentAdapter";
+const URL_BASE = import.meta.env.VITE_APP_BASE_URL;
 const { getIdBarberShop, getToken } = usePersistData();
 const getServicesAndBarbers = async () => {
     const headers = {
-        accestoken: getToken(),
+        accesstoken: getToken(),
     };
     console.log(getIdBarberShop());
 
     const data = await axios(
-        `${URL_BASE}/users/barbershopSchedule?barberShopId=${getIdBarberShop()}`,
+        `${URL_BASE}/users/barbershopSchedule?barbershopId=${getIdBarberShop()}`,
         {
             headers: headers,
         }
     ).then((r) => r.data);
-    console.log(data);
+    const barbers = barberAdapter.mapBarbersApiToBarbers(data.barbers);
+    const services = serviceAdapter.mapServicesApiToServices(data.services);
+    const appointments = appointmentAdapter.mapAppointmentsApiToAppointments(data.appointments);
+    return { barbers, services, appointments };
 };
 
 export default {
