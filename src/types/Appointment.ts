@@ -1,4 +1,4 @@
-import { type AppointmentState } from "src/types";
+import { type AppointmentState } from "../typesConfig";
 import { Barber } from "./Barber";
 import { Service } from "./Service";
 import { User } from "./User";

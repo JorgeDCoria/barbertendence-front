@@ -5,12 +5,14 @@ import { AppointmentHistory } from "../../types/AppointmentHistory";
 interface AppointmentsState {
     appointments: Appointment[];
     appointmentsUserHistory: AppointmentHistory[] | null;
+    appointmentsPending: Appointment[] | null;
     state: string;
 }
 
 const initialState: AppointmentsState = {
     appointments: [] as Appointment[],
     appointmentsUserHistory: null,
+    appointmentsPending: null,
     state: "ALL",
 };
 export const appointmentSlice = createSlice({
@@ -31,11 +33,14 @@ export const appointmentSlice = createSlice({
             // aux = aux.filter((app) => app.state.toUpperCase() === action.payload.toUpperCase());
             state.appointments = action.payload;
         },
-        setAppointmentsUserHistory: (state, action:PayloadAction<AppointmentHistory[] | null>) => {
+        setAppointmentsUserHistory: (state, action: PayloadAction<AppointmentHistory[] | null>) => {
             state.appointmentsUserHistory = action.payload;
         },
         setState: (state, action) => {
             state.state = action.payload;
+        },
+        setAppointmentsPending: (state, action: PayloadAction<Appointment[] | null>) => {
+            state.appointmentsPending = action.payload;
         },
     },
 });
@@ -46,5 +51,6 @@ export const {
     getAppointmentsByState,
     setState,
     setAppointmentsUserHistory,
+    setAppointmentsPending,
 } = appointmentSlice.actions;
 export default appointmentSlice.reducer;

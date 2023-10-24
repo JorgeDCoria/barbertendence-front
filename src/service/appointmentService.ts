@@ -1,8 +1,10 @@
-import { Appointment } from "src/types/Appointment";
+import { Appointment } from "../types/Appointment";
 import appointmentAdapter from "../adapters/appointmentAdapter";
 import data from "../data/appointments.json";
 import { AppointmentHistory } from "../types/AppointmentHistory";
+import axios from "axios";
 
+const URL_BASE = import.meta.env.VITE_APP_BASE_URL;
 const getAppointments = (state: string = "ALL"): Appointment[] => {
     try {
         if (state === "ALL") return appointmentAdapter.mapAppointmentsApiToAppointments(data);
@@ -31,9 +33,22 @@ const getAppointmentsByUser = async (id: string): Promise<AppointmentHistory[]> 
     }
 };
 
+const getAppointmentsPending = async (idBarberShop: string, token: string) => {
+    const headers = {
+        accesstoken: token,
+    };
+    const appointments = await axios
+        .get(`${URL_BASE}/users/pendingAppointments?barbershopId=${idBarberShop}`, {
+            headers: headers,
+        })
+        .then((r) => r.data);
+    return appointmentAdapter.mapAppointmentsApiToAppointments(appointments);
+};
+
 const appointmentService = {
     getAppointments,
     getAppointmentsByUser,
+    getAppointmentsPending,
 };
 
 export default appointmentService;

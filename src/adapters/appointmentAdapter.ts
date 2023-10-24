@@ -5,8 +5,6 @@ import barberAdapter from "./barberAdapter";
 import { SchedulerDateTime } from "node_modules/@devexpress/dx-react-scheduler/dist/dx-react-scheduler";
 import { AppointmentHistory } from "src/types/AppointmentHistory";
 const mapAppointmentApiToAppointment = (data: any): Appointment => {
-    console.log(`barber ${data.barber.name}`);
-
     // console.log(new Date(data.endDate).toLocaleDateString());
     // console.log(new Date(data.startDate).toDateString());
 
@@ -15,10 +13,10 @@ const mapAppointmentApiToAppointment = (data: any): Appointment => {
         startDate: data.startDate,
         endDate: data.endDate,
         title: data.service.name,
-        service: serviceAdapter.mapServiceApiToService(data.service),
-        barber: barberAdapter.mapBarberApiToBarber(data.barber),
-        barberId: data.barber.id,
-        user: userAdapter.mapUserApiToUser(data.user),
+        service: data.service && serviceAdapter.mapServiceApiToService(data.service),
+        barber: data.barber && barberAdapter.mapBarberApiToBarber(data.barber),
+        barberId: data.barberId,
+        user: data.user && userAdapter.mapUserApiToUser(data.user),
         state: data.state,
     };
 };

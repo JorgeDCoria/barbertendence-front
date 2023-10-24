@@ -10,7 +10,7 @@ import {
     useMediaQuery,
     useTheme,
 } from "@mui/material";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 import banner from "../../assets/banner.jpg";
 import CaruselCard from "./components/CaruselCard";
@@ -18,8 +18,11 @@ import PaginationCard from "./components/PaginationCard";
 import CardOrder from "./components/CardOrder";
 import ButtonLg from "./components/ButtonLg";
 import { Link } from "react-router-dom";
-import { useAppDispatch } from "../../hook/useStore";
+import { useAppDispatch, useAppSelector } from "../../hook/useStore";
 import { actionGetServicesAndBarbers } from "../../redux/actions/barberShopAction";
+import { usePersistData } from "../../hook/usePersistData";
+import { actionGetAppointmentsPending } from "../../redux/actions/appointmentActions";
+import Loading from "../../components/Loading/Loading";
 
 const orders: any = [
     {
@@ -85,14 +88,27 @@ const UserHome: React.FC<{}> = ({}) => {
     const theme: Theme = useTheme();
     const isXs = useMediaQuery(theme.breakpoints.only("xs"));
     const dispatch = useAppDispatch();
+    const { getIdBarberShop, getToken } = usePersistData();
+    const [loading, setLoading] = useState<boolean>(true);
+    const { appointmentsPending } = useAppSelector((state) => state.appointments);
     useEffect(() => {
         try {
-            dispatch(actionGetServicesAndBarbers());
+            dispatch(actionGetServicesAndBarbers()).then(() => {
+                if (getToken() && getIdBarberShop()) {
+                    dispatch(
+                        actionGetAppointmentsPending(getIdBarberShop() as string, getToken())
+                    ).then(() => {
+                        setLoading(false);
+                    });
+                }
+            });
         } catch (e: any) {
             console.log(e.message);
         }
-    });
-    return (
+    }, []);
+    return loading ? (
+        <Loading />
+    ) : (
         <Box width={"100%"}>
             <Stack spacing={3} width={"100%"}>
                 <Typography
@@ -113,9 +129,10 @@ const UserHome: React.FC<{}> = ({}) => {
                         >
                             {/* Carousel de turnos pendientes */}
                             <CaruselCard>
-                                {orders.slice(0, 5).map((order, index) => (
-                                    <CardOrder key={index} order={order} />
-                                ))}
+                                {appointmentsPending &&
+                                    appointmentsPending
+                                        .slice(0, 5)
+                                        .map((app, index) => <CardOrder key={index} data={app} />)}
                             </CaruselCard>
                         </Box>
                     </Grid>
@@ -181,7 +198,7 @@ const UserHome: React.FC<{}> = ({}) => {
                 >
                     Turnos Anteriores
                 </Typography>
-                <PaginationCard orders={orders} orderPerPage={isXs ? 4 : 8} />
+                {/* <PaginationCard orders={orders} orderPerPage={isXs ? 4 : 8} /> */}
             </Stack>
         </Box>
     );
