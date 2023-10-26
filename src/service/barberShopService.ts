@@ -36,6 +36,8 @@ const getServicesAndBarbers = async () => {
             headers: headers,
         }
     ).then((r) => r.data);
+    console.log(data);
+
     const barbers = barberAdapter.mapBarbersApiToBarbers(data.barbers);
     const services = serviceAdapter.mapServicesApiToServices(data.services);
     //const appointments = appointmentAdapter.mapAppointmentsApiToAppointments(data.appointments);

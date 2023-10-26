@@ -1,3 +1,4 @@
+import { Appointment } from ".";
 import { Schedule } from "./Schedule";
 import { Service } from "./Service";
 
@@ -11,8 +12,9 @@ export type Barber = {
     email?: string;
     phone?: string;
     address?: string;
-    services?: Service[] | string[];
+    services?: string[];
     schedules?: Schedule[];
+    appointments?: Appointment[];
 };
 //seleccion rapida de horarios (turno mañana, tarde, jornada completa y opcion de personalizar);
 // [{dia: "", incio:"DateTIME", fin:""}]

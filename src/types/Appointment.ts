@@ -6,6 +6,7 @@ import { AppointmentModel } from "node_modules/@devexpress/dx-react-scheduler/di
 
 export interface Appointment extends AppointmentModel {
     barberId: string | number;
+    serviceId?: string;
     notes?: string;
     barber?: Barber;
     service?: Service;

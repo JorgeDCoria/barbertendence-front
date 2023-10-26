@@ -1,5 +1,7 @@
 import { Barber } from "src/types/Barber";
 import { BarberResource } from "../types/BarberResource";
+import appointmentAdapter from "./appointmentAdapter";
+import { Appointment } from "src/types";
 
 const mapBarberToBarberInstanceResource = (barbers: Barber[]): BarberResource[] => {
     const barbersResources: BarberResource[] = barbers.map((b) => {
@@ -15,6 +17,9 @@ const mapBarberApiToBarber = (data: any): Barber => {
         id: data._id,
         name: data.name,
         services: data.services,
+        appointments: data.appointments.length
+            ? appointmentAdapter.mapAppointmentsApiToAppointments(data.appointments)
+            : ([] as Appointment[]),
     };
 };
 

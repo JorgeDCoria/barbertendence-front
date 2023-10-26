@@ -9,13 +9,14 @@ const mapAppointmentApiToAppointment = (data: any): Appointment => {
     // console.log(new Date(data.startDate).toDateString());
 
     return {
-        id: data.id,
+        id: data._id && data._id,
         startDate: data.startDate,
         endDate: data.endDate,
-        title: data.service.name,
+        title: data.title && data.title,
         service: data.service && serviceAdapter.mapServiceApiToService(data.service),
         barber: data.barber && barberAdapter.mapBarberApiToBarber(data.barber),
-        barberId: data.barberId,
+        barberId: data.barberId && data.barberId,
+        serviceId: data.serviceId && data.serviceId,
         user: data.user && userAdapter.mapUserApiToUser(data.user),
         state: data.state,
     };

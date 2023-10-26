@@ -19,7 +19,6 @@ import CardBarber from "./components/CardBarber";
 
 import ScheduleUser from "../../components/schedule/ScheduleUser";
 import { useAppDispatch, useAppSelector } from "../../hook/useStore";
-import { useNavigate, useLocation } from "react-router-dom";
 import { actionGetServicesAndBarbers } from "../../redux/actions/barberShopAction";
 import Loading from "../../components/Loading/Loading";
 
@@ -28,10 +27,11 @@ const NewOrder = () => {
     const [activeStep, setActiveStep] = useState<number>(0);
     const [serviceSelected, setServiceSelected] = useState<Service | null>(null);
     const [barberSelected, setBarberSelected] = useState<Barber | null>(null);
+    const [barbers, setBarbers] = useState<Barber[] | null>(null);
     const theme: Theme = useTheme();
     const isXs = useMediaQuery(theme.breakpoints.only("xs"));
     const { services } = useAppSelector((state) => state.servicesState);
-    const { barbers } = useAppSelector((state) => state.barbers);
+    const { barbers: barbersState } = useAppSelector((state) => state.barbers);
     const dispatch = useAppDispatch();
     type Step = {
         title: string;
@@ -57,6 +57,12 @@ const NewOrder = () => {
     ];
 
     const handleNext = () => {
+        if (activeStep === 0 && serviceSelected) {
+            const barbersFilter = barbersState?.filter((barber) =>
+                barber.services?.includes(serviceSelected.id)
+            );
+            barbersFilter && setBarbers(barbersFilter);
+        }
         setActiveStep((prevActiveStep) => prevActiveStep + 1);
     };
     const handleBack = () => {
@@ -90,11 +96,11 @@ const NewOrder = () => {
         return true;
     };
     useEffect(() => {
-        if (!barbers || !services) {
+        if (!barbersState || !services) {
             dispatch(actionGetServicesAndBarbers());
         }
     }, []);
-    return barbers && services ? (
+    return barbersState && services ? (
         <Stack
             component={"form"}
             justifyContent={{
