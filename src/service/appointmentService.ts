@@ -45,10 +45,22 @@ const getAppointmentsPending = async (idBarberShop: string, token: string) => {
     return appointmentAdapter.mapAppointmentsApiToAppointments(appointments);
 };
 
+const addAppointment = async (appointment: Appointment, idBarberShop: string, token: string) => {
+    const headers = {
+        accesstoken: token,
+    };
+    await axios.post(
+        `${URL_BASE}/users/appointments`,
+        { ...appointment, date: appointment.startDate, note: "", barbershopId: idBarberShop },
+        { headers: headers }
+    );
+};
+
 const appointmentService = {
     getAppointments,
     getAppointmentsByUser,
     getAppointmentsPending,
+    addAppointment,
 };
 
 export default appointmentService;

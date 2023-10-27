@@ -29,10 +29,16 @@ const CustomTimeTableCell: React.FC<CustomTimeTableCellProps> = ({
 
         data.forEach((appointment) => {
             if (
-                dayjs(startDate).isSame(appointment.startDate, "minute") ||
+                dayjs(startDate).isSame(dayjs(appointment.startDate), "minute") ||
                 (appointment.endDate !== undefined &&
-                    (dayjs(startDate).isBetween(appointment.startDate, appointment.endDate) ||
-                        dayjs(endDate).isBetween(appointment.startDate, appointment.endDate)))
+                    dayjs(startDate).isBetween(
+                        dayjs(appointment.startDate),
+                        dayjs(appointment.endDate) ||
+                            dayjs(endDate).isBetween(
+                                dayjs(appointment.startDate),
+                                dayjs(appointment.endDate)
+                            )
+                    ))
             ) {
                 ocup = true;
                 return;
@@ -40,8 +46,6 @@ const CustomTimeTableCell: React.FC<CustomTimeTableCellProps> = ({
         });
         return ocup;
     };
-
-    // console.log(props);
 
     //no se entiende por que las comparaciones funcionan con el operador && y no con el ||
     const verifyAvailableHours = (startDate: Date, endDate: Date): boolean => {
@@ -74,7 +78,7 @@ const CustomTimeTableCell: React.FC<CustomTimeTableCellProps> = ({
     return (
         <WeekView.TimeTableCell
             {...props}
-            className={isInvalid() ? "shadded" : ""}
+            className={isInvalid() ? "shadded" : "cellAviable"}
             onDoubleClick={
                 isInvalid()
                     ? () => {

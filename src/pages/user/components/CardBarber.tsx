@@ -117,7 +117,7 @@ const CardBarber: React.FC<Props> = ({
                     >
                         <CardMedia
                             component={"img"}
-                            src={perfil}
+                            src={barber.avatar}
                             sx={{
                                 height: "100%",
                                 width: "100%",

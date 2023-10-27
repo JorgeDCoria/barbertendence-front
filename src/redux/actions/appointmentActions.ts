@@ -67,3 +67,10 @@ export const actionGetAppointmentsPending = (idBarberShop: string, token: string
         dispatch(setAppointmentsPending(data));
     };
 };
+
+// export const actionAddAppointment = (appointment:Appointment, idBarberShop:string, token:string) => {
+//     return async ( dispatch: Dispatch) => {
+//         await appointmentService.addAppointment(appointment, idBarberShop, token);
+
+//     }
+// }

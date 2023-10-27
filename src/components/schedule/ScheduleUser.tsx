@@ -32,34 +32,49 @@ import CustomAppointments from "./CustomAppointments";
 import { useNotification } from "../../context/notification.context";
 import { useNavigate } from "react-router-dom";
 import ChangeCircleOutlinedIcon from "@mui/icons-material/ChangeCircleOutlined";
+import { appointmentService } from "../../service";
+import { usePersistData } from "../../hook/usePersistData";
+import isSomeOrAfter from "dayjs/plugin/isSameOrAfter";
 //import { WeekView } from "node_modules/@devexpress/dx-react-scheduler/dist/dx-react-scheduler";
-
+dayjs.extend(isSomeOrAfter);
 interface Props {
-    service: Service | null;
-    barber: Barber | null;
+    service: Service;
+    barber: Barber;
     handleReset: () => void;
 }
-const appointmentsData: Appointment[] = [
-    {
-        id: 0,
-        startDate: new Date(2023, 9, 27, 8, 15, 0),
-        endDate: new Date(2023, 9, 27, 9, 15, 0),
-        title: "Reserved",
-        state: "atendido",
-        barberId: "",
-    },
-    {
-        id: 1,
-        startDate: new Date(2023, 9, 27, 10, 15, 0),
-        endDate: new Date(2023, 9, 27, 11, 15, 0),
-        title: "Reserved",
-        state: "pendiente",
-        barberId: "",
-    },
-];
+// const appointmentsData: Appointment[] = [
+//     {
+//         id: 0,
+//         startDate: new Date(2023, 9, 27, 8, 15, 0),
+//         endDate: new Date(2023, 9, 27, 9, 15, 0),
+//         title: "Reserved",
+//         state: "atendido",
+//         barberId: "",
+//     },
+//     {
+//         id: 1,
+//         startDate: new Date(2023, 9, 27, 10, 15, 0),
+//         endDate: new Date(2023, 9, 27, 11, 15, 0),
+//         title: "Reserved",
+//         state: "pendiente",
+//         barberId: "",
+//     },
+// ];
 
 const filterAppointmentsBeforeToday = (data: Appointment[]) => {
-    return data.filter((app) => dayjs(app.endDate) > dayjs());
+    const currentDate = dayjs();
+
+    console.log(new Date());
+
+    return data.filter((app) => {
+        const appointmentStart = dayjs(app.startDate);
+        const appointmentEnd = dayjs(app.endDate);
+        console.log(appointmentStart);
+
+        return (
+            appointmentStart.isSameOrAfter(currentDate) || appointmentEnd.isSameOrAfter(currentDate)
+        );
+    });
 };
 
 const ScheduleUser: React.FC<Props> = ({ service, barber, handleReset }) => {
@@ -89,8 +104,9 @@ const ScheduleUser: React.FC<Props> = ({ service, barber, handleReset }) => {
     let appointments: Appointment[] = barber?.appointments?.length
         ? filterAppointmentsBeforeToday(barber.appointments)
         : ([] as Appointment[]);
-    appointments = appointments.concat(appointmentsData);
 
+    //appointments = appointments.concat(appointmentsData);
+    const { getIdBarberShop, getToken } = usePersistData();
     /**
      * funcion encagada de cambiar el estado de shiftTomorrow.
      * @param e
@@ -117,11 +133,25 @@ const ScheduleUser: React.FC<Props> = ({ service, barber, handleReset }) => {
         console.log("******* actuando handle commit change ********");
 
         if (added) {
-            const startingAddedId =
-                appointments.length > 0 ? appointments[appointments.length - 1].id + 1 : 0;
-            setAppointments([...appointments, { id: startingAddedId, ...added }]);
-            showNotification("Turno Agendado", "success");
-            navigate("/user");
+            // const startingAddedId =
+            //     appointments.length > 0 ? appointments[appointments.length - 1].id + 1 : 0;
+            // setAppointments([...appointments, { id: startingAddedId, ...added }]);
+            let newAppointment: Appointment = {
+                serviceId: service?.id,
+                barberId: barber.id !== undefined ? barber.id : "",
+                startDate: added.startDate,
+                state: "pendiente",
+            };
+            appointmentService
+                .addAppointment(newAppointment, getIdBarberShop() as string, getToken())
+                .then(() => {
+                    showNotification("Turno Agendado", "success");
+                    //navigate("/user");
+                })
+                .catch((e: any) => {
+                    showNotification("Error, problemas al guardar turno", "error");
+                    console.log(e.message);
+                });
         }
         if (changed) {
             setAppointments(

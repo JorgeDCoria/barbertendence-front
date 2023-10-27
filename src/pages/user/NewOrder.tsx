@@ -215,11 +215,13 @@ const NewOrder = () => {
                                     width={{ xs: "100%" }}
                                     alignSelf={"center"}
                                 >
-                                    <ScheduleUser
-                                        handleReset={handleReset}
-                                        service={serviceSelected ? serviceSelected : null}
-                                        barber={barberSelected ? barberSelected : null}
-                                    />
+                                    {serviceSelected && barberSelected && (
+                                        <ScheduleUser
+                                            handleReset={handleReset}
+                                            service={serviceSelected}
+                                            barber={barberSelected}
+                                        />
+                                    )}
                                 </Box>
                             </Grid>{" "}
                         </Grid>
