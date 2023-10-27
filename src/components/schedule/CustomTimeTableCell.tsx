@@ -3,6 +3,8 @@ import { WeekView } from "@devexpress/dx-react-scheduler-material-ui";
 import { useNotification } from "../../context/notification.context";
 import { Appointment } from "src/types/Appointment";
 import dayjs from "dayjs";
+import isBetween from "dayjs/plugin/isBetween";
+import "../../App.css";
 
 interface CustomTimeTableCellProps {
     today: Date;
@@ -19,15 +21,34 @@ const CustomTimeTableCell: React.FC<CustomTimeTableCellProps> = ({
     closeHour,
 }) => {
     const { showNotification } = useNotification();
-    const { startDate, onDoubleClick } = props;
-    const isInvalid = startDate < today;
+    const { startDate, endDate, onDoubleClick } = props;
+    dayjs.extend(isBetween);
+    const isInvalid = () => {
+        let ocup = false;
+        if (startDate < today) ocup = true;
+
+        data.forEach((appointment) => {
+            if (
+                dayjs(startDate).isSame(appointment.startDate, "minute") ||
+                (appointment.endDate !== undefined &&
+                    (dayjs(startDate).isBetween(appointment.startDate, appointment.endDate) ||
+                        dayjs(endDate).isBetween(appointment.startDate, appointment.endDate)))
+            ) {
+                ocup = true;
+                return;
+            }
+        });
+        return ocup;
+    };
+
+    // console.log(props);
 
     //no se entiende por que las comparaciones funcionan con el operador && y no con el ||
     const verifyAvailableHours = (startDate: Date, endDate: Date): boolean => {
         let invalid = false;
         data.forEach((e) => {
             console.log(e);
-            if (startDate < new Date(e.endDate) && endDate > new Date(e.startDate)) {
+            if (e.endDate && startDate < new Date(e.endDate) && endDate > new Date(e.startDate)) {
                 invalid = true;
                 return;
             }
@@ -53,23 +74,22 @@ const CustomTimeTableCell: React.FC<CustomTimeTableCellProps> = ({
     return (
         <WeekView.TimeTableCell
             {...props}
-            sx={{}}
-            isShaded={isInvalid}
+            className={isInvalid() ? "shadded" : ""}
             onDoubleClick={
-                isInvalid
+                isInvalid()
                     ? () => {
                           showNotification(
-                              "No es posible otorgar turnos en horarios y fechas ya transcurridas",
+                              "Lo sentimos, debe seleccionar un horario diponible",
                               "warning"
                           );
                       }
                     : checkAvailableHours
             }
             onTouchStart={
-                isInvalid
+                isInvalid()
                     ? () => {
                           showNotification(
-                              "No es posible otorgar turnos en horarios y fechas ya transcurridas",
+                              "Lo sentimos, debe seleccionar un horario disponible",
                               "warning"
                           );
                       }

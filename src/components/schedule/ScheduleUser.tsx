@@ -1,5 +1,5 @@
 import { useState, PropsWithChildren } from "react";
-//@ts-ignore
+
 import {
     AppointmentForm,
     Scheduler,
@@ -9,14 +9,14 @@ import {
     DateNavigator,
     Toolbar,
     AppointmentTooltip,
-    ConfirmationDialog,
+    ConfirmationDialog, //@ts-ignore
 } from "@devexpress/dx-react-scheduler-material-ui";
-//@ts-ignore
+
 import {
     EditingState,
     ViewState,
     IntegratedEditing,
-    AppointmentModel,
+    AppointmentModel, //@ts-ignore
 } from "@devexpress/dx-react-scheduler";
 
 import { Box, Paper, Theme, Button, useTheme } from "@mui/material";
@@ -31,6 +31,7 @@ import CustomTimeTableCell from "./CustomTimeTableCell";
 import CustomAppointments from "./CustomAppointments";
 import { useNotification } from "../../context/notification.context";
 import { useNavigate } from "react-router-dom";
+import ChangeCircleOutlinedIcon from "@mui/icons-material/ChangeCircleOutlined";
 //import { WeekView } from "node_modules/@devexpress/dx-react-scheduler/dist/dx-react-scheduler";
 
 interface Props {
@@ -41,21 +42,29 @@ interface Props {
 const appointmentsData: Appointment[] = [
     {
         id: 0,
-        startDate: "Tue Oct 24 2023 09:45:00 GMT-0300",
-        endDate: "Tue Oct 24 2023 11:00:00 GMT-0300",
+        startDate: new Date(2023, 9, 27, 8, 15, 0),
+        endDate: new Date(2023, 9, 27, 9, 15, 0),
         title: "Reserved",
+        state: "atendido",
+        barberId: "",
     },
     {
         id: 1,
-        startDate: "Tue Oct 24 2023 08:00:00 GMT-0300",
-        endDate: "Tue Oct 24 2023 09:00:00 GMT-0300",
+        startDate: new Date(2023, 9, 27, 10, 15, 0),
+        endDate: new Date(2023, 9, 27, 11, 15, 0),
         title: "Reserved",
+        state: "pendiente",
+        barberId: "",
     },
 ];
 
+const filterAppointmentsBeforeToday = (data: Appointment[]) => {
+    return data.filter((app) => dayjs(app.endDate) > dayjs());
+};
+
 const ScheduleUser: React.FC<Props> = ({ service, barber, handleReset }) => {
     const [currentDate, setCurrentDate] = useState<Date>(new Date());
-    const [appointments, setAppointments] = useState<Appointment[]>(appointmentsData);
+    //const [appointments, setAppointments] = useState<Appointment[]>(appointmentsData);
 
     const [addedAppointment, setAddedAppointment] = useState<Appointment>({} as Appointment);
     const [isAppointmentBeingCreated, setIsAppointmentBeingCreated] = useState<boolean>(false);
@@ -77,6 +86,11 @@ const ScheduleUser: React.FC<Props> = ({ service, barber, handleReset }) => {
     const [shiftTomorrow, setShifTomorrow] = useState<boolean>(today.getHours() < closeMorningHour);
     const { showNotification } = useNotification();
     const navigate = useNavigate();
+    let appointments: Appointment[] = barber?.appointments?.length
+        ? filterAppointmentsBeforeToday(barber.appointments)
+        : ([] as Appointment[]);
+    appointments = appointments.concat(appointmentsData);
+
     /**
      * funcion encagada de cambiar el estado de shiftTomorrow.
      * @param e
@@ -209,8 +223,12 @@ const ScheduleUser: React.FC<Props> = ({ service, barber, handleReset }) => {
                 {children}
                 <Box sx={{ flexGrow: 1 }}>
                     <Box sx={{ marginLeft: "auto" }}>
-                        <Button variant="outlined" onClick={handleClick}>
-                            {tomorrow ? "PM" : "AM"}
+                        <Button
+                            variant="outlined"
+                            onClick={handleClick}
+                            endIcon={<ChangeCircleOutlinedIcon />}
+                        >
+                            {tomorrow ? "AM" : "PM"}
                         </Button>
                     </Box>
                 </Box>
@@ -220,8 +238,7 @@ const ScheduleUser: React.FC<Props> = ({ service, barber, handleReset }) => {
 
     return (
         <Paper sx={{ position: "relative", height: "70vh" }}>
-            <Scheduler data={appointments}>
-                {" "}
+            <Scheduler data={appointments} locale="es">
                 <ViewState currentDate={currentDate} onCurrentDateChange={currentDateChange} />
                 <EditingState
                     onCommitChanges={handleCommitChange}
@@ -256,9 +273,9 @@ const ScheduleUser: React.FC<Props> = ({ service, barber, handleReset }) => {
                     )}
                 />
                 <DateNavigator />
-                <TodayButton />
+                <TodayButton messages={{ today: "Hoy" }} />
                 <ConfirmationDialog messages={customDialogMessage} />
-                <Appointments appointmentComponent={CustomAppointments} />
+                {/* <Appointments appointmentComponent={CustomAppointments} /> */}
                 {/* <AppointmentTooltip
                     headerComponent={CustomAppointmentTooltipHeader}
                     commandButtonComponent={CustomCommandButton}

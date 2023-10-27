@@ -173,18 +173,33 @@ const NewOrder = () => {
                     {/* ***************** Seleccion de barbero ******************** */}
                     {activeStep === 1 && (
                         <Box p={2} width={"100%"}>
-                            <CaruselCard numDesktop={4}>
-                                {barbers.map((b) => (
-                                    <CardBarber
-                                        handleClick={handleSelectBarber}
-                                        selected={
-                                            barberSelected ? barberSelected.id === b.id : false
-                                        }
-                                        key={b.name}
-                                        barber={b}
-                                    />
-                                ))}
-                            </CaruselCard>
+                            {barbers?.length ? (
+                                <CaruselCard numDesktop={4}>
+                                    {barbers.map((b) => (
+                                        <CardBarber
+                                            handleClick={handleSelectBarber}
+                                            selected={
+                                                barberSelected ? barberSelected.id === b.id : false
+                                            }
+                                            key={b.name}
+                                            barber={b}
+                                        />
+                                    ))}
+                                </CaruselCard>
+                            ) : (
+                                <Box
+                                    display={"grid"}
+                                    sx={{
+                                        placeContent: "center",
+                                    }}
+                                >
+                                    <Typography textAlign={"center"} maxWidth={"80ch"}>
+                                        Lo sentimos, en este momento todos nuestros profesionales
+                                        que atienden el servicio elegido estan ocupados. Intentelo o
+                                        mas tarde o seleccione otro servicio.
+                                    </Typography>
+                                </Box>
+                            )}
                         </Box>
                     )}
                     {/* ***************** Seleccion de fecha ******************** */}

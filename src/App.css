@@ -1,0 +1,7 @@
+.shadded{
+  background-color: rgb(241, 103, 103);
+  border: 2px solid rgb(192, 190, 190)
+}
+.shadded:hover {
+  background-color: rgb(240, 161, 161);
+}
