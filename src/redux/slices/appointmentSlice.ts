@@ -4,7 +4,7 @@ import { AppointmentHistory } from "../../types/AppointmentHistory";
 
 interface AppointmentsState {
     appointments: Appointment[];
-    appointmentsUserHistory: AppointmentHistory[] | null;
+    appointmentsUserHistory: Appointment[] | null;
     appointmentsPending: Appointment[] | null;
     state: string;
 }
@@ -33,7 +33,7 @@ export const appointmentSlice = createSlice({
             // aux = aux.filter((app) => app.state.toUpperCase() === action.payload.toUpperCase());
             state.appointments = action.payload;
         },
-        setAppointmentsUserHistory: (state, action: PayloadAction<AppointmentHistory[] | null>) => {
+        setAppointmentsUserHistory: (state, action: PayloadAction<Appointment[] | null>) => {
             state.appointmentsUserHistory = action.payload;
         },
         setState: (state, action) => {

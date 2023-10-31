@@ -63,8 +63,13 @@ export const actionClearAppointmentsUserHistories = () => {
 
 export const actionGetAppointmentsPending = (idBarberShop: string, token: string) => {
     return async (dispatch: Dispatch) => {
-        const data = await appointmentService.getAppointmentsPending(idBarberShop, token);
-        dispatch(setAppointmentsPending(data));
+        const { pending, histories } = await appointmentService.getAppointmentsPending(
+            idBarberShop,
+            token
+        );
+
+        dispatch(setAppointmentsPending(pending));
+        dispatch(setAppointmentsUserHistory(histories));
     };
 };
 

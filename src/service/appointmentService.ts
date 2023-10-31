@@ -37,12 +37,24 @@ const getAppointmentsPending = async (idBarberShop: string, token: string) => {
     const headers = {
         accesstoken: token,
     };
-    const appointments = await axios
+    const today = new Date();
+    let appointments = await axios
         .get(`${URL_BASE}/users/pendingAppointments?barbershopId=${idBarberShop}`, {
             headers: headers,
         })
         .then((r) => r.data);
-    return appointmentAdapter.mapAppointmentsApiToAppointments(appointments).reverse();
+    appointments = appointmentAdapter.mapAppointmentsApiToAppointments(appointments);
+    let appointmentHistories: Appointment[] = [];
+    let appointmentPending: Appointment[] = [];
+    appointments.forEach((app: Appointment) => {
+        if (new Date(app.startDate) < today) {
+            appointmentHistories.push(app);
+        } else {
+            appointmentPending.push(app);
+        }
+    });
+
+    return { pending: appointmentPending.reverse(), histories: appointmentHistories };
 };
 
 const addAppointment = async (appointment: Appointment, idBarberShop: string, token: string) => {

@@ -90,7 +90,9 @@ const UserHome: React.FC<{}> = ({}) => {
     const dispatch = useAppDispatch();
     const { getIdBarberShop, getToken } = usePersistData();
     const [loading, setLoading] = useState<boolean>(true);
-    const { appointmentsPending } = useAppSelector((state) => state.appointments);
+    const { appointmentsPending, appointmentsUserHistory } = useAppSelector(
+        (state) => state.appointments
+    );
     useEffect(() => {
         try {
             dispatch(actionGetServicesAndBarbers()).then(() => {
@@ -198,7 +200,9 @@ const UserHome: React.FC<{}> = ({}) => {
                 >
                     Turnos Anteriores
                 </Typography>
-                {/* <PaginationCard orders={orders} orderPerPage={isXs ? 4 : 8} /> */}
+                {appointmentsUserHistory && (
+                    <PaginationCard orders={appointmentsUserHistory} orderPerPage={isXs ? 4 : 8} />
+                )}
             </Stack>
         </Box>
     );
