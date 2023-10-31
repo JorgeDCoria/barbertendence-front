@@ -42,7 +42,7 @@ const getAppointmentsPending = async (idBarberShop: string, token: string) => {
             headers: headers,
         })
         .then((r) => r.data);
-    return appointmentAdapter.mapAppointmentsApiToAppointments(appointments);
+    return appointmentAdapter.mapAppointmentsApiToAppointments(appointments).reverse();
 };
 
 const addAppointment = async (appointment: Appointment, idBarberShop: string, token: string) => {

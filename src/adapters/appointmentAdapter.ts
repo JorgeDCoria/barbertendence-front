@@ -11,8 +11,8 @@ const mapAppointmentApiToAppointment = (data: any): Appointment => {
 
     return {
         id: data._id && data._id,
-        startDate: new Date(data.startDate),
-        endDate: new Date(data.endDate),
+        startDate: new Date(data.startDate).toString(),
+        endDate: new Date(data.endDate).toString(),
         title: data.title && data.title,
         service: data.service && serviceAdapter.mapServiceApiToService(data.service),
         barber: data.barber && barberAdapter.mapBarberApiToBarber(data.barber),

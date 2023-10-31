@@ -28,7 +28,6 @@ import { Barber } from "src/types/Barber";
 import { Service } from "src/types/Service";
 import CustomAppointmentForm from "./CustomAppointmentForm";
 import CustomTimeTableCell from "./CustomTimeTableCell";
-import CustomAppointments from "./CustomAppointments";
 import { useNotification } from "../../context/notification.context";
 import { useNavigate } from "react-router-dom";
 import ChangeCircleOutlinedIcon from "@mui/icons-material/ChangeCircleOutlined";
@@ -42,24 +41,6 @@ interface Props {
     barber: Barber;
     handleReset: () => void;
 }
-// const appointmentsData: Appointment[] = [
-//     {
-//         id: 0,
-//         startDate: new Date(2023, 9, 27, 8, 15, 0),
-//         endDate: new Date(2023, 9, 27, 9, 15, 0),
-//         title: "Reserved",
-//         state: "atendido",
-//         barberId: "",
-//     },
-//     {
-//         id: 1,
-//         startDate: new Date(2023, 9, 27, 10, 15, 0),
-//         endDate: new Date(2023, 9, 27, 11, 15, 0),
-//         title: "Reserved",
-//         state: "pendiente",
-//         barberId: "",
-//     },
-// ];
 
 const filterAppointmentsBeforeToday = (data: Appointment[]) => {
     const currentDate = dayjs();
@@ -84,7 +65,6 @@ const ScheduleUser: React.FC<Props> = ({ service, barber, handleReset }) => {
     const [addedAppointment, setAddedAppointment] = useState<Appointment>({} as Appointment);
     const [isAppointmentBeingCreated, setIsAppointmentBeingCreated] = useState<boolean>(false);
 
-    const theme: Theme = useTheme();
     const today: Date = new Date();
     const closeMorningHour: number = 12;
     const closeAfternoonHour: number = 20;
@@ -123,8 +103,6 @@ const ScheduleUser: React.FC<Props> = ({ service, barber, handleReset }) => {
 
     const handleCommitChange = ({
         added,
-        changed,
-        deleted,
     }: {
         added?: Partial<AppointmentModel>;
         changed?: { [key: string]: object };
@@ -146,24 +124,12 @@ const ScheduleUser: React.FC<Props> = ({ service, barber, handleReset }) => {
                 .addAppointment(newAppointment, getIdBarberShop() as string, getToken())
                 .then(() => {
                     showNotification("Turno Agendado", "success");
-                    //navigate("/user");
+                    navigate("/user");
                 })
                 .catch((e: any) => {
                     showNotification("Error, problemas al guardar turno", "error");
                     console.log(e.message);
                 });
-        }
-        if (changed) {
-            setAppointments(
-                appointments.map((appointment) =>
-                    changed[appointment.id]
-                        ? { ...appointment, ...changed[appointment.id] }
-                        : appointment
-                )
-            );
-        }
-        if (deleted !== undefined) {
-            setAppointments(appointments.filter((appointment) => appointment.id !== deleted));
         }
         setIsAppointmentBeingCreated(false);
     };
@@ -182,54 +148,6 @@ const ScheduleUser: React.FC<Props> = ({ service, barber, handleReset }) => {
         }
     };
 
-    // ************* custom command Button ****************
-    /**
-     * Componente definido para personalizar las propiedades del modal de schedule para
-     * una mejor visualizacion, afectan al boton de close y delete
-     * @param param0
-     * @returns
-     */
-    const CustomCommandButton: React.FC<{}> = ({ ...restProp }) => (
-        <AppointmentTooltip.CommandButton
-            sx={{
-                background: theme.palette.primary.light,
-                color: theme.palette.primary.main,
-                "&:hover": {
-                    background: theme.palette.primary.dark,
-                    color: theme.palette.primary.light,
-                },
-            }}
-            {...restProp}
-        />
-    );
-
-    // ***************** custom header *************
-    type HeadersProps = {
-        children: React.ReactNode;
-        image: string;
-    };
-    /**
-     * Componente definido para personalizar el header del modal de schedule al
-     * visualizar un Appointment.
-     * @param param0
-     * @returns
-     */
-    const CustomAppointmentTooltipHeader: React.FC<HeadersProps> = ({
-        children,
-        image = header,
-        ...restProps
-    }) => (
-        <AppointmentTooltip.Header
-            sx={{
-                backgroundImage: `url(${image})`,
-                backgroundSize: "cover",
-                backgroundPosition: "center",
-                height: "15em",
-            }}
-            {...restProps}
-        ></AppointmentTooltip.Header>
-    );
-
     /**
      * Objeto que contiene los valores de los textos a mostrar en el schedule
      */
@@ -239,6 +157,7 @@ const ScheduleUser: React.FC<Props> = ({ service, barber, handleReset }) => {
         cancelButton: "Cancelar",
         confirmCancelMessage: "¿Esta seguro de descartar el horario y seleccionar otro?",
         discardButton: "Descartar",
+        commitCommand: "Confirmar turno",
     };
 
     //************** Toolbar personalizado ************************* */
@@ -313,6 +232,7 @@ const ScheduleUser: React.FC<Props> = ({ service, barber, handleReset }) => {
                     showDeleteButton
                 /> */}
                 <AppointmentForm
+                    messages={customDialogMessage}
                     basicLayoutComponent={(props: AppointmentForm.BasicLayout) => (
                         <CustomAppointmentForm
                             appointmentData={addedAppointment}

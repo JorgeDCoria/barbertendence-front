@@ -8,7 +8,7 @@ interface Props {
     data: Appointment;
 }
 const CardOrder: React.FC<Props> = ({ data }) => {
-    console.log(data);
+    console.log(data.startDate);
 
     return (
         <Card sx={{ width: "250px", height: "250px", position: "relative" }}>
@@ -38,14 +38,14 @@ const CardOrder: React.FC<Props> = ({ data }) => {
                         justifyContent={"space-around"}
                     >
                         <Stack width={"100%"} direction={"row"} justifyContent={"space-between"}>
-                            <Typography>{new Date(data.startDate).toDateString()}</Typography>
+                            <Typography>{new Date(data.startDate).toLocaleString()}</Typography>
                             {/* <Typography> {data.service?.duration}</Typography> */}
                         </Stack>
                         <Typography variant="h5" fontWeight={700}>
                             {data.service?.name}
                         </Typography>
                         <Typography>{data.barber ? data.barber.name : "Barber"}</Typography>
-                        <Button variant="contained">Ver Mas</Button>
+                        <Button variant="contained">Cancelar</Button>
                     </Stack>
                 </CardContent>
             </Box>

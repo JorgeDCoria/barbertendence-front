@@ -130,9 +130,9 @@ const UserHome: React.FC<{}> = ({}) => {
                             {/* Carousel de turnos pendientes */}
                             <CaruselCard>
                                 {appointmentsPending &&
-                                    appointmentsPending
-                                        .slice(0, 5)
-                                        .map((app, index) => <CardOrder key={index} data={app} />)}
+                                    appointmentsPending.map((app, index) => (
+                                        <CardOrder key={index} data={app} />
+                                    ))}
                             </CaruselCard>
                         </Box>
                     </Grid>
