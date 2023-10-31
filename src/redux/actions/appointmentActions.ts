@@ -2,6 +2,7 @@ import {
     getAllAppointments,
     getAppointmentsByBarber,
     getAppointmentsByState,
+    setAppointmentsPending,
     setAppointmentsUserHistory,
     setState,
 } from "../slices/appointmentSlice";
@@ -59,3 +60,17 @@ export const actionClearAppointmentsUserHistories = () => {
         dispatch(setAppointmentsUserHistory(null));
     };
 };
+
+export const actionGetAppointmentsPending = (idBarberShop: string, token: string) => {
+    return async (dispatch: Dispatch) => {
+        const data = await appointmentService.getAppointmentsPending(idBarberShop, token);
+        dispatch(setAppointmentsPending(data));
+    };
+};
+
+// export const actionAddAppointment = (appointment:Appointment, idBarberShop:string, token:string) => {
+//     return async ( dispatch: Dispatch) => {
+//         await appointmentService.addAppointment(appointment, idBarberShop, token);
+
+//     }
+// }

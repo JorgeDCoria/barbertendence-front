@@ -19,7 +19,6 @@ import CardBarber from "./components/CardBarber";
 
 import ScheduleUser from "../../components/schedule/ScheduleUser";
 import { useAppDispatch, useAppSelector } from "../../hook/useStore";
-import { useNavigate, useLocation } from "react-router-dom";
 import { actionGetServicesAndBarbers } from "../../redux/actions/barberShopAction";
 import Loading from "../../components/Loading/Loading";
 
@@ -28,10 +27,11 @@ const NewOrder = () => {
     const [activeStep, setActiveStep] = useState<number>(0);
     const [serviceSelected, setServiceSelected] = useState<Service | null>(null);
     const [barberSelected, setBarberSelected] = useState<Barber | null>(null);
+    const [barbers, setBarbers] = useState<Barber[] | null>(null);
     const theme: Theme = useTheme();
     const isXs = useMediaQuery(theme.breakpoints.only("xs"));
     const { services } = useAppSelector((state) => state.servicesState);
-    const { barbers } = useAppSelector((state) => state.barbers);
+    const { barbers: barbersState } = useAppSelector((state) => state.barbers);
     const dispatch = useAppDispatch();
     type Step = {
         title: string;
@@ -57,6 +57,12 @@ const NewOrder = () => {
     ];
 
     const handleNext = () => {
+        if (activeStep === 0 && serviceSelected) {
+            const barbersFilter = barbersState?.filter((barber) =>
+                barber.services?.includes(serviceSelected.id)
+            );
+            barbersFilter && setBarbers(barbersFilter);
+        }
         setActiveStep((prevActiveStep) => prevActiveStep + 1);
     };
     const handleBack = () => {
@@ -90,11 +96,11 @@ const NewOrder = () => {
         return true;
     };
     useEffect(() => {
-        if (!barbers || !services) {
+        if (!barbersState || !services) {
             dispatch(actionGetServicesAndBarbers());
         }
     }, []);
-    return barbers && services ? (
+    return barbersState && services ? (
         <Stack
             component={"form"}
             justifyContent={{
@@ -167,18 +173,33 @@ const NewOrder = () => {
                     {/* ***************** Seleccion de barbero ******************** */}
                     {activeStep === 1 && (
                         <Box p={2} width={"100%"}>
-                            <CaruselCard numDesktop={4}>
-                                {barbers.map((b) => (
-                                    <CardBarber
-                                        handleClick={handleSelectBarber}
-                                        selected={
-                                            barberSelected ? barberSelected.id === b.id : false
-                                        }
-                                        key={b.name}
-                                        barber={b}
-                                    />
-                                ))}
-                            </CaruselCard>
+                            {barbers?.length ? (
+                                <CaruselCard numDesktop={4}>
+                                    {barbers.map((b) => (
+                                        <CardBarber
+                                            handleClick={handleSelectBarber}
+                                            selected={
+                                                barberSelected ? barberSelected.id === b.id : false
+                                            }
+                                            key={b.name}
+                                            barber={b}
+                                        />
+                                    ))}
+                                </CaruselCard>
+                            ) : (
+                                <Box
+                                    display={"grid"}
+                                    sx={{
+                                        placeContent: "center",
+                                    }}
+                                >
+                                    <Typography textAlign={"center"} maxWidth={"80ch"}>
+                                        Lo sentimos, en este momento todos nuestros profesionales
+                                        que atienden el servicio elegido estan ocupados. Intentelo o
+                                        mas tarde o seleccione otro servicio.
+                                    </Typography>
+                                </Box>
+                            )}
                         </Box>
                     )}
                     {/* ***************** Seleccion de fecha ******************** */}
@@ -194,11 +215,13 @@ const NewOrder = () => {
                                     width={{ xs: "100%" }}
                                     alignSelf={"center"}
                                 >
-                                    <ScheduleUser
-                                        handleReset={handleReset}
-                                        service={serviceSelected ? serviceSelected : null}
-                                        barber={barberSelected ? barberSelected : null}
-                                    />
+                                    {serviceSelected && barberSelected && (
+                                        <ScheduleUser
+                                            handleReset={handleReset}
+                                            service={serviceSelected}
+                                            barber={barberSelected}
+                                        />
+                                    )}
                                 </Box>
                             </Grid>{" "}
                         </Grid>

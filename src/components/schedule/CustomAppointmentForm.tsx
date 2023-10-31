@@ -7,6 +7,7 @@ import CardBarber from "../../pages/user/components/CardBarber";
 import { Service } from "src/types/Service";
 import { Barber } from "src/types/Barber";
 import { Appointment } from "src/types/Appointment";
+import dayjs from "dayjs";
 
 interface CustomAppointmentFormProps extends AppointmentForm.BasicLayoutProps {
     appointmentData: Appointment;
@@ -21,8 +22,6 @@ const CustomAppointmentForm: React.FC<CustomAppointmentFormProps> = ({
     ...restProps
 }) => {
     const theme: Theme = useTheme();
-    console.log("************ abrindo form **************");
-
     return (
         <Box
             display={"flex"}
@@ -48,7 +47,7 @@ const CustomAppointmentForm: React.FC<CustomAppointmentFormProps> = ({
                 {" "}
                 <Typography variant="h6">Fecha y Hora</Typography>
                 <Typography variant="h6" color={theme.palette.primary.main}>
-                    {DateUtility.formattedDateTime(appointmentData.startDate)}
+                    {dayjs(appointmentData.startDate).format("DD/MM/YYYY -HH:MM")}
                 </Typography>
             </Box>
             <Box

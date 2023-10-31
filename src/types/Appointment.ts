@@ -1,4 +1,4 @@
-import { type AppointmentState } from "src/types";
+import { type AppointmentState } from "../typesConfig";
 import { Barber } from "./Barber";
 import { Service } from "./Service";
 import { User } from "./User";
@@ -6,6 +6,7 @@ import { AppointmentModel } from "node_modules/@devexpress/dx-react-scheduler/di
 
 export interface Appointment extends AppointmentModel {
     barberId: string | number;
+    serviceId?: string;
     notes?: string;
     barber?: Barber;
     service?: Service;

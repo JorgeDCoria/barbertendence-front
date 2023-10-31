@@ -1,0 +1,11 @@
+.shadded{
+  background-color: rgba(0, 0, 0,0.3);
+  border: 1px solid rgb(192, 190, 190)
+}
+.cellAviable{
+  background-color: #FAEBF9;
+
+}
+.shadded:hover {
+  background-color: rgb(200, 200, 200);
+}
