@@ -22,7 +22,6 @@ import {
 import { Box, Paper, Theme, Button, useTheme } from "@mui/material";
 import * as dayjs from "dayjs";
 
-import header from "../../assets/serviceImage.jpg";
 import { Appointment } from "src/types/Appointment";
 import { Barber } from "src/types/Barber";
 import { Service } from "src/types/Service";
@@ -34,6 +33,7 @@ import ChangeCircleOutlinedIcon from "@mui/icons-material/ChangeCircleOutlined";
 import { appointmentService } from "../../service";
 import { usePersistData } from "../../hook/usePersistData";
 import isSomeOrAfter from "dayjs/plugin/isSameOrAfter";
+import { useAppSelector } from "../../hook/useStore";
 //import { WeekView } from "node_modules/@devexpress/dx-react-scheduler/dist/dx-react-scheduler";
 dayjs.extend(isSomeOrAfter);
 interface Props {
@@ -74,6 +74,7 @@ const ScheduleUser: React.FC<Props> = ({ service, barber, handleReset }) => {
             .add(numWeeksToShow - 1, "week")
             .toISOString()
     );
+    const { appointmentsPending } = useAppSelector((state) => state.appointments);
     /**
      * variable shiftTomorrow definida para indicar si el scheduler muestre horarios
      * de 8 a 12 || 16 a 20.
@@ -81,9 +82,10 @@ const ScheduleUser: React.FC<Props> = ({ service, barber, handleReset }) => {
     const [shiftTomorrow, setShifTomorrow] = useState<boolean>(today.getHours() < closeMorningHour);
     const { showNotification } = useNotification();
     const navigate = useNavigate();
-    let appointments: Appointment[] = barber?.appointments?.length
-        ? filterAppointmentsBeforeToday(barber.appointments)
-        : ([] as Appointment[]);
+    let appointments: Appointment[] =
+        barber?.appointments?.length && appointmentsPending
+            ? filterAppointmentsBeforeToday(barber.appointments.concat(appointmentsPending))
+            : ([] as Appointment[]);
 
     //appointments = appointments.concat(appointmentsData);
     const { getIdBarberShop, getToken } = usePersistData();
