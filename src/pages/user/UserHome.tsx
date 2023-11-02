@@ -123,20 +123,37 @@ const UserHome: React.FC<{}> = ({}) => {
                 </Typography>
                 <Grid container justifyContent={"center"}>
                     <Grid item xs={12} sm={9}>
-                        <Box
-                            width={"100%"}
-                            p={2}
-                            border={`2px solid ${theme.palette.primary.main}`}
-                            borderRadius={"16px"}
-                        >
-                            {/* Carousel de turnos pendientes */}
-                            <CaruselCard>
-                                {appointmentsPending &&
-                                    appointmentsPending.map((app, index) => (
+                        {" "}
+                        {appointmentsPending && appointmentsPending.length ? (
+                            <Box
+                                width={"100%"}
+                                p={2}
+                                border={`2px solid ${theme.palette.primary.main}`}
+                                borderRadius={"16px"}
+                            >
+                                {/* Carousel de turnos pendientes */}
+
+                                <CaruselCard>
+                                    {appointmentsPending.map((app, index) => (
                                         <CardOrder key={index} data={app} />
                                     ))}
-                            </CaruselCard>
-                        </Box>
+                                </CaruselCard>
+                            </Box>
+                        ) : (
+                            <Box
+                                display={"grid"}
+                                sx={{
+                                    placeContent: "center",
+
+                                    height: "100%",
+                                }}
+                            >
+                                {" "}
+                                <Typography variant="h5">
+                                    Usted no tiene turnos pendientes
+                                </Typography>{" "}
+                            </Box>
+                        )}
                     </Grid>
                     <Grid item xs={12} sm={2}>
                         <Box
