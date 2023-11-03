@@ -23,66 +23,7 @@ import { actionGetServicesAndBarbers } from "../../redux/actions/barberShopActio
 import { usePersistData } from "../../hook/usePersistData";
 import { actionGetAppointmentsPending } from "../../redux/actions/appointmentActions";
 import Loading from "../../components/Loading/Loading";
-
-const orders: any = [
-    {
-        id: "",
-        date: new Date(),
-        time: "20:45",
-        barber: {
-            name: "Juan",
-            description: "",
-            avatar: "",
-            id: "",
-        },
-        service: {
-            id: "",
-            description: "",
-            duration: 0,
-            image: "",
-            name: "Corte de pelo",
-            price: 800,
-        },
-    },
-    {
-        id: "",
-        date: new Date(),
-        time: "20:45",
-        barber: {
-            name: "Roberto",
-            description: "",
-            avatar: "",
-            id: "",
-        },
-        service: {
-            id: "",
-            description: "",
-            duration: 0,
-            image: "",
-            name: "Corte de pelo",
-            price: 800,
-        },
-    },
-    {
-        id: "",
-        date: new Date(),
-        time: "20:45",
-        barber: {
-            name: "Lautaro",
-            description: "",
-            avatar: "",
-            id: "",
-        },
-        service: {
-            id: "",
-            description: "",
-            duration: 0,
-            image: "",
-            name: "Corte de pelo",
-            price: 800,
-        },
-    },
-];
+import { Appointment } from "../../types";
 
 const UserHome: React.FC<{}> = ({}) => {
     const theme: Theme = useTheme();
@@ -134,8 +75,8 @@ const UserHome: React.FC<{}> = ({}) => {
                                 {/* Carousel de turnos pendientes */}
 
                                 <CaruselCard>
-                                    {appointmentsPending.map((app, index) => (
-                                        <CardOrder key={index} data={app} />
+                                    {appointmentsPending.map((app: Appointment, index) => (
+                                        <CardOrder key={index} data={app} allowDelete />
                                     ))}
                                 </CaruselCard>
                             </Box>

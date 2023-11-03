@@ -6,8 +6,9 @@ import { Appointment } from "../../../types";
 
 interface Props {
     data: Appointment;
+    allowDelete?: boolean;
 }
-const CardOrder: React.FC<Props> = ({ data }) => {
+const CardOrder: React.FC<Props> = ({ data, allowDelete = false }) => {
     console.log(data.startDate);
 
     return (
@@ -45,7 +46,7 @@ const CardOrder: React.FC<Props> = ({ data }) => {
                             {data.service?.name}
                         </Typography>
                         <Typography>{data.barber ? data.barber.name : "Barber"}</Typography>
-                        <Button variant="contained">Cancelar</Button>
+                        {allowDelete && <Button variant="contained">Cancelar</Button>}
                     </Stack>
                 </CardContent>
             </Box>

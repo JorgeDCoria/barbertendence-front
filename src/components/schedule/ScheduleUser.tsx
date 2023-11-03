@@ -1,27 +1,21 @@
-import { useState, PropsWithChildren } from "react";
-
+import { useState, PropsWithChildren, useEffect } from "react";
 import {
     AppointmentForm,
     Scheduler,
-    Appointments,
     WeekView,
     TodayButton,
     DateNavigator,
     Toolbar,
-    AppointmentTooltip,
     ConfirmationDialog, //@ts-ignore
 } from "@devexpress/dx-react-scheduler-material-ui";
-
 import {
     EditingState,
     ViewState,
     IntegratedEditing,
     AppointmentModel, //@ts-ignore
 } from "@devexpress/dx-react-scheduler";
-
-import { Box, Paper, Theme, Button, useTheme } from "@mui/material";
+import { Box, Paper, Button } from "@mui/material";
 import * as dayjs from "dayjs";
-
 import { Appointment } from "src/types/Appointment";
 import { Barber } from "src/types/Barber";
 import { Service } from "src/types/Service";
@@ -44,14 +38,9 @@ interface Props {
 
 const filterAppointmentsBeforeToday = (data: Appointment[]) => {
     const currentDate = dayjs();
-
-    console.log(new Date());
-
     return data.filter((app) => {
         const appointmentStart = dayjs(app.startDate);
         const appointmentEnd = dayjs(app.endDate);
-        console.log(appointmentStart);
-
         return (
             appointmentStart.isSameOrAfter(currentDate) || appointmentEnd.isSameOrAfter(currentDate)
         );
@@ -75,6 +64,7 @@ const ScheduleUser: React.FC<Props> = ({ service, barber, handleReset }) => {
             .toISOString()
     );
     const { appointmentsPending } = useAppSelector((state) => state.appointments);
+
     /**
      * variable shiftTomorrow definida para indicar si el scheduler muestre horarios
      * de 8 a 12 || 16 a 20.
@@ -82,10 +72,15 @@ const ScheduleUser: React.FC<Props> = ({ service, barber, handleReset }) => {
     const [shiftTomorrow, setShifTomorrow] = useState<boolean>(today.getHours() < closeMorningHour);
     const { showNotification } = useNotification();
     const navigate = useNavigate();
-    let appointments: Appointment[] =
-        barber?.appointments?.length && appointmentsPending
-            ? filterAppointmentsBeforeToday(barber.appointments.concat(appointmentsPending))
-            : ([] as Appointment[]);
+    let appointments: Appointment[] = appointmentsPending
+        ? filterAppointmentsBeforeToday(
+              appointmentsPending.concat(barber.appointments as Appointment[])
+          )
+        : ([] as Appointment[]);
+    // let appointments: Appointment[] =
+    //     barber?.appointments?.length && appointmentsPending
+    //         ? filterAppointmentsBeforeToday(barber.appointments.concat(appointmentsPending))
+    //         : ([] as Appointment[]);
 
     //appointments = appointments.concat(appointmentsData);
     const { getIdBarberShop, getToken } = usePersistData();
@@ -187,6 +182,9 @@ const ScheduleUser: React.FC<Props> = ({ service, barber, handleReset }) => {
         );
     };
 
+    useEffect(() => {
+        console.log("schedule renderizandose");
+    }, [appointmentsPending]);
     return (
         <Paper sx={{ position: "relative", height: "70vh" }}>
             <Scheduler data={appointments} locale="es">

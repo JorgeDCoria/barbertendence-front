@@ -11,7 +11,7 @@ interface Props {}
 const UserLayout: React.FC<Props> = () => {
     const { getUser, getIdBarberShop } = usePersistData();
     const itemsNav: TabNav[] = [
-        { title: "Mis Turnos", url: "", icon: <MenuIcon /> },
+        { title: "Home", url: "", icon: <MenuIcon /> },
         { title: "Nuevo Turno", url: "newOrder", icon: <MenuIcon /> },
         { title: "Mi Perfil", url: "perfil", icon: <MenuIcon /> },
     ];
