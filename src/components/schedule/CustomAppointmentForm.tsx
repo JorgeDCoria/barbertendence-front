@@ -22,10 +22,9 @@ const CustomAppointmentForm: React.FC<CustomAppointmentFormProps> = ({
     ...restProps
 }) => {
     const theme: Theme = useTheme();
-    console.log(appointmentData);
-
     return (
         <Box
+            {...restProps}
             display={"flex"}
             p={{ xs: 1, md: 2 }}
             flexDirection={"column"}
@@ -34,7 +33,6 @@ const CustomAppointmentForm: React.FC<CustomAppointmentFormProps> = ({
             justifyContent={"space-around"}
             gap={1}
             alignItems={"center"}
-            {...restProps}
         >
             <Typography variant="h5" color={theme.palette.primary.main}>
                 Datos del Turno

@@ -1,7 +1,5 @@
 import { Box, Button, Card, CardContent, CardMedia, Stack, Typography } from "@mui/material";
 import React from "react";
-import { Order } from "src/types/Order";
-import serviceImage from "../../../assets/serviceImage.jpg";
 import { Appointment } from "../../../types";
 
 interface Props {
@@ -9,8 +7,6 @@ interface Props {
     allowDelete?: boolean;
 }
 const CardOrder: React.FC<Props> = ({ data, allowDelete = false }) => {
-    console.log(data.startDate);
-
     return (
         <Card sx={{ width: "250px", height: "250px", position: "relative" }}>
             <CardMedia component={"img"} src={data.service?.image} height={"100%"} width={"100%"} />

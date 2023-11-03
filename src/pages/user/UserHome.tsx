@@ -17,7 +17,7 @@ import CaruselCard from "./components/CaruselCard";
 import PaginationCard from "./components/PaginationCard";
 import CardOrder from "./components/CardOrder";
 import ButtonLg from "./components/ButtonLg";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../hook/useStore";
 import { actionGetServicesAndBarbers } from "../../redux/actions/barberShopAction";
 import { usePersistData } from "../../hook/usePersistData";
@@ -31,6 +31,7 @@ const UserHome: React.FC<{}> = ({}) => {
     const dispatch = useAppDispatch();
     const { getIdBarberShop, getToken } = usePersistData();
     const [loading, setLoading] = useState<boolean>(true);
+    const navigate = useNavigate();
     const { appointmentsPending, appointmentsUserHistory } = useAppSelector(
         (state) => state.appointments
     );
@@ -49,6 +50,10 @@ const UserHome: React.FC<{}> = ({}) => {
             console.log(e.message);
         }
     }, []);
+
+    const navigateNewOrder = () => {
+        navigate("newOrder");
+    };
     return loading ? (
         <Loading />
     ) : (
@@ -106,9 +111,8 @@ const UserHome: React.FC<{}> = ({}) => {
                             mt={{ xs: "16px", sm: "0" }}
                         >
                             {/* Boton agregar turno */}
-                            <Link to={"newOrder"}>
-                                <ButtonLg label="Agregar Turno" />
-                            </Link>
+
+                            <ButtonLg label="Agregar Turno" handleClick={navigateNewOrder} />
                         </Box>
                     </Grid>
                 </Grid>
