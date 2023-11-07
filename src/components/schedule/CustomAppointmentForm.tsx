@@ -24,6 +24,7 @@ const CustomAppointmentForm: React.FC<CustomAppointmentFormProps> = ({
     const theme: Theme = useTheme();
     return (
         <Box
+            {...restProps}
             display={"flex"}
             p={{ xs: 1, md: 2 }}
             flexDirection={"column"}
@@ -32,7 +33,6 @@ const CustomAppointmentForm: React.FC<CustomAppointmentFormProps> = ({
             justifyContent={"space-around"}
             gap={1}
             alignItems={"center"}
-            {...restProps}
         >
             <Typography variant="h5" color={theme.palette.primary.main}>
                 Datos del Turno
@@ -47,7 +47,7 @@ const CustomAppointmentForm: React.FC<CustomAppointmentFormProps> = ({
                 {" "}
                 <Typography variant="h6">Fecha y Hora</Typography>
                 <Typography variant="h6" color={theme.palette.primary.main}>
-                    {dayjs(appointmentData.startDate).format("DD/MM/YYYY -HH:MM")}
+                    {dayjs(appointmentData.startDate).format("DD/MM/YYYY -HH:mm")}
                 </Typography>
             </Box>
             <Box

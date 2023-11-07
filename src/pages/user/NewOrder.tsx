@@ -12,7 +12,7 @@ import {
     Theme,
     useTheme,
 } from "@mui/material";
-import { Service, Barber } from "src/types";
+import { Service, Barber } from "../../types";
 import CardService from "./components/CardService";
 import CaruselCard from "./components/CaruselCard";
 import CardBarber from "./components/CardBarber";
@@ -21,6 +21,8 @@ import ScheduleUser from "../../components/schedule/ScheduleUser";
 import { useAppDispatch, useAppSelector } from "../../hook/useStore";
 import { actionGetServicesAndBarbers } from "../../redux/actions/barberShopAction";
 import Loading from "../../components/Loading/Loading";
+import { usePersistData } from "../../hook/usePersistData";
+import { actionGetAppointmentsPending } from "../../redux/actions/appointmentActions";
 
 const NewOrder = () => {
     //const theme: Theme = useTheme();
@@ -31,8 +33,12 @@ const NewOrder = () => {
     const theme: Theme = useTheme();
     const isXs = useMediaQuery(theme.breakpoints.only("xs"));
     const { services } = useAppSelector((state) => state.servicesState);
+    const { appointmentsPending, appointmentsUserHistory } = useAppSelector(
+        (state) => state.appointments
+    );
     const { barbers: barbersState } = useAppSelector((state) => state.barbers);
     const dispatch = useAppDispatch();
+    const { getIdBarberShop, getToken } = usePersistData();
     type Step = {
         title: string;
         subTitle: string;
@@ -96,8 +102,28 @@ const NewOrder = () => {
         return true;
     };
     useEffect(() => {
-        if (!barbersState || !services) {
-            dispatch(actionGetServicesAndBarbers());
+        try {
+            if (!barbersState || !services) {
+                dispatch(actionGetServicesAndBarbers());
+            }
+        } catch (e: any) {
+            console.log(e.message);
+        }
+    }, []);
+
+    useEffect(() => {
+        try {
+            if (!appointmentsPending || !appointmentsUserHistory) {
+                dispatch(actionGetServicesAndBarbers()).then(() => {
+                    if (getToken() && getIdBarberShop()) {
+                        dispatch(
+                            actionGetAppointmentsPending(getIdBarberShop() as string, getToken())
+                        );
+                    }
+                });
+            }
+        } catch (e: any) {
+            console.log(e.message);
         }
     }, []);
     return barbersState && services ? (

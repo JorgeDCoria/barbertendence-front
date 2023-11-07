@@ -59,13 +59,10 @@ const InputPhoneNumber: React.FC<Props> = ({
                 .validateAvailableNumberPhone(`${code}${phone}`)
                 .then((valid) => {
                     if (ifNumberExistError && valid)
-                        throw { message: "El Numero ya existe en nuestra base datos" };
+                        throw { message: "Ya existe una cuenta registrada con ese numero" };
                     if (!ifNumberExistError && !valid)
-                        throw { message: "El Numero No existe en nuestra base datos" };
-                    console.log("estoy llegando a handle change");
-
+                        throw { message: "El Numero no pertenece a una cuenta registrada" };
                     handleChange(`${code}${phone}`);
-                    console.log(`El valor de valid es: ${valid}`);
                 })
                 .catch((e: any) => {
                     onErrorChange(e.message);

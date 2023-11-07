@@ -2,8 +2,9 @@ import { Box, Pagination, useTheme } from "@mui/material";
 import React, { useState } from "react";
 import { Order } from "src/types/Order";
 import CardOrder from "./CardOrder";
+import { Appointment } from "../../../types";
 interface Props {
-    orders: Order[];
+    orders: Appointment[];
     orderPerPage: number;
 }
 const PaginationCard: React.FC<Props> = ({ orders, orderPerPage }) => {
@@ -33,7 +34,7 @@ const PaginationCard: React.FC<Props> = ({ orders, orderPerPage }) => {
                 }}
             >
                 {displayedOrders.map((order, index) => (
-                    <CardOrder key={index} order={order} />
+                    <CardOrder key={index} data={order} />
                 ))}
             </Box>{" "}
             <Pagination
