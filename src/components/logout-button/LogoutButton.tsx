@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Button, Modal, Box, Typography } from "@mui/material";
 import { usePersistData } from "../../hook/usePersistData";
-import { Navigate, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 const LogoutButton = () => {
     const [showModal, setShowModal] = useState(false);
     const { removePersistData, getIdBarberShop } = usePersistData();

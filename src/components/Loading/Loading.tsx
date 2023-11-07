@@ -1,8 +1,8 @@
-import { CircularProgress } from "@mui/material";
-import React from "react";
+import { CardMedia } from "@mui/material";
+import loading from "../../assets/barber-loading.gif";
 
 const Loading = () => {
-    return <CircularProgress />;
+    return <CardMedia src={loading} sx={{ width: "200px", height: "200px" }} />;
 };
 
 export default Loading;
