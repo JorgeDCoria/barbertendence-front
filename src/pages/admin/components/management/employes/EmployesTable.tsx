@@ -10,9 +10,7 @@ import {
     TablePagination,
     TableRow,
     TableSortLabel,
-    Theme,
     Typography,
-    useTheme,
     Button,
     Modal,
 } from "@mui/material";
@@ -38,7 +36,6 @@ import FormContainer from "./FormContainer";
 
 type Order = "asc" | "desc";
 const EmployesTable = () => {
-    const theme: Theme = useTheme();
     const dispatch = useAppDispatch();
     const { barbers } = useAppSelector((state) => state.barbers);
     const [page, setPage] = useState(0);
@@ -49,6 +46,8 @@ const EmployesTable = () => {
 
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
+    //revisar luego este ts-ignore
+    //@ts-ignore
     const handleChangePage = (event: unknown, newPage: number) => {
         setPage(newPage);
     };
@@ -57,7 +56,7 @@ const EmployesTable = () => {
         setRowsPerPage(+event.target.value);
         setPage(0);
     };
-
+    //@ts-ignore
     const createSortHandler = (e: React.MouseEvent<unknown>, property: keyof Barber) => {
         const isAsc = orderBy === property && order === "asc";
         setOrder(isAsc ? "desc" : "asc");

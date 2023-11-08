@@ -1,7 +1,6 @@
 import { useEffect } from "react";
-import { Navigate, useNavigate } from "react-router-dom";
-import { PRIVATEROUTES, PrivateAdminRoutes, PrivateUserRoutes, PublicRoutes, ROL } from "../const";
-import { useAppSelector } from "../hook/useStore";
+import { Navigate } from "react-router-dom";
+import { PrivateAdminRoutes, PrivateUserRoutes, ROL } from "../const";
 import { usePersistData } from "../hook/usePersistData";
 
 interface AuthGuardProps {

@@ -1,15 +1,10 @@
+//@ts-ignore
 import { AppointmentForm } from "@devexpress/dx-react-scheduler-material-ui";
 import { Box, Divider, Theme, Typography, useTheme } from "@mui/material";
 
 import React from "react";
-import DateUtility from "../../utilities/DateUtility";
 
-const AdminCustomLayout: React.FC<AppointmentForm.LayoutProps> = ({
-    appointmentData,
-    commandLayoutComponent,
-    recurrenceLayoutComponent,
-    restProps,
-}) => {
+const AdminCustomLayout: React.FC<AppointmentForm.LayoutProps> = ({ restProps }) => {
     const theme: Theme = useTheme();
 
     {

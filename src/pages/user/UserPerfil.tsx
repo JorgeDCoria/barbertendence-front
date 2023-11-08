@@ -15,7 +15,7 @@ import file from "../../assets/file.jpg";
 import logo from "../../assets/logo.png";
 import UserInformationProfile from "./components/UserInformationProfile";
 import UserFormProfile from "./components/UserFormProfile";
-import InputPassword from "../login/components/InputPassword";
+//import InputPassword from "../login/components/InputPassword";
 
 const UserPerfil = () => {
     const [editUser, setEditUser] = useState<boolean>(false);
@@ -115,9 +115,9 @@ const UserPerfil = () => {
                         >
                             Cambio de Clave
                         </Typography>
-                        <InputPassword label="Clave Actual" />
+                        {/* <InputPassword label="Clave Actual" />
                         <InputPassword label="Nueva Clave" />
-                        <InputPassword label="Confirmar Clave" />
+                        <InputPassword label="Confirmar Clave" /> */}
                         <Stack
                             direction={{ xs: "column", md: "row" }}
                             gap={2}

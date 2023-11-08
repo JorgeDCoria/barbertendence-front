@@ -63,6 +63,7 @@ const SideBar: React.FC<Props> = ({
     const dayCalendar = dayjs(currentDate);
 
     const handleChangeAccordion =
+        //@ts-ignore
         (panel: string) => (event: React.SyntheticEvent, isExpanded: boolean) => {
             setExpanded(isExpanded ? panel : false);
         };

@@ -1,6 +1,6 @@
 import { Box, Pagination, useTheme } from "@mui/material";
 import React, { useState } from "react";
-import { Order } from "src/types/Order";
+
 import CardOrder from "./CardOrder";
 import { Appointment } from "../../../types";
 interface Props {
@@ -16,6 +16,7 @@ const PaginationCard: React.FC<Props> = ({ orders, orderPerPage }) => {
     const endIndex = startIndex + orderPerPage;
 
     const displayedOrders = orders.slice(startIndex, endIndex);
+    //@ts-ignore
     const handleChangePage = (e: React.ChangeEvent<unknown>, page: number) => {
         setCurrentPage(page);
     };

@@ -14,7 +14,6 @@ import {
     FormControl,
     SelectChangeEvent,
     Divider,
-    Modal,
 } from "@mui/material";
 import DateUtility from "../../utilities/DateUtility";
 import { Service } from "src/types/Service";
@@ -53,7 +52,8 @@ const CustomAdminAppointmentBasicLayout: React.FC<CustomAppointmentFormBasicLayo
         appointments.forEach((e) => {
             if (e.barberId === barberId) {
                 console.log(e);
-                if (startDate < new Date(e.endDate) && endDate > dayjs(e.startDate)) {
+                //verificar si e.endDate es un string se lo puso asi para evitar warning para el deploy
+                if (startDate < new Date(e.endDate as string) && endDate > dayjs(e.startDate)) {
                     invalid = true;
                     return;
                 }

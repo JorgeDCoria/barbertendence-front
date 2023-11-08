@@ -1,14 +1,16 @@
 import { Barber } from "src/types/Barber";
-//import { BarberResource } from "../types/BarberResource";
+import { BarberResource } from "../types/BarberResource";
 import appointmentAdapter from "./appointmentAdapter";
 import { Appointment } from "src/types";
 
-// const mapBarberToBarberInstanceResource = (barbers: Barber[]): BarberResource[] => {
-//     const barbersResources: BarberResource[] = barbers.map((b) => {
-//         return { text: b.name, id: b.id };
-//     });
-//     return barbersResources;
-// };
+const mapBarberToBarberInstanceResource = (barbers: Barber[]): BarberResource[] => {
+    const barbersResources: BarberResource[] = barbers
+        ? barbers.map((b) => {
+              return { text: b.name, id: b.id ? b.id : "" };
+          })
+        : ([] as BarberResource[]);
+    return barbersResources;
+};
 
 const mapBarberApiToBarber = (data: any): Barber => {
     return {
@@ -28,6 +30,7 @@ const mapBarbersApiToBarbers = (data: any): Barber[] => {
 };
 
 const barberAdapter = {
+    mapBarberToBarberInstanceResource,
     mapBarbersApiToBarbers,
     mapBarberApiToBarber,
 };

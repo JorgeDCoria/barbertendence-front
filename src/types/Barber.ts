@@ -1,6 +1,5 @@
 import { Appointment } from ".";
 import { Schedule } from "./Schedule";
-import { Service } from "./Service";
 
 export type Barber = {
     id?: string;

@@ -1,7 +1,7 @@
 import { Box, TextField, Typography, Theme, useTheme, Stack, Button, Divider } from "@mui/material";
 import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
-import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-import InputPhoneNumber from "../../login/components/InputPhoneNumber";
+// import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+// import InputPhoneNumber from "../../login/components/InputPhoneNumber";
 import AlternateEmailIcon from "@mui/icons-material/AlternateEmail";
 interface Props {
     handleClickCancel: () => void;
@@ -43,7 +43,7 @@ const UserFormProfile: React.FC<Props> = ({ handleClickCancel }) => {
                 justifyContent={"space-around"}
                 width={{ xs: "100%", md: "70%" }}
             >
-                <DatePicker sx={{ flexGrow: 1 }}  label="Fecha de Nacimiento" />
+                {/* <DatePicker  label="Fecha de Nacimiento" /> */}
             </Box>
             <Box
                 display={"flex"}
@@ -51,7 +51,7 @@ const UserFormProfile: React.FC<Props> = ({ handleClickCancel }) => {
                 justifyContent={"space-around"}
                 width={{ xs: "100%", md: "70%" }}
             >
-                <InputPhoneNumber sizeIcon="large" />
+                {/* <InputPhoneNumber sizeIcon="large" /> */}
             </Box>
 
             <Box

@@ -36,7 +36,7 @@ const ClientTable: React.FC = () => {
     const [order, setOrder] = useState<Order>("asc");
     const [orderBy, setOrderBy] = useState<keyof User>("fullName");
     const navigate = useNavigate();
-
+    //@ts-ignore
     const handleChangePage = (event: unknown, newPage: number) => {
         setPage(newPage);
     };
@@ -45,7 +45,7 @@ const ClientTable: React.FC = () => {
         setRowsPerPage(+event.target.value);
         setPage(0);
     };
-
+    //@ts-ignore
     const createSortHandler = (e: React.MouseEvent<unknown>, property: keyof User) => {
         const isAsc = orderBy === property && order === "asc";
         setOrder(isAsc ? "desc" : "asc");

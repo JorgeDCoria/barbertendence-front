@@ -1,4 +1,4 @@
-import { Box, FormControl, TextField, useTheme, Theme, useMediaQuery, Stack } from "@mui/material";
+import { Box, TextField, useTheme, Theme, useMediaQuery } from "@mui/material";
 import { Barber } from "../../../../../types/Barber";
 import { useState } from "react";
 import { DatePicker, MobileDatePicker } from "@mui/x-date-pickers";
@@ -8,15 +8,18 @@ interface FormDataEmployeeProps {
     employee: Partial<Barber>;
     handleChange: () => void;
 }
+//********* revisar los ts-ignore, agregados para quitar warnings para deploy ****** */
 const EmployeeDataForm: React.FC<FormDataEmployeeProps> = ({ employee }) => {
+    //@ts-ignore
     const [confirmPassword, setConfirmPassword] = useState("");
+    //@ts-ignore
     const [date, setDate] = useState<Dayjs | null>(dayjs("2014-08-18T21:11:54"));
-    const [phoneNumber, setPhoneNumber] = useState<{ code: string; number: number }>({
-        code: "",
-        number: 0,
-    });
+    // const [phoneNumber, setPhoneNumber] = useState<{ code: string; number: number }>({
+    //     code: "",
+    //     number: 0,
+    // });
 
-    const { name, phone, email, address, birthDay, password } = employee;
+    const { name, phone, email, address, password } = employee;
     const theme: Theme = useTheme();
     const isXs = useMediaQuery(theme.breakpoints.down("sm"));
 

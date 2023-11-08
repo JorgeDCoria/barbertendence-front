@@ -44,16 +44,16 @@ export const actionGetAppointmentsByState = (state: string = "ALL") => {
     };
 };
 
-export const actionGetAppointmentsUserHistories = (id: string) => {
-    return async (dispatch: Dispatch) => {
-        try {
-            const histories = appointmentService.getAppointmentsByUser(id);
-            dispatch(setAppointmentsUserHistory(histories));
-        } catch (e: any) {
-            throw e;
-        }
-    };
-};
+// export const actionGetAppointmentsUserHistories = (id: string) => {
+//     return async (dispatch: Dispatch) => {
+//         try {
+//             const histories = appointmentService.getAppointmentsByUser(id);
+//             dispatch(setAppointmentsUserHistory(histories));
+//         } catch (e: any) {
+//             throw e;
+//         }
+//     };
+// };
 
 export const actionClearAppointmentsUserHistories = () => {
     return (dispatch: Dispatch) => {

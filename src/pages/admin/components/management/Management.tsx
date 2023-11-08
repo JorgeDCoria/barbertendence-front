@@ -1,4 +1,3 @@
-import React from "react";
 import NavBar from "../../../../components/Layout/NavBar";
 import { TabNav } from "../../../../types/tabNav";
 import { Outlet } from "react-router-dom";

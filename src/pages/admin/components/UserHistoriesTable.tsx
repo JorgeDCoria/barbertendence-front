@@ -25,7 +25,7 @@ const UserHistoriesTable: React.FC<UserHistoriesTableProps> = ({ id }) => {
     const { histories, error, loading } = useUserHistories(id);
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(5);
-
+    //@ts-ignore
     const handleChangePage = (event: unknown, newPage: number) => {
         setPage(newPage);
     };

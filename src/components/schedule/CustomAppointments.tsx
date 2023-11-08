@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useState } from "react";
 //@ts-ignore
 import { Appointments } from "@devexpress/dx-react-scheduler-material-ui";
 import {

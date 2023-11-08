@@ -1,4 +1,3 @@
-import React from "react";
 import { Box, TextField } from "@mui/material";
 import ImageUploader from "../../../../../components/image-uploader/ImageUploader";
 const EmployeeLastDataForm = () => {

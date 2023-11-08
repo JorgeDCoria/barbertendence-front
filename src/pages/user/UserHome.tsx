@@ -17,7 +17,7 @@ import CaruselCard from "./components/CaruselCard";
 import PaginationCard from "./components/PaginationCard";
 import CardOrder from "./components/CardOrder";
 import ButtonLg from "./components/ButtonLg";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../hook/useStore";
 import { actionGetServicesAndBarbers } from "../../redux/actions/barberShopAction";
 import { usePersistData } from "../../hook/usePersistData";

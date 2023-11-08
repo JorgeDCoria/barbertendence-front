@@ -3,7 +3,7 @@ import { Box, Grid } from "@mui/material";
 import { Outlet, useLocation, useNavigate, useParams } from "react-router-dom";
 import logo from "../../assets/logo.png";
 
-import { IDBARBERSHOP, PRIVATEROUTES } from "../../const";
+import { PRIVATEROUTES } from "../../const";
 import { usePersistData } from "../../hook/usePersistData";
 import { useAppDispatch } from "../../hook/useStore";
 import { actionSetUser } from "../../redux/actions/userAction";

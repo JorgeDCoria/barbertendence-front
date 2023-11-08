@@ -11,6 +11,7 @@ const steps: string[] = ["Datos Personales", "Servicios", "Horarios", "Alta"];
 const FormContainer = () => {
     const [activeStep, setActiveStep] = useState(0);
     const theme: Theme = useTheme();
+    //@ts-ignore
     const [newEmployee, setNewEmployee] = useState<Partial<Barber>>({
         name: "",
         address: "",
@@ -24,11 +25,11 @@ const FormContainer = () => {
         services: [],
     });
 
-    const handleSetNewEmployee = (e: any) => {
-        // let oldData = {...newEmployee};
-        // oldData[e.target.name] = e.target.value;
-        // setNewEmployee((oldData) => {...oldData, oldData.e.target.name: e.target.value})
-    };
+    // const handleSetNewEmployee = (e: any) => {
+    //     // let oldData = {...newEmployee};
+    //     // oldData[e.target.name] = e.target.value;
+    //     // setNewEmployee((oldData) => {...oldData, oldData.e.target.name: e.target.value})
+    // };
 
     const handleNext = () => {
         if (activeStep === steps.length - 1) {
@@ -38,9 +39,9 @@ const FormContainer = () => {
     const handleBack = () => {
         setActiveStep((prevActiveStep) => prevActiveStep - 1);
     };
-    const handleReset = () => {
-        setActiveStep(0);
-    };
+    // const handleReset = () => {
+    //     setActiveStep(0);
+    // };
     const handleClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
         e.stopPropagation(); // Detiene la propagación del evento click
         // Tu lógica aquí, si es necesario

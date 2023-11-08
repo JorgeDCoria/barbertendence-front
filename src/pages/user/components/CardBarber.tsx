@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Barber } from "src/types/Barber";
 import { Card, CardMedia, Box, Theme, useTheme, Typography } from "@mui/material";
-import perfil from "../../../assets/perfil.jpg";
+
 interface Props {
     onlyRead?: boolean;
     barber: Barber;

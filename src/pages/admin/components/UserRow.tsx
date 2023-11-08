@@ -1,6 +1,6 @@
 import React from "react";
 import { User } from "../../../types/User";
-import { TableCell, TableRow, IconButton, Collapse, Theme, useTheme } from "@mui/material";
+import { TableCell, TableRow, IconButton, Collapse } from "@mui/material";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import dayjs from "dayjs";
@@ -11,7 +11,6 @@ interface UserRowProps {
 }
 const UserRow: React.FC<UserRowProps> = ({ user }) => {
     const [open, setOpen] = React.useState(false);
-    const theme: Theme = useTheme();
     return (
         <>
             <TableRow

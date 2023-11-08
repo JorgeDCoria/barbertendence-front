@@ -1,17 +1,14 @@
 //@ts-ignore
 import { Appointments } from "@devexpress/dx-react-scheduler-material-ui";
 import React, { useEffect } from "react";
-import { Box, Typography, Divider, Stack, Theme, useTheme, Button, Link } from "@mui/material";
+import { Typography, Stack } from "@mui/material";
 
-import { servicesBd, clientsBd } from "../../data/data";
-import { Service } from "src/types/Service";
 import dayjs from "dayjs";
-import { User } from "src/types/User";
+
 const AdminCustomAppointment: React.FC<Appointments.AppointmentProps> = ({
     data,
     ...restProps
 }) => {
-    const theme: Theme = useTheme();
     // const service: Service | undefined = servicesBd.find((s) => s.id === data.);
     // const client: User | undefined = clientsBd.find((c) => c.id === data.clientId);
 

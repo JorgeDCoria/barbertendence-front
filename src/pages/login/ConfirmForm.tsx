@@ -1,7 +1,7 @@
 import { Box, Button, Grid, Typography, useTheme, Modal, Stack } from "@mui/material";
 import { useState, useEffect } from "react";
 import BoxCode from "./components/BoxCode";
-import InputPhoneNumber from "./components/InputPhoneNumber";
+//import InputPhoneNumber from "./components/InputPhoneNumber";
 import { useAppDispatch, useAppSelector } from "../../hook/useStore";
 import { actionValidateNumberPhoneUser } from "../../redux/actions/userAction";
 import { useNotification } from "../../context/notification.context";
@@ -9,10 +9,12 @@ import { useNavigate } from "react-router-dom";
 import { PRIVATEROUTES } from "../../const";
 
 interface Props {}
+//validar el ignore <--***************
 const ConfirmForm: React.FC<Props> = ({}) => {
     // const codeAux: string[] = ["", "", "", "", "", ""];
     const [code, setCode] = useState<string[]>(["", "", "", "", "", ""]);
     const [showModal, setShowModal] = useState<boolean>(false);
+    //@ts-ignore
     const [numberPhone, setNumberPhone] = useState<string>("");
 
     const { userTemp } = useAppSelector((state) => state.userSate);
@@ -33,9 +35,9 @@ const ConfirmForm: React.FC<Props> = ({}) => {
         setShowModal(!showModal);
     };
 
-    const handleChangeNumberPhone = (number: string): void => {
-        setNumberPhone(number);
-    };
+    // const handleChangeNumberPhone = (number: string): void => {
+    //     setNumberPhone(number);
+    // };
     const handleClick = async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         e.preventDefault();
         try {
@@ -155,12 +157,12 @@ const ConfirmForm: React.FC<Props> = ({}) => {
                                 borderRadius={"16px"}
                                 p={{ xs: 3, md: 4 }}
                             >
-                                <InputPhoneNumber
+                                {/* <InputPhoneNumber
                                     sizeInput="medium"
                                     sizeIcon="large"
                                     handleChange={handleChangeNumberPhone}
                                     ifNumberExistError
-                                />
+                                /> */}
                             </Box>
                         </Box>
                         <Box

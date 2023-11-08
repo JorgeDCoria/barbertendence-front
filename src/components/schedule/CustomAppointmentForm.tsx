@@ -1,7 +1,6 @@
 //@ts-ignore
 import { AppointmentForm } from "@devexpress/dx-react-scheduler-material-ui";
 import { Box, Typography, useTheme, Theme } from "@mui/material";
-import DateUtility from "../../utilities/DateUtility";
 import CardService from "../../pages/user/components/CardService";
 import CardBarber from "../../pages/user/components/CardBarber";
 import { Service } from "src/types/Service";

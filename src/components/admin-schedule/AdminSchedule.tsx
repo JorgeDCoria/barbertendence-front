@@ -19,7 +19,6 @@ import {
     AppointmentTooltip,
     ConfirmationDialog,
     DayView,
-    WeekView,
     Resources,
     GroupingPanel,
     //@ts-ignore
@@ -79,6 +78,7 @@ const AdminSchedule: React.FC<AdminScheduleProps> = ({ currentDate, handleChange
     const { barbersSelected: barbers } = useAppSelector((state) => state.barbers);
     // const [currentDate, setCurrentDate] = useState<Date>(new Date());
     const [addedAppointment, setAddedAppointment] = useState<Appointment>({} as Appointment);
+    //@ts-ignore
     const [barberData, setBarberData] = useState<BarberResource[]>([] as BarberResource[]);
     const [resources, setResources] = useState<Resource[] | null>(null);
 
@@ -87,7 +87,6 @@ const AdminSchedule: React.FC<AdminScheduleProps> = ({ currentDate, handleChange
     const closeMorningHour: number = 12;
     const closeAfternoonHour: number = 20;
 
-    const currenDateSchedule = new Date(currentDate ? currentDate.toString() : "");
     /**
      * variable shiftTomorrow definida para indicar si el scheduler muestre horarios
      * de 8 a 12 || 16 a 20.

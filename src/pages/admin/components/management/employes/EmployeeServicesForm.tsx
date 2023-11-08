@@ -1,15 +1,8 @@
 import { useEffect, useState } from "react";
 import {
     Box,
-    Card,
-    CardContent,
-    CardMedia,
-    Theme,
-    Typography,
-    useTheme,
     List,
     ListItem,
-    IconButton,
     ListItemIcon,
     Checkbox,
     ListItemText,
@@ -18,7 +11,6 @@ import {
 import { useAppDispatch, useAppSelector } from "../../../../../hook/useStore";
 import { actionGetAllServices } from "../../../../../redux/actions/servicesActions";
 import Loading from "../../../../../components/Loading/Loading";
-import image from "../../../../../assets/service.jpg";
 import { Service } from "../../../../../types/Service";
 import MiscellaneousServicesIcon from "@mui/icons-material/MiscellaneousServices";
 
@@ -26,8 +18,8 @@ const EmployeeServicesForm = () => {
     const dispatch = useAppDispatch();
     const { services } = useAppSelector((state) => state.servicesState);
     const [servicesChecked, setServicesChecked] = useState<Service[]>([]);
-    const theme: Theme = useTheme();
 
+    //@ts-ignore
     const handleChecked = (e: React.MouseEvent<HTMLDivElement, MouseEvent>, service: Service) => {
         let auxServices = [...servicesChecked];
         const foundService = auxServices.find((s) => s.id == service.id);

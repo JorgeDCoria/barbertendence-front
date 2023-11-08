@@ -243,7 +243,6 @@ const NewOrder = () => {
                                 >
                                     {serviceSelected && barberSelected && (
                                         <ScheduleUser
-                                            handleReset={handleReset}
                                             service={serviceSelected}
                                             barber={barberSelected}
                                         />
