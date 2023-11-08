@@ -1,59 +1,56 @@
-// import { useState } from "react";
 import { useState } from "react";
 import { Box, Grid, Button, Typography } from "@mui/material";
-
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import InputPassword from "./components/InputPassword";
 import InputPhoneNumber from "./components/InputPhoneNumber";
-import { type Phone } from "src/types/phoneType";
-import { type InputError } from "src/types/inputError";
+import { useNotification } from "../../context/notification.context";
+import { useAppDispatch } from "../../hook/useStore";
+import { actionLoginUserWhithNumber } from "../../redux/actions/userAction";
+import { LoginButton } from "../../components/login-button";
+import { PRIVATEROUTES } from "../../const";
+
+import { usePersistData } from "../../hook/usePersistData";
 
 interface Props {}
-interface Input {
-    numberPhone: Phone;
-    password: string;
-}
 
-type FormError = {
-    phoneError: InputError;
-    passwordError: InputError;
-};
-
-const validarPassword = (password: string): boolean => {
-    let ExpRegPass =
-        /(?=(.*[0-9]))(?=.*[\!@#$%^&*()\\[\]{}\-_+=|:;"'<>,./?])(?=.*[a-z])(?=(.*[A-Z]))(?=(.*)).{8,}/;
-    return password.match(ExpRegPass) !== null;
-};
-const validarNumberPhone = (phone: string): string => {
-    let ExpRegSoloNumeros = "^[0-9]+$";
-    let message: string = "";
-    if (phone.match(ExpRegSoloNumeros) == null) message = "Solo numeros";
-    if (phone.length < 7) message = "Ingrese un numero valido";
-
-    return message;
-};
 const LoginForm: React.FC<Props> = ({}) => {
-    const [input, setInput] = useState<Input>({
-        numberPhone: { code: "", phone: 0 },
+    const { showNotification } = useNotification();
+    const [input, setInput] = useState<{ numberPhone: string; password: string }>({
+        numberPhone: "",
         password: "",
     });
-    const [formError, setFormError] = useState<FormError>({
-        phoneError: { error: false, message: "" },
+    const [formError, setFormError] = useState({
         passwordError: { error: false, message: "" },
+        phoneError: { error: false, message: "" },
     });
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
-        if (e.target.name === "password") {
-            setInput({ ...input, [e.target.name]: e.target.value });
-            if (!validarPassword(e.target.value)) {
-                setFormError({
-                    ...formError,
-                    passwordError: {
-                        ...formError.passwordError,
-                        error: true,
-                        message: "Password invalida",
-                    },
+    const navigate = useNavigate();
+    const dispatch = useAppDispatch();
+    const { getIdBarberShop } = usePersistData();
+
+    const loginWhitNumber = () => {
+        if (!formError.passwordError.error && input.numberPhone.length) {
+            console.log("estoy por despachar");
+
+            dispatch(actionLoginUserWhithNumber(`${input.numberPhone}`, input.password))
+                .then(() => {
+                    showNotification("Inicio de session exitoso, bienvenido/a", "success");
+                    navigate(`/${PRIVATEROUTES}`, { replace: true });
+                })
+                .catch((e: any) => {
+                    console.log(`ah ocurrido un error ${e.message}`);
+                    showNotification(
+                        `Error: numero/ contraseña invalidos, intente nuevamente`,
+                        "error"
+                    );
                 });
-            } else {
+        } else {
+            showNotification("Error: Telefono y/o Contraseña invalidos", "warning");
+        }
+    };
+
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>): void => {
+        if (e.target.name === "password") {
+            if (e.target.value !== "")
                 setFormError({
                     ...formError,
                     passwordError: {
@@ -62,30 +59,34 @@ const LoginForm: React.FC<Props> = ({}) => {
                         message: "",
                     },
                 });
+            else {
+                setFormError({
+                    ...formError,
+                    passwordError: {
+                        ...formError.passwordError,
+                        error: true,
+                        message: "Complete el campo contraseña",
+                    },
+                });
             }
-        } else {
-            setInput({
-                ...input,
-                numberPhone: {
-                    ...input.numberPhone,
-                    [e.target.name]: e.target.value,
-                },
-            });
-            let aux = validarNumberPhone(e.target.value);
-            setFormError({
-                ...formError,
-                phoneError: {
-                    ...formError.phoneError,
-                    error: aux !== "",
-                    message: aux,
-                },
-            });
+
+            setInput({ ...input, [e.target.name]: e.target.value });
         }
     };
+    const handleChangeNumber = (value: string) => {
+        setInput((prev) => ({ ...prev, numberPhone: value }));
+    };
 
+    const handleChangeInputErrorNumberPhone = (message: string) => {
+        setFormError((prev) => ({
+            ...prev,
+            phoneError: { ...prev.phoneError, error: message.length == 0, message: message },
+        }));
+    };
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>): void => {
         e.preventDefault();
     };
+
     return (
         <Box
             sx={{ height: "100%" }}
@@ -111,13 +112,8 @@ const LoginForm: React.FC<Props> = ({}) => {
                     <InputPhoneNumber
                         sizeIcon="large"
                         sizeInput="medium"
-                        codeName="code"
-                        phoneName="phone"
-                        codeValue={input.numberPhone.code}
-                        phoneValue={input.numberPhone.phone}
-                        handleChange={handleChange}
-                        error={formError.phoneError.error}
-                        errorMessage={formError.phoneError.message}
+                        handleChange={handleChangeNumber}
+                        onErrorChange={handleChangeInputErrorNumberPhone}
                     />
                 </Grid>
                 {/* Numero password */}
@@ -131,7 +127,7 @@ const LoginForm: React.FC<Props> = ({}) => {
                     justifyContent={"center"}
                 >
                     <InputPassword
-                        label="Password"
+                        label="Contraseña"
                         name="password"
                         sizeTextField="medium"
                         sizeIcon="large"
@@ -148,37 +144,30 @@ const LoginForm: React.FC<Props> = ({}) => {
                         fullWidth
                         color="primary"
                         size="large"
+                        onClick={loginWhitNumber}
                     >
                         Ingresar
                     </Button>
                 </Grid>
                 <Grid item xs={10} sx={{ height: "40px" }}>
-                    <Button
-                        type="submit"
-                        variant="outlined"
-                        fullWidth
-                        color="primary"
-                        size="large"
-                    >
-                        Ingresar con gmail
-                    </Button>
+                    <LoginButton />
                 </Grid>
                 <Grid item xs={10}>
-                    <Typography
-                        component={"p"}
-                        align="center"
-                        color={"primary.main"}
+                    <Link
+                        to={`/${getIdBarberShop()}/reset-password`}
+                        style={{ textDecoration: "none" }}
                     >
-                        ¿olvidate tu password?
-                    </Typography>
+                        <Typography component={"p"} align="center" color={"primary.main"}>
+                            ¿olvidate tu contraseña?
+                        </Typography>
+                    </Link>
                     <Typography component={"p"} align="center">
                         No tienes una cuenta{" "}
-                        <Link to={"/register"}>
-                            <Typography
-                                component={"span"}
-                                fontSize={"18px"}
-                                color={"primary.main"}
-                            >
+                        <Link
+                            to={`/${getIdBarberShop()}/register`}
+                            style={{ textDecoration: "none" }}
+                        >
+                            <Typography component={"span"} fontSize={"18px"} color={"primary.main"}>
                                 Registrate
                             </Typography>{" "}
                         </Link>

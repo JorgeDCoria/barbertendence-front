@@ -16,6 +16,7 @@ import { TabNav } from "src/types/tabNav";
 import MenuIcon from "@mui/icons-material/Menu";
 import logo from "../../assets/logoTitle.png";
 import DrawerNav from "../drawer/DrawerNav";
+import { LogoutButton } from "../logout-button";
 interface Props {
     items: TabNav[];
 }
@@ -28,10 +29,7 @@ const NavBar: React.FC<Props> = ({ items }) => {
     };
     return (
         <Box sx={{ flexGrow: 1 }}>
-            <AppBar
-                position="fixed"
-                sx={{ background: theme.palette.customDark }}
-            >
+            <AppBar position="fixed" sx={{ background: theme.palette.customDark }}>
                 <Toolbar>
                     <Hidden smUp>
                         <IconButton onClick={() => handleOpenDrawer()}>
@@ -47,16 +45,8 @@ const NavBar: React.FC<Props> = ({ items }) => {
                         >
                             <Grid item>
                                 {" "}
-                                <Box
-                                    component={"div"}
-                                    display={"flex"}
-                                    height={"40px"}
-                                >
-                                    <Box
-                                        component={"img"}
-                                        height={"100%"}
-                                        src={logo}
-                                    />
+                                <Box component={"div"} display={"flex"} height={"40px"}>
+                                    <Box component={"img"} height={"100%"} src={logo} />
                                 </Box>
                             </Grid>
                             <Grid item>
@@ -64,14 +54,12 @@ const NavBar: React.FC<Props> = ({ items }) => {
                                     <Stack direction={"row"} spacing={4}>
                                         {items.map((e) => (
                                             <Link key={e.title} to={e.url}>
-                                                <Button
-                                                    sx={{ color: "white" }}
-                                                    variant="text"
-                                                >
+                                                <Button sx={{ color: "white" }} variant="text">
                                                     {e.title}
                                                 </Button>
                                             </Link>
                                         ))}
+                                        <LogoutButton />
                                     </Stack>
                                 </Hidden>
                             </Grid>
@@ -79,11 +67,7 @@ const NavBar: React.FC<Props> = ({ items }) => {
                     </Container>
                 </Toolbar>
             </AppBar>
-            <DrawerNav
-                items={items}
-                openDrawer={openDrawer}
-                handleClose={handleOpenDrawer}
-            />
+            <DrawerNav items={items} openDrawer={openDrawer} handleClose={handleOpenDrawer} />
         </Box>
     );
 };

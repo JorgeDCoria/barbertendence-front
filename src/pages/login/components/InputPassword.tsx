@@ -1,15 +1,15 @@
 import { Box, InputAdornment, TextField } from "@mui/material";
 import React, { useState } from "react";
-import { type SizeSMValue, type SizeSMLValue } from "src/types";
+import { type SizeSMValue, type SizeSMLValue } from "../../../typesConfig";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
 interface Props {
     label: string;
     name: string;
-    sizeTextField: SizeSMValue;
-    sizeIcon: SizeSMLValue;
+    sizeTextField?: SizeSMValue;
+    sizeIcon?: SizeSMLValue;
     value: string;
-    handleChange: Function;
+    handleChange: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
     error: boolean;
     errorMessage: string;
 }
@@ -17,8 +17,8 @@ interface Props {
 const InputPassword: React.FC<Props> = ({
     label,
     name,
-    sizeTextField,
-    sizeIcon,
+    sizeTextField = "medium",
+    sizeIcon = "large",
     value,
     handleChange,
     error,
@@ -29,6 +29,9 @@ const InputPassword: React.FC<Props> = ({
     const handleShowPassword = (): void => {
         setShowPassword((prevShowPassword) => !prevShowPassword);
     };
+    // const handleChangePassword = (e:React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    //     handleChange(e.target.value)
+    // }
     return (
         <Box
             sx={{
@@ -38,7 +41,6 @@ const InputPassword: React.FC<Props> = ({
                 width: "100%",
             }}
         >
-            {" "}
             <LockOutlinedIcon fontSize={sizeIcon} />
             <TextField
                 required

@@ -1,18 +1,21 @@
 import { Box, Container } from "@mui/material";
 import React from "react";
 import NavBar from "./NavBar";
-import { Outlet } from "react-router-dom";
-import { TabNav } from "src/types/tabNav";
+import { Navigate, Outlet } from "react-router-dom";
+import { TabNav } from "../../types/tabNav";
 import MenuIcon from "@mui/icons-material/Menu";
+import { usePersistData } from "../../hook/usePersistData";
+import { ROL } from "../../const";
 
 interface Props {}
 const UserLayout: React.FC<Props> = () => {
+    const { getUser, getIdBarberShop } = usePersistData();
     const itemsNav: TabNav[] = [
-        { title: "Mis Turnos", url: "", icon: <MenuIcon /> },
+        { title: "Home", url: "", icon: <MenuIcon /> },
         { title: "Nuevo Turno", url: "newOrder", icon: <MenuIcon /> },
         { title: "Mi Perfil", url: "perfil", icon: <MenuIcon /> },
     ];
-    return (
+    return getUser() && getUser()?.rol === ROL.USERKEY ? (
         <Container
             maxWidth="xl"
             // boxSizing={"border-box"}
@@ -33,6 +36,8 @@ const UserLayout: React.FC<Props> = () => {
                 <Outlet />
             </Box>
         </Container>
+    ) : (
+        <Navigate to={`/${getIdBarberShop()}/`} />
     );
 };
 

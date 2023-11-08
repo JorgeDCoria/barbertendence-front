@@ -7,9 +7,9 @@
     "types": ["react-router-dom"],
     "baseUrl": ".",
     "paths": {
-    "@material-ui/*": ["node_modules/@material-ui/*"],
-    "typeRoots": ["./typings", "./node_modules/@types"]
-   },
+      
+    }, 
+   "typeRoots": ["./typings", "./node_modules/@types"],
   
 
     /* Bundler mode */

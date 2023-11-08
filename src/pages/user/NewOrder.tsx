@@ -1,32 +1,44 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
     Box,
     Stack,
     Typography,
-    Theme,
-    useTheme,
     Grid,
     Stepper,
     Step,
     StepLabel,
     Button,
+    useMediaQuery,
+    Theme,
+    useTheme,
 } from "@mui/material";
-import { Service } from "src/types/Service";
+import { Service, Barber } from "../../types";
 import CardService from "./components/CardService";
 import CaruselCard from "./components/CaruselCard";
-import { Barber } from "src/types/Barber";
 import CardBarber from "./components/CardBarber";
 
-import ButtonLg from "./components/ButtonLg";
-import { Order } from "src/types/Order";
-import ScheduleUser from "./components/ScheduleUser";
+import ScheduleUser from "../../components/schedule/ScheduleUser";
+import { useAppDispatch, useAppSelector } from "../../hook/useStore";
+import { actionGetServicesAndBarbers } from "../../redux/actions/barberShopAction";
+import Loading from "../../components/Loading/Loading";
+import { usePersistData } from "../../hook/usePersistData";
+import { actionGetAppointmentsPending } from "../../redux/actions/appointmentActions";
+
 const NewOrder = () => {
+    //const theme: Theme = useTheme();
+    const [activeStep, setActiveStep] = useState<number>(0);
+    const [serviceSelected, setServiceSelected] = useState<Service | null>(null);
+    const [barberSelected, setBarberSelected] = useState<Barber | null>(null);
+    const [barbers, setBarbers] = useState<Barber[] | null>(null);
     const theme: Theme = useTheme();
-    const [activeStep, setActiveStep] = useState<number>(1);
-    const [newOrder, setNewOrder] = useState<Order | null>(null);
-    const [serviceSelected, setServiceSelected] = useState<Service | null>(
-        null
+    const isXs = useMediaQuery(theme.breakpoints.only("xs"));
+    const { services } = useAppSelector((state) => state.servicesState);
+    const { appointmentsPending, appointmentsUserHistory } = useAppSelector(
+        (state) => state.appointments
     );
+    const { barbers: barbersState } = useAppSelector((state) => state.barbers);
+    const dispatch = useAppDispatch();
+    const { getIdBarberShop, getToken } = usePersistData();
     type Step = {
         title: string;
         subTitle: string;
@@ -51,111 +63,23 @@ const NewOrder = () => {
     ];
 
     const handleNext = () => {
+        if (activeStep === 0 && serviceSelected) {
+            const barbersFilter = barbersState?.filter((barber) =>
+                barber.services?.includes(serviceSelected.id)
+            );
+            barbersFilter && setBarbers(barbersFilter);
+        }
         setActiveStep((prevActiveStep) => prevActiveStep + 1);
     };
     const handleBack = () => {
         setActiveStep((prevActiveStep) => prevActiveStep - 1);
     };
     const handleReset = () => {
+        setServiceSelected(null);
+        setBarberSelected(null);
         setActiveStep(0);
     };
-    const [barberSelected, setBarberSelected] = useState<Barber | null>(null);
 
-    const services: Service[] = [
-        {
-            id: "1",
-            name: "corte de pelo",
-            duration: 30,
-            image: "",
-            price: 800,
-            description:
-                "corte de pelo ya sea clasico o con degradado. No incluye diseño/lavado",
-        },
-
-        {
-            id: "2",
-            name: "corte Premium",
-            duration: 45,
-            image: "",
-            price: 800,
-            description:
-                "Corte de pelo ya sea clasico o degradado con un margen de trabajo mas amplio asesoramiento de visagismo y productos premium para un acabado aun mas profesional.",
-        },
-        {
-            id: "3",
-            name: "arreglo de barba",
-            duration: 60,
-            image: "",
-            price: 800,
-            description:
-                "Arreglo de barba con disminucion, afeitado completo y/o perfilado.",
-        },
-        {
-            id: "4",
-            name: "afeitado tradicional",
-            duration: 30,
-            image: "",
-            price: 800,
-            description:
-                "ageitado o arreglo de barba con el metodo tradicional, toallas calientes/frias y vapor de ozono.",
-        },
-        {
-            id: "5",
-            name: "corte niño",
-            duration: 60,
-            image: "",
-            price: 800,
-            description:
-                "Corte de pelo clasico o degradado para niños hasta 12 años ",
-        },
-        {
-            id: "6",
-            name: "perfilado de cejas",
-            duration: 45,
-            image: "",
-            price: 800,
-            description:
-                "Arrego de cejas con disminucion, utilizamos tecnicas especializadas para que tus cejas queden implecables.",
-        },
-    ];
-    const barbers: Barber[] = [
-        {
-            id: "1",
-            name: "Juan",
-            description: "cuento con 5 años de experiencia, animate te espero",
-            avatar: "",
-        },
-        {
-            id: "2",
-            name: "Joquin",
-            description: "cuento con 5 años de experiencia, animate te espero",
-            avatar: "",
-        },
-        {
-            id: "3",
-            name: "Marcos",
-            description: "cuento con 5 años de experiencia, animate te espero",
-            avatar: "",
-        },
-        {
-            id: "4",
-            name: "Emiliano",
-            description: "cuento con 5 años de experiencia, animate te espero",
-            avatar: "",
-        },
-        {
-            id: "5",
-            name: "Ernesto",
-            description: "cuento con 5 años de experiencia, animate te espero",
-            avatar: "",
-        },
-        {
-            id: "6",
-            name: "Lorenzo",
-            description: "cuento con 5 años de experiencia, animate te espero",
-            avatar: "",
-        },
-    ];
     const handleSelectedService = (service: Service): void => {
         // service.selected = true;
         if (!serviceSelected) setServiceSelected(service);
@@ -172,7 +96,37 @@ const NewOrder = () => {
         else if (barberSelected.id === barber.id) setBarberSelected(null);
         else setBarberSelected(barber);
     };
-    return (
+    const handleDisabledNext = (): boolean => {
+        if (activeStep === 0 && serviceSelected) return false;
+        if (activeStep === 1 && barberSelected) return false;
+        return true;
+    };
+    useEffect(() => {
+        try {
+            if (!barbersState || !services) {
+                dispatch(actionGetServicesAndBarbers());
+            }
+        } catch (e: any) {
+            console.log(e.message);
+        }
+    }, []);
+
+    useEffect(() => {
+        try {
+            if (!appointmentsPending || !appointmentsUserHistory) {
+                dispatch(actionGetServicesAndBarbers()).then(() => {
+                    if (getToken() && getIdBarberShop()) {
+                        dispatch(
+                            actionGetAppointmentsPending(getIdBarberShop() as string, getToken())
+                        );
+                    }
+                });
+            }
+        } catch (e: any) {
+            console.log(e.message);
+        }
+    }, []);
+    return barbersState && services ? (
         <Stack
             component={"form"}
             justifyContent={{
@@ -185,25 +139,17 @@ const NewOrder = () => {
         >
             {activeStep < steps.length && (
                 <>
-                    <Typography
-                        variant={"h4"}
-                        color={"primary"}
-                        textAlign={"center"}
-                    >
+                    <Typography variant={"h4"} color={"primary"} textAlign={"center"}>
                         {steps[activeStep].title}
                     </Typography>
-                    <Typography
-                        textAlign={"center"}
-                        maxWidth={{ xs: "95%", md: "70%" }}
-                    >
-                        {steps[activeStep].note}
+                    <Typography textAlign={"center"} maxWidth={{ xs: "95%", md: "70%" }}>
+                        {isXs
+                            ? steps[activeStep].note.substring(0, 100) + "..."
+                            : steps[activeStep].note}
                     </Typography>
                 </>
             )}
-            <Stepper
-                activeStep={activeStep}
-                sx={{ width: { sm: "70%", xs: "100%" } }}
-            >
+            <Stepper activeStep={activeStep} sx={{ width: { sm: "70%", xs: "100%" } }}>
                 {steps.map(({ subTitle }, index) => {
                     const stepProps: { completed?: boolean } = {};
                     const labelProps: { optional?: React.ReactNode } = {};
@@ -233,54 +179,59 @@ const NewOrder = () => {
                 </>
             ) : (
                 <>
+                    {/* ***************** Seleccion de Servicios ******************** */}
                     {activeStep === 0 && (
                         <Box p={2} width={"100%"}>
                             <CaruselCard>
                                 {services.map((s) => (
                                     <CardService
-                                        handleSelectedService={
-                                            handleSelectedService
-                                        }
+                                        handleSelectedService={handleSelectedService}
                                         key={s.id}
                                         service={s}
                                         selected={
-                                            serviceSelected
-                                                ? serviceSelected.id === s.id
-                                                : false
+                                            serviceSelected ? serviceSelected.id === s.id : false
                                         }
                                     />
                                 ))}
                             </CaruselCard>
                         </Box>
                     )}
-
+                    {/* ***************** Seleccion de barbero ******************** */}
                     {activeStep === 1 && (
                         <Box p={2} width={"100%"}>
-                            <CaruselCard numDesktop={4}>
-                                {barbers.map((b) => (
-                                    <CardBarber
-                                        handleClick={handleSelectBarber}
-                                        selected={
-                                            barberSelected
-                                                ? barberSelected.id === b.id
-                                                : false
-                                        }
-                                        key={b.name}
-                                        barber={b}
-                                    />
-                                ))}
-                            </CaruselCard>
+                            {barbers?.length ? (
+                                <CaruselCard numDesktop={4}>
+                                    {barbers.map((b) => (
+                                        <CardBarber
+                                            handleClick={handleSelectBarber}
+                                            selected={
+                                                barberSelected ? barberSelected.id === b.id : false
+                                            }
+                                            key={b.name}
+                                            barber={b}
+                                        />
+                                    ))}
+                                </CaruselCard>
+                            ) : (
+                                <Box
+                                    display={"grid"}
+                                    sx={{
+                                        placeContent: "center",
+                                    }}
+                                >
+                                    <Typography textAlign={"center"} maxWidth={"80ch"}>
+                                        Lo sentimos, en este momento todos nuestros profesionales
+                                        que atienden el servicio elegido estan ocupados. Intentelo o
+                                        mas tarde o seleccione otro servicio.
+                                    </Typography>
+                                </Box>
+                            )}
                         </Box>
                     )}
+                    {/* ***************** Seleccion de fecha ******************** */}
                     {activeStep === 2 && (
                         <Grid container justifyContent={"center"}>
-                            <Grid
-                                item
-                                xs={12}
-                                md={8}
-                                display={"flex"}
-                                justifyContent={"flex-end"}
-                            >
+                            <Grid item xs={12} md={8} display={"flex"} justifyContent={"flex-end"}>
                                 <Box
                                     display={"flex"}
                                     justifyContent={"center"}
@@ -290,36 +241,14 @@ const NewOrder = () => {
                                     width={{ xs: "100%" }}
                                     alignSelf={"center"}
                                 >
-                                    <ScheduleUser
-                                        titleService={
-                                            serviceSelected
-                                                ? serviceSelected.name
-                                                : ""
-                                        }
-                                        duration={
-                                            serviceSelected
-                                                ? serviceSelected.duration
-                                                : 0
-                                        }
-                                    />
+                                    {serviceSelected && barberSelected && (
+                                        <ScheduleUser
+                                            service={serviceSelected}
+                                            barber={barberSelected}
+                                        />
+                                    )}
                                 </Box>
                             </Grid>{" "}
-                            {/* <Grid item xs={12} sm={2}>
-                                    <Box
-                                        height={"100%"}
-                                        display={"flex"}
-                                        justifyContent={{
-                                            xs: "center",
-                                            md: "start",
-                                        }}
-                                        alignItems={"center"}
-                                    >
-                                        <ButtonLg
-                                            label="Agregar Turno"
-                                            handleClick={() => {}}
-                                        />
-                                    </Box>
-                                </Grid> */}
                         </Grid>
                     )}
                     <Box
@@ -338,15 +267,15 @@ const NewOrder = () => {
                             Back
                         </Button>
 
-                        <Button onClick={handleNext}>
-                            {activeStep === steps.length - 1
-                                ? "Finish"
-                                : "Next"}
+                        <Button onClick={handleNext} disabled={handleDisabledNext()}>
+                            {activeStep === steps.length - 1 ? "Finish" : "Next"}
                         </Button>
                     </Box>
                 </>
             )}
         </Stack>
+    ) : (
+        <Loading />
     );
 };
 

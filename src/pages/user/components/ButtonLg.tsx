@@ -1,11 +1,4 @@
-import {
-    Button,
-    Stack,
-    IconButton,
-    Typography,
-    Theme,
-    useTheme,
-} from "@mui/material";
+import { Button, Stack, Typography, Theme, useTheme } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 interface Props {
     label: string;
@@ -26,15 +19,14 @@ const ButtonLg: React.FC<Props> = ({ label, handleClick }) => {
                 },
             }}
         >
-            <Stack>
-                <IconButton>
-                    <AddIcon
-                        sx={{
-                            fontSize: "3rem",
-                            color: "white",
-                        }}
-                    />
-                </IconButton>
+            <Stack justifyContent={"center"} alignItems={"center"}>
+                <AddIcon
+                    sx={{
+                        fontSize: "3rem",
+                        color: "white",
+                    }}
+                />
+
                 <Typography>{label}</Typography>
             </Stack>
         </Button>
