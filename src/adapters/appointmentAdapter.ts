@@ -4,7 +4,6 @@ import userAdapter from "./userAdapter";
 import barberAdapter from "./barberAdapter";
 import { SchedulerDateTime } from "node_modules/@devexpress/dx-react-scheduler/dist/dx-react-scheduler";
 import { AppointmentHistory } from "src/types/AppointmentHistory";
-import dayjs from "dayjs";
 const mapAppointmentApiToAppointment = (data: any): Appointment => {
     // console.log(new Date(data.endDate).toLocaleDateString());
     // console.log(new Date(data.startDate).toDateString());

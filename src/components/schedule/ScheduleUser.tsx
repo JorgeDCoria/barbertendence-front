@@ -33,7 +33,6 @@ dayjs.extend(isSomeOrAfter);
 interface Props {
     service: Service;
     barber: Barber;
-    handleReset: () => void;
 }
 
 const filterAppointmentsBeforeToday = (data: Appointment[]) => {
@@ -47,11 +46,10 @@ const filterAppointmentsBeforeToday = (data: Appointment[]) => {
     });
 };
 
-const ScheduleUser: React.FC<Props> = ({ service, barber, handleReset }) => {
+const ScheduleUser: React.FC<Props> = ({ service, barber }) => {
     const [currentDate, setCurrentDate] = useState<Date>(new Date());
-    //const [appointments, setAppointments] = useState<Appointment[]>(appointmentsData);
-
     const [addedAppointment, setAddedAppointment] = useState<Appointment>({} as Appointment);
+    //@ts-ignore
     const [isAppointmentBeingCreated, setIsAppointmentBeingCreated] = useState<boolean>(false);
 
     const today: Date = new Date();
@@ -77,12 +75,6 @@ const ScheduleUser: React.FC<Props> = ({ service, barber, handleReset }) => {
               appointmentsPending.concat(barber.appointments as Appointment[])
           )
         : ([] as Appointment[]);
-    // let appointments: Appointment[] =
-    //     barber?.appointments?.length && appointmentsPending
-    //         ? filterAppointmentsBeforeToday(barber.appointments.concat(appointmentsPending))
-    //         : ([] as Appointment[]);
-
-    //appointments = appointments.concat(appointmentsData);
     const { getIdBarberShop, getToken } = usePersistData();
     /**
      * funcion encagada de cambiar el estado de shiftTomorrow.
@@ -108,9 +100,6 @@ const ScheduleUser: React.FC<Props> = ({ service, barber, handleReset }) => {
         console.log("******* actuando handle commit change ********");
 
         if (added) {
-            // const startingAddedId =
-            //     appointments.length > 0 ? appointments[appointments.length - 1].id + 1 : 0;
-            // setAppointments([...appointments, { id: startingAddedId, ...added }]);
             let newAppointment: Appointment = {
                 serviceId: service?.id,
                 barberId: barber.id !== undefined ? barber.id : "",

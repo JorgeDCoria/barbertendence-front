@@ -1,7 +1,7 @@
 import { Barber } from "./Barber";
 import { Service } from "./Service";
 import { User } from "./User";
-import { AppointmentState } from "src/types";
+import { AppointmentState } from "../typesConfig";
 
 export type AppointmentHistory = {
     id: string;
